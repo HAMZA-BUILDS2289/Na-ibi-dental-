@@ -1,0 +1,1049 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Best Dental Clinic in Kano Janbulo | NA'IBI Dental Clinic</title><meta name="description" content="NA'IBI Dental Clinic - best dental clinic in Kano, Janbulo. Painless dental crowns, scaling, whitening, braces, implants. Open daily till 9pm. Call 0810 697 7321."><meta property="og:title" content="NA'IBI Dental Clinic, Kano"><meta property="og:description" content="NA'IBI Dental Clinic - best dental clinic in Kano, Janbulo. Painless dental crowns, scaling, whitening, braces, implants. Open daily till 9pm. Call 0810 697 7321."><meta property="og:image" content="img/interior.jpg"><meta name="theme-color" content="#0A1931"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Dentist","name":"NA'IBI Dental Clinic","telephone":"+2348106977321","address":{"@type":"PostalAddress","streetAddress":"Gwarzo road, Janbulo First Gate Road, opposite Haman superstores","addressLocality":"Kano","addressCountry":"NG"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"22"},"openingHours":"Mo-Su 08:00-21:00"}</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"><style>[hidden]{display:none!important}img{max-width:100%}html,body{margin:0;background:#0A1931}</style></head><body><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script><style>
+/* Concept: a gold-leaf dental atelier at night. Deep navy ground, a polished 3D gold crown and tooth catching the light, cream sections for calm, serif headlines against a clean sans. Gold is the only accent; green appears once, for "painless". */
+:root{
+  --navy:#0A1931; --ink:#0F172A; --gold:#D4AF37; --gold2:#C5A028; --glow:#FFD700; --cream:#FDF6E3; --white:#FFFFFF; --green:#10B981; --wa:#25D366;
+  --bg:#0A1931; --text:#e9eefb; --head:#ffffff; --muted:#aab8d4; --panel:rgba(14,30,62,.62); --line:rgba(212,175,55,.3); --soft:rgba(255,255,255,.06);
+  --f-display:'Cormorant Garamond','Playfair Display',Georgia,serif;
+  --f-body:'Jost','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+  --goldtxt:linear-gradient(100deg,#b88a1e 0%,#f6d86a 28%,#D4AF37 48%,#fff2b0 62%,#c5a028 100%);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+img,video{max-width:100%}
+html{scroll-behavior:smooth}
+body{margin:0; font:400 1.0625rem/1.65 var(--f-body); color:var(--text); background-color:var(--bg);
+  background-image:radial-gradient(900px 600px at 90% -5%,rgba(212,175,55,.16) 0%,transparent 62%),radial-gradient(900px 700px at -10% 100%,rgba(34,64,120,.55) 0%,transparent 60%);
+  background-attachment:fixed; overflow-x:hidden; -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--f-display); font-weight:700; line-height:1.04; margin:0; color:var(--head); text-wrap:balance; letter-spacing:-.005em}
+p{margin:0; text-wrap:pretty}
+a{color:inherit}
+button{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--glow); outline-offset:3px; border-radius:8px}
+.i{width:1.2em; height:1.2em; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; flex:none}
+.i.fill{fill:currentColor; stroke:none}
+#bg{position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; display:block}
+.app{position:relative; z-index:1}
+.wrap{width:min(1220px,100%); margin-inline:auto; padding-inline:clamp(16px,4vw,36px)}
+.sec{padding-block:clamp(52px,8vw,110px)}
+.sec.tight{padding-block:clamp(30px,4.5vw,56px)}
+.cr{--bg:#FDF6E3; --text:#2b3550; --head:#0A1931; --muted:#55607a; --panel:#ffffff; --line:#e6d7a8; --soft:rgba(10,25,49,.05); background:var(--cream); color:var(--text); position:relative}
+.wh{--bg:#ffffff; --text:#2b3550; --head:#0A1931; --muted:#55607a; --panel:#FDF6E3; --line:#eadfb8; --soft:rgba(10,25,49,.05); background:#fff; color:var(--text)}
+.cr :focus-visible,.wh :focus-visible{outline-color:var(--navy)}
+
+/* reveal (only hidden when gsap is confirmed) */
+html.has-gsap .reveal{opacity:0; transform:translateY(28px)}
+html.force-show .reveal{opacity:1!important; transform:none!important}
+
+/* topbar + header */
+.topbar{background:linear-gradient(90deg,#8a6a12,#D4AF37 50%,#8a6a12); color:#0A1931; font-size:.88rem; font-weight:600; letter-spacing:.02em}
+.topbar .wrap{display:flex; flex-wrap:wrap; gap:4px 22px; justify-content:center; align-items:center; padding-block:8px; text-align:center}
+.topbar a{text-decoration:none; border-bottom:1px solid rgba(10,25,49,.5); font-weight:700}
+.hdr{position:sticky; top:env(safe-area-inset-top,0px); z-index:60; background:rgba(8,20,42,.86); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex; align-items:center; gap:14px; min-height:74px}
+.brand{display:flex; align-items:center; gap:12px; text-decoration:none; margin-right:auto; min-width:0}
+.logo-mark{width:46px; height:46px; border-radius:50%; display:grid; place-items:center; background:#fff; box-shadow:0 0 0 2px var(--gold),0 0 26px rgba(212,175,55,.5); flex:none}
+.logo-mark svg{width:30px; height:30px}
+.brand b{display:block; font:700 1.5rem/1 var(--f-display); letter-spacing:.04em; background:var(--goldtxt); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent}
+.brand small{display:block; font-size:.62rem; letter-spacing:.34em; text-transform:uppercase; color:#e9d8a0; margin-top:4px; font-weight:500}
+.nav{display:none; align-items:center; gap:2px}
+.nav a{position:relative; padding:.6rem .78rem; text-decoration:none; font-weight:500; font-size:.95rem; color:#cfd9ee; letter-spacing:.02em; transition:color .2s}
+.nav a::after{content:""; position:absolute; left:.78rem; right:.78rem; bottom:.25rem; height:1px; background:var(--gold); transform:scaleX(0); transition:transform .25s}
+.nav a:hover{color:#fff}.nav a:hover::after,.nav a[aria-current="page"]::after{transform:scaleX(1)}
+.nav a[aria-current="page"]{color:var(--gold)}
+.nav .nav-more{display:none}
+.menu-btn{display:inline-grid; place-items:center; width:48px; height:48px; border-radius:50%; border:1px solid var(--line); background:var(--soft); cursor:pointer}
+.menu-btn .i{width:24px; height:24px}
+.hdr .btn.sm{display:none}
+.nav.open{display:grid; grid-template-columns:1fr 1fr; position:absolute; left:0; right:0; top:100%; padding:14px clamp(16px,4vw,36px) 20px; gap:6px; background:rgba(8,20,42,.98); border-bottom:1px solid var(--line); max-height:calc(100vh - 130px); overflow:auto}
+.nav.open a{background:var(--soft); text-align:center; padding:.8rem; border-radius:12px}
+.nav.open a::after{display:none}
+.nav.open .nav-more{display:block}
+@media (min-width:1180px){.nav{display:flex}.menu-btn{display:none}.hdr .btn.sm{display:inline-flex}}
+
+/* buttons */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:.6rem; min-height:52px; padding:.8rem 1.6rem; border-radius:999px; border:1px solid transparent; font-weight:600; font-size:1rem; letter-spacing:.03em; text-decoration:none; cursor:pointer; position:relative; overflow:hidden; isolation:isolate; transition:transform .2s, box-shadow .2s, background .2s; text-align:center}
+.btn:hover{transform:translateY(-2px)}
+.btn::after{content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%); transform:translateX(-120%); animation:shine 5.5s ease-in-out infinite}
+@keyframes shine{0%,70%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.btn-gold{background:linear-gradient(135deg,#f3d467,#D4AF37 45%,#b38b1a); color:#0A1931; box-shadow:0 10px 34px rgba(212,175,55,.45)}
+.btn-gold:hover{box-shadow:0 14px 44px rgba(255,215,0,.6)}
+.btn-line{background:transparent; border-color:var(--gold); color:var(--gold)}
+.btn-line:hover{background:rgba(212,175,55,.14)}
+.cr .btn-line,.wh .btn-line{color:#0A1931; border-color:#0A1931}
+.cr .btn-line:hover,.wh .btn-line:hover{background:rgba(10,25,49,.06)}
+.btn-navy{background:#0A1931; color:#fff; border-color:rgba(212,175,55,.5)}
+.btn-wa{background:var(--wa); color:#04230f}
+.btn.sm{min-height:44px; padding:.55rem 1.2rem; font-size:.94rem}
+.btn-row{display:flex; flex-wrap:wrap; gap:12px}
+.card .btn{margin-top:16px}
+
+/* type */
+.kicker{display:inline-flex; align-items:center; gap:.7rem; font-size:.78rem; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:var(--gold)}
+.kicker::before{content:""; width:34px; height:1px; background:var(--gold)}
+.cr .kicker,.wh .kicker{color:#9a7712}.cr .kicker::before,.wh .kicker::before{background:#9a7712}
+h1{font-size:clamp(2.7rem,7.2vw,5.6rem); font-weight:700; line-height:.98}
+h2{font-size:clamp(2.1rem,4.8vw,3.7rem); line-height:1.02}
+h3{font-size:1.65rem; line-height:1.1}
+.lead{font-size:clamp(1.05rem,1.5vw,1.22rem); color:#cdd8ee; max-width:58ch; font-weight:300}
+.cr .lead,.wh .lead{color:#3d4968; font-weight:400}
+.muted{color:var(--muted)}
+.gold{background:var(--goldtxt); background-size:220% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; font-style:italic; animation:sheen 7s linear infinite}
+.cr .gold,.wh .gold{filter:saturate(1.1) brightness(.78)}
+@keyframes sheen{to{background-position:-220% 0}}
+.sec-head{display:grid; gap:14px; margin-bottom:clamp(26px,4.5vw,50px); max-width:800px}
+.sec-head.row{max-width:none; grid-template-columns:1fr auto; align-items:end}
+@media (max-width:700px){.sec-head.row{grid-template-columns:1fr}}
+.rule{height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:.55; border:0; margin:0}
+
+/* cards */
+.card{background:var(--panel); border:1px solid var(--line); border-radius:24px; padding:clamp(20px,2.6vw,32px); min-width:0; transition:transform .3s, border-color .3s, box-shadow .3s}
+.dk .card,.card.glass{backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px)}
+a.card{text-decoration:none; display:block}
+.card.hov:hover{transform:translateY(-6px); border-color:var(--gold); box-shadow:0 22px 56px rgba(212,175,55,.18)}
+.grid{display:grid; gap:clamp(14px,2vw,22px)}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.ico{display:grid; place-items:center; width:56px; height:56px; border-radius:18px; background:linear-gradient(135deg,rgba(243,212,103,.28),rgba(212,175,55,.08)); border:1px solid rgba(212,175,55,.45); color:var(--gold); margin-bottom:16px}
+.ico .i{width:28px; height:28px}
+.cr .ico,.wh .ico{color:#8a6a12; background:#fff7dc}
+.card p{color:var(--muted); font-size:1rem}
+.card h3{margin-bottom:8px}
+
+.page{animation:fade .4s ease-out}
+@keyframes fade{from{opacity:.3}to{opacity:1}}
+
+/* hero */
+.hero{padding-block:clamp(26px,5vw,70px) 0; position:relative}
+.hero-grid{display:grid; gap:clamp(10px,3vw,30px); grid-template-columns:1fr; align-items:center}
+@media (min-width:980px){.hero-grid{grid-template-columns:1.2fr .8fr}}
+.hero-copy{display:grid; gap:24px; min-width:0}
+.badges{display:flex; flex-wrap:wrap; gap:10px}
+.badge{display:inline-flex; align-items:center; gap:.5rem; padding:.45rem 1rem; border-radius:999px; background:var(--soft); border:1px solid var(--line); font-size:.88rem; font-weight:500; backdrop-filter:blur(8px); color:#fff; letter-spacing:.02em}
+.badge .st{color:var(--glow)}
+.badge.pain{border-color:rgba(16,185,129,.6); background:rgba(16,185,129,.14); color:#8ff0cb}
+.badge.pain .dot{width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 0 0 rgba(16,185,129,.7); animation:live 1.9s infinite}
+@keyframes live{70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+.anchor{width:100%; min-height:300px; aspect-ratio:1/1; max-height:560px; pointer-events:none}
+.anchor.sm{max-height:360px}
+.anchor.cta{max-width:380px; justify-self:center}
+.sparkline{position:absolute; right:clamp(8px,3vw,30px); top:50%; writing-mode:vertical-rl; transform:translateY(-50%) rotate(180deg); letter-spacing:.4em; font-size:.72rem; text-transform:uppercase; color:#d9c682; opacity:.8; display:none}
+@media (min-width:1300px){.sparkline{display:block}}
+.w{display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.1em}
+.w>span{display:inline-block}
+.trust{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); margin-top:clamp(24px,4vw,50px); border:1px solid var(--line); border-radius:24px; background:rgba(8,20,42,.7); backdrop-filter:blur(12px); overflow:hidden}
+.trust div{display:flex; align-items:center; gap:14px; padding:20px 24px; font-weight:500; border-right:1px solid var(--line)}
+.trust div:last-child{border-right:0}
+.trust .i{color:var(--gold); width:30px; height:30px}
+.trust b{display:block; font:700 1.25rem/1.1 var(--f-display); color:#fff}
+.trust small{color:var(--muted); font-size:.85rem}
+@media (max-width:700px){.trust div{border-right:0; border-bottom:1px solid var(--line)}.trust div:last-child{border-bottom:0}}
+
+/* marquee */
+.marq{overflow:hidden; border-block:1px solid var(--line); background:rgba(6,15,32,.85); margin-top:clamp(36px,5vw,60px)}
+.marq-track{display:flex; width:max-content; animation:marq 46s linear infinite}
+.marq span{display:inline-flex; align-items:center; gap:1.4rem; padding:1.15rem 1.4rem 1.15rem 0; font:600 1.45rem var(--f-display); font-style:italic; white-space:nowrap; color:#f0dc9a}
+.marq .i{color:var(--gold); width:.9em; height:.9em}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* stats */
+.stat{display:grid; gap:4px; text-align:center; padding:8px}
+.stat b{font:700 clamp(2.8rem,6vw,4.4rem)/1 var(--f-display); background:var(--goldtxt); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent}
+.stat span{color:var(--muted); font-size:.95rem; letter-spacing:.04em}
+
+/* bento */
+.bento{display:grid; gap:clamp(14px,2vw,22px); grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr))}
+@media (min-width:980px){.bento{grid-template-columns:repeat(6,1fr)}.bento>*:nth-child(1){grid-column:span 3}.bento>*:nth-child(2){grid-column:span 3}.bento>*:nth-child(n+3){grid-column:span 2}}
+.tile{position:relative; overflow:hidden; display:flex; flex-direction:column; gap:10px}
+.tile .cnt{position:absolute; right:22px; top:18px; font:700 3.4rem/1 var(--f-display); color:transparent; -webkit-text-stroke:1px rgba(212,175,55,.5)}
+.tile.big{background:linear-gradient(135deg,rgba(212,175,55,.2),rgba(14,30,62,.8))}
+.tile .tag{align-self:flex-start; padding:.25rem .75rem; border-radius:999px; font-size:.78rem; font-weight:600; letter-spacing:.06em; background:rgba(16,185,129,.16); color:#8ff0cb; border:1px solid rgba(16,185,129,.5)}
+.tile q{quotes:none; font-family:var(--f-display); font-style:italic; font-size:1.3rem; line-height:1.25; color:#fff}
+
+/* services index */
+.index{border-top:1px solid var(--line)}
+.row{display:grid; grid-template-columns:70px 1.1fr 1.6fr 40px; gap:18px; align-items:center; padding:26px 12px; border-bottom:1px solid var(--line); text-decoration:none; position:relative; transition:padding .3s, background .3s}
+.row::before{content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(212,175,55,.2),transparent); opacity:0; transition:opacity .3s}
+.row:hover{padding-inline:26px}.row:hover::before{opacity:1}
+.row>*{position:relative}
+.row .n{font:600 1.1rem var(--f-display); color:var(--gold); letter-spacing:.1em}
+.row .nm{font:700 clamp(1.5rem,3vw,2.3rem)/1.05 var(--f-display); color:var(--head)}
+.row .ds{color:var(--muted); font-size:1rem}
+.row .ar{color:var(--gold); transition:transform .3s}.row:hover .ar{transform:translateX(6px)}
+.cr .row .n{color:#9a7712}.cr .row .ar{color:#9a7712}
+@media (max-width:760px){.row{grid-template-columns:44px 1fr 28px; gap:10px; padding-block:20px}.row .ds{grid-column:2/3; grid-row:2}.row .ar{grid-row:1; grid-column:3}}
+
+/* crown feature */
+.feat{display:grid; gap:clamp(24px,4vw,50px); grid-template-columns:1fr; align-items:center}
+@media (min-width:1000px){.feat{grid-template-columns:1fr .85fr .7fr}}
+.phone{position:relative; width:min(100%,300px); margin-inline:auto; aspect-ratio:540/742; border-radius:36px; padding:10px; background:linear-gradient(135deg,#f3d467,#8a6a12 60%,#D4AF37); box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 60px rgba(212,175,55,.25)}
+.phone .screen{position:relative; width:100%; height:100%; border-radius:28px; overflow:hidden; background:#000}
+.phone video,.phone img{width:100%; height:100%; object-fit:cover; display:block}
+.pp{position:absolute; right:12px; bottom:12px; width:46px; height:46px; border-radius:50%; border:1px solid rgba(255,255,255,.5); background:rgba(10,25,49,.7); display:grid; place-items:center; cursor:pointer; color:#fff}
+.reel-tabs{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:16px}
+.rtab{padding:.5rem 1rem; border-radius:999px; border:1px solid var(--line); background:var(--soft); cursor:pointer; font-weight:500; font-size:.92rem; color:var(--text)}
+.rtab[aria-pressed="true"]{background:var(--gold); border-color:var(--gold); color:#0A1931; font-weight:600}
+.steps-inline{display:grid; gap:12px; list-style:none; padding:0; margin:0; counter-reset:s}
+.steps-inline li{counter-increment:s; display:flex; gap:14px; align-items:flex-start}
+.steps-inline li::before{content:counter(s); flex:none; width:34px; height:34px; border-radius:50%; display:grid; place-items:center; border:1px solid var(--gold); color:var(--gold); font:700 1.1rem var(--f-display)}
+
+/* split */
+.split{display:grid; gap:clamp(26px,5vw,64px); grid-template-columns:1fr; align-items:center}
+@media (min-width:900px){.split{grid-template-columns:1fr 1fr}.split.rev>:first-child{order:2}}
+.shot{border-radius:28px; overflow:hidden; border:1px solid var(--line); box-shadow:0 26px 70px rgba(0,0,0,.35); position:relative; background:#0b1d3a}
+.cr .shot,.wh .shot{box-shadow:0 22px 50px rgba(10,25,49,.18)}
+.shot img{display:block; width:100%; height:100%; object-fit:cover}
+.shot.par img{height:118%; margin-top:-9%}
+.shot figcaption{position:absolute; left:14px; bottom:14px; right:14px; font-size:.82rem; font-weight:500; color:#fff; background:rgba(10,25,49,.8); padding:.4rem .8rem; border-radius:10px; width:fit-content; max-width:100%}
+.checks{list-style:none; margin:0; padding:0; display:grid; gap:12px}
+.checks li{display:flex; gap:.75rem; align-items:flex-start}
+.checks .i{color:var(--gold); margin-top:.22em}
+.cr .checks .i,.wh .checks .i{color:#9a7712}
+
+/* strip (tour) */
+.strip{display:flex; gap:18px; overflow-x:auto; scroll-snap-type:x mandatory; padding:4px 4px 18px; scrollbar-width:thin; scrollbar-color:var(--gold) transparent}
+.strip figure{margin:0; flex:0 0 min(78%,320px); scroll-snap-align:start; position:relative; border-radius:24px; overflow:hidden; border:1px solid var(--line); background:#0b1d3a}
+.strip figure.land{flex-basis:min(86%,520px)}
+.strip button{all:unset; display:block; width:100%; cursor:zoom-in}
+.strip button:focus-visible{outline:3px solid var(--glow); outline-offset:-3px}
+.strip img{display:block; width:100%; height:420px; object-fit:cover; transition:transform .7s}
+.strip figure:hover img{transform:scale(1.05)}
+.strip figcaption{position:absolute; left:0; right:0; bottom:0; padding:44px 18px 16px; font:600 1.2rem var(--f-display); background:linear-gradient(transparent,rgba(5,12,28,.94)); color:#fff}
+.sc-nav{display:flex; gap:10px}
+.round{width:50px; height:50px; border-radius:50%; border:1px solid var(--line); background:var(--soft); display:grid; place-items:center; cursor:pointer; color:var(--text)}
+.round:hover{border-color:var(--gold); color:var(--gold)}
+
+/* reviews */
+.rev-wrap{display:grid; gap:30px}
+.rev-main{position:relative; padding:clamp(26px,5vw,60px); border-radius:32px; background:linear-gradient(135deg,rgba(212,175,55,.14),rgba(14,30,62,.75)); border:1px solid var(--line); min-height:340px; display:grid; align-content:space-between; gap:24px}
+.cr .rev-main,.wh .rev-main{background:#fff}
+.rev-main::before{content:"\201C"; position:absolute; left:clamp(16px,3vw,34px); top:-6px; font:700 8rem/1 var(--f-display); color:var(--gold); opacity:.55}
+.rev-main q{quotes:none; position:relative; font:600 clamp(1.5rem,3.2vw,2.5rem)/1.2 var(--f-display); font-style:italic; color:var(--head)}
+.who{display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.av{width:50px; height:50px; border-radius:50%; display:grid; place-items:center; font:700 1.1rem var(--f-display); background:linear-gradient(135deg,#f3d467,#b38b1a); color:#0A1931; flex:none}
+.who b{display:block; font-weight:600; color:var(--head)}
+.who small{color:var(--muted)}
+.stars{color:var(--glow); letter-spacing:.14em}
+.rev-ctl{display:flex; align-items:center; gap:14px; justify-content:space-between; flex-wrap:wrap}
+.dots{display:flex; gap:8px}
+.dot{width:12px; height:12px; border-radius:50%; border:1px solid var(--gold); background:transparent; cursor:pointer; padding:0}
+.dot[aria-current="true"]{background:var(--gold); width:34px; border-radius:99px}
+.chipset{display:flex; flex-wrap:wrap; gap:10px}
+.chip{display:inline-flex; align-items:center; gap:.5rem; padding:.5rem 1rem; border-radius:999px; border:1px solid var(--line); background:var(--soft); font-weight:500; font-size:.93rem}
+.chip b{color:var(--gold); font-weight:700}
+.cr .chip b,.wh .chip b{color:#8a6a12}
+.tabs{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px}
+.tab{padding:.55rem 1.1rem; border-radius:999px; border:1px solid var(--line); background:var(--soft); cursor:pointer; font-weight:500; font-size:.93rem; color:var(--text)}
+.tab[aria-pressed="true"]{background:var(--gold); border-color:var(--gold); color:#0A1931; font-weight:600}
+.quote{display:flex; flex-direction:column; gap:14px}
+.quote q{quotes:none; font-size:1.05rem; line-height:1.6; color:var(--text)}
+.quote .who{margin-top:auto}
+
+/* team */
+.role{text-align:left}
+.role .ico{width:64px; height:64px}
+.role .big{font:700 4rem/1 var(--f-display); color:transparent; -webkit-text-stroke:1px rgba(212,175,55,.55); float:right}
+
+/* planner */
+.planner{display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.plan{display:grid; gap:6px}
+.plan .big{font:700 clamp(2.2rem,4vw,3rem)/1 var(--f-display); background:var(--goldtxt); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent}
+.cr .plan .big{filter:brightness(.78)}
+.range{position:relative; margin-top:16px; padding:40px 0 34px}
+.range .track{height:12px; border-radius:99px; background:rgba(255,255,255,.1); position:relative}
+.cr .range .track{background:rgba(10,25,49,.1)}
+.range .fill{position:absolute; top:0; bottom:0; left:11.1%; right:0; border-radius:99px; background:linear-gradient(90deg,#f3d467,#D4AF37,#b38b1a); box-shadow:0 0 22px rgba(212,175,55,.5)}
+.range .mk{position:absolute; top:0; transform:translateX(-50%); display:grid; justify-items:center; gap:4px; font-size:.85rem; white-space:nowrap}
+.range .mk.a{left:11.1%; top:-34px}.range .mk.b{left:100%; transform:translateX(-100%); top:-34px}
+.range .ax{display:flex; justify-content:space-between; margin-top:12px; font-size:.82rem; color:var(--muted)}
+
+/* how painless */
+.timeline{display:grid; gap:18px; counter-reset:t}
+@media (min-width:900px){.timeline{grid-template-columns:repeat(3,1fr)}}
+.tl{position:relative; padding:34px 26px 28px; border-radius:26px; border:1px solid var(--line); background:var(--panel)}
+.tl .n{position:absolute; top:-26px; left:26px; width:52px; height:52px; border-radius:50%; display:grid; place-items:center; font:700 1.6rem var(--f-display); background:linear-gradient(135deg,#f3d467,#b38b1a); color:#0A1931; box-shadow:0 8px 24px rgba(212,175,55,.45)}
+
+/* pricing */
+.quote-big{font:600 clamp(1.7rem,3.6vw,2.8rem)/1.15 var(--f-display); font-style:italic; color:var(--head); max-width:30ch}
+
+/* blog */
+.post-card{display:flex; flex-direction:column; padding:0; overflow:hidden}
+.post-card .ph{aspect-ratio:16/10; position:relative; overflow:hidden; background:#0b1d3a}
+.post-card .ph img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .7s}
+.post-card:hover .ph img{transform:scale(1.06)}
+.post-card .pc{padding:22px 24px 26px; display:flex; flex-direction:column; gap:10px; flex:1}
+.tag-s{font-size:.75rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--gold)}
+.cr .tag-s,.wh .tag-s{color:#8a6a12}
+.post-card .go{margin-top:auto; font-weight:600; color:var(--gold); display:inline-flex; gap:.4rem; align-items:center}
+.cr .post-card .go,.wh .post-card .go{color:#8a6a12}
+.article{max-width:760px; margin-inline:auto}
+.article h1{font-size:clamp(2.3rem,5.4vw,4rem); margin:16px 0 14px}
+.article .meta{color:var(--muted); font-size:.95rem}
+.article .hero-img{display:block; width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:26px; margin-block:28px; border:1px solid var(--line)}
+.article h3{margin:34px 0 10px; font-size:1.9rem}
+.article p,.article li{font-size:1.15rem; color:#d2dcf1; line-height:1.8; font-weight:300}
+.article p{margin-bottom:18px}
+.article ul,.article ol{padding-left:1.3rem; margin:0 0 18px}
+.cta-box{margin-top:36px; padding:28px; border-radius:26px; border:1px solid var(--line); background:var(--panel); display:grid; gap:14px}
+
+/* crumbs / faq */
+.crumbs{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:.9rem; color:var(--muted); margin-bottom:22px}
+.crumbs a{text-decoration:none; color:var(--gold)}.cr .crumbs a,.wh .crumbs a{color:#8a6a12}
+.crumbs a:hover{text-decoration:underline}
+details{border:1px solid var(--line); border-radius:20px; background:var(--panel)}
+details+details{margin-top:12px}
+summary{cursor:pointer; list-style:none; padding:1.2rem 1.5rem; font:700 1.45rem/1.15 var(--f-display); display:flex; justify-content:space-between; gap:14px; align-items:center; color:var(--head)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+"; font:300 2rem/1 var(--f-body); color:var(--gold); flex:none; transition:transform .25s}
+.cr summary::after,.wh summary::after{color:#8a6a12}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 1.5rem 1.4rem; color:var(--muted)}
+
+/* booking */
+.book-grid{display:grid; gap:22px; grid-template-columns:1fr; align-items:start}
+@media (min-width:980px){.book-grid{grid-template-columns:1.55fr 1fr}.sticky{position:sticky; top:calc(100px + env(safe-area-inset-top,0px))}}
+.frm{display:grid; gap:20px}
+.fld{display:grid; gap:7px}
+.fld label,.legend{font-weight:600; font-size:.95rem; color:#e8dcae; letter-spacing:.03em}
+.in{width:100%; min-height:52px; padding:.8rem 1.05rem; border-radius:14px; border:1px solid var(--line); background:rgba(6,15,32,.7); color:#fff; font:inherit; font-size:1rem}
+.in::placeholder{color:#7f8fb0}
+.in:focus{border-color:var(--gold); outline:3px solid rgba(212,175,55,.25); outline-offset:0}
+textarea.in{min-height:100px; resize:vertical}
+.row2{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.seg{display:flex; flex-wrap:wrap; gap:8px}
+.seg label{position:relative; padding:.65rem 1.1rem; border-radius:999px; border:1px solid var(--line); background:var(--soft); cursor:pointer; font-weight:500; font-size:.93rem; color:var(--text)}
+.seg input{position:absolute; opacity:0; inset:0; width:100%; height:100%; margin:0; cursor:pointer}
+.seg label.on{background:var(--gold); border-color:var(--gold); color:#0A1931; font-weight:600}
+.seg label:focus-within{outline:3px solid var(--glow); outline-offset:2px}
+.search{display:flex; align-items:center; gap:10px; padding:0 1.05rem; min-height:54px; border-radius:16px; background:rgba(6,15,32,.7); border:1px solid var(--line)}
+.search input{flex:1; min-width:0; background:none; border:0; color:#fff; font:inherit; font-size:1rem; padding:.8rem 0; outline:none}
+.search:focus-within{border-color:var(--gold)}
+.sc{display:inline-flex; align-items:center; gap:.5rem; padding:.7rem 1.1rem; border-radius:999px; border:1px solid var(--line); background:var(--soft); cursor:pointer; font-weight:500; font-size:.95rem; color:var(--text); transition:.15s; min-height:46px}
+.sc:hover{border-color:var(--gold)}
+.sc[aria-pressed="true"]{background:var(--gold); color:#0A1931; border-color:var(--gold); font-weight:600}
+.err{color:#ffd0d0; background:rgba(255,80,80,.14); border:1px solid rgba(255,120,120,.5); border-radius:14px; padding:.85rem 1.1rem; font-size:.96rem}
+.msg-prev{white-space:pre-wrap; font-size:.92rem; color:#d4def2; background:rgba(6,15,32,.7); border:1px dashed var(--line); border-radius:14px; padding:14px; max-height:270px; overflow:auto; overflow-wrap:anywhere}
+.sum-list{margin:0; padding:0; list-style:none; display:grid; gap:8px; max-height:220px; overflow:auto}
+.sum-list li{display:flex; align-items:center; gap:.6rem}
+.sum-list .i{color:var(--gold)}
+.help{font-size:.9rem; color:var(--muted)}
+.pickbar{position:sticky; bottom:calc(14px + env(safe-area-inset-bottom,0px)); z-index:40; display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; justify-content:space-between; padding:12px 18px; border-radius:20px; background:rgba(6,15,32,.95); border:1px solid var(--gold); box-shadow:0 14px 40px rgba(0,0,0,.5); color:#fff; margin-top:18px}
+
+/* contact */
+.map{position:relative; border-radius:28px; overflow:hidden; border:1px solid var(--line); background:#0b1d3a; min-height:360px; display:grid}
+.map-art{position:relative; display:grid; place-items:center; padding:30px; background-image:linear-gradient(rgba(212,175,55,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,.1) 1px,transparent 1px); background-size:46px 46px; background-color:#0b1d3a; text-align:center}
+.pin{display:grid; justify-items:center; gap:10px}
+.pin .dotp{width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#f3d467,#b38b1a); display:grid; place-items:center; color:#0A1931; position:relative; z-index:1; box-shadow:0 0 0 6px rgba(212,175,55,.3)}
+.pin .dotp::before{content:""; position:absolute; inset:0; border-radius:50%; background:rgba(212,175,55,.5); animation:pulse 2.2s ease-out infinite; z-index:-1}
+@keyframes pulse{0%{transform:scale(1); opacity:1}100%{transform:scale(3); opacity:0}}
+.pin b{font:700 1.7rem var(--f-display); color:#fff}
+.pin span{color:#c8d4ee}
+.map iframe{width:100%; height:100%; min-height:400px; border:0; display:block}
+.info{display:grid; gap:18px}
+.info-row{display:flex; gap:16px; align-items:flex-start}
+.info-row .ico{margin:0; flex:none}
+.info-row b{display:block; color:var(--head); font:700 1.35rem var(--f-display)}
+.info-row span{color:var(--muted); overflow-wrap:anywhere}
+.num-big{font:700 clamp(1.8rem,4.5vw,2.6rem)/1.1 var(--f-display); color:var(--head)!important}
+.feat-list{display:grid; gap:10px; list-style:none; margin:0; padding:0}
+.feat-list li{display:flex; gap:.6rem; align-items:flex-start; color:var(--muted)}
+.feat-list .i{color:var(--gold); margin-top:.22em}
+.note{display:flex; gap:.7rem; align-items:flex-start; padding:1rem 1.2rem; border-radius:16px; border:1px solid rgba(212,175,55,.5); background:rgba(212,175,55,.1); color:#f0e3b0; font-size:.95rem}
+.cr .note,.wh .note{color:#6b5400; background:#fff3c8}
+
+/* banner */
+.banner{position:relative; border-radius:36px; padding:clamp(30px,5vw,68px); display:grid; gap:26px; align-items:center; background:linear-gradient(135deg,rgba(212,175,55,.28),rgba(10,25,49,.88)); border:1px solid rgba(212,175,55,.6); overflow:hidden; box-shadow:0 30px 90px rgba(212,175,55,.2)}
+@media (min-width:860px){.banner{grid-template-columns:1.2fr .8fr}}
+.banner::before{content:""; position:absolute; inset:-40%; background:conic-gradient(from 0deg,transparent,rgba(255,215,0,.16),transparent 30%); animation:spin 14s linear infinite; pointer-events:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.banner>*{position:relative}
+.banner .copy{display:grid; gap:18px}
+
+/* footer */
+.ftr{border-top:1px solid var(--gold); background:rgba(5,12,26,.95); backdrop-filter:blur(10px); padding-block:56px 130px; position:relative; z-index:1}
+.ftr .cols{display:grid; gap:34px; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.ftr h4{font:700 1.3rem var(--f-display); margin-bottom:12px; color:var(--gold)}
+.ftr ul{list-style:none; margin:0; padding:0; display:grid; gap:2px}
+.ftr .lk{all:unset; cursor:pointer; color:var(--muted); padding:.35rem 0; display:inline-block; min-height:32px}
+.ftr .lk:hover{color:#fff}.ftr .lk:focus-visible{outline:3px solid var(--glow); outline-offset:3px}
+.ftr p,.ftr li{color:var(--muted); font-size:.97rem}
+.ftr a{text-decoration:none}
+.ftr .copy-r{margin-top:36px; padding-top:20px; border-top:1px solid rgba(212,175,55,.25); color:#8190b0; font-size:.88rem}
+.credit{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:22px; padding:14px 18px; border:1px solid rgba(212,175,55,.3); border-radius:20px; background:rgba(255,255,255,.04); width:fit-content; max-width:100%}
+.credit img{width:46px; height:46px; border-radius:12px; flex:none}
+.credit small{display:block; color:#8190b0; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase}
+.credit b{display:block; color:#fff; font-weight:600}
+.credit a{color:var(--gold); font-size:.92rem; overflow-wrap:anywhere}
+
+/* floating */
+.fabs{position:fixed; right:max(14px,env(safe-area-inset-right,0px)); bottom:calc(16px + env(safe-area-inset-bottom,0px)); z-index:70; display:grid; gap:12px}
+.fab{width:60px; height:60px; border-radius:50%; display:grid; place-items:center; text-decoration:none; box-shadow:0 12px 34px rgba(0,0,0,.5); border:0; color:#0A1931}
+.fab .i{width:30px; height:30px}
+.fab.wa{background:linear-gradient(135deg,#f6dc78,#D4AF37 55%,#b38b1a); animation:ring 2.6s ease-out infinite}
+.fab.call{background:#0A1931; color:var(--gold); border:1px solid var(--gold)}
+@keyframes ring{0%{box-shadow:0 12px 34px rgba(0,0,0,.5),0 0 0 0 rgba(255,215,0,.6)}100%{box-shadow:0 12px 34px rgba(0,0,0,.5),0 0 0 24px rgba(255,215,0,0)}}
+.mbar{display:none}
+@media (max-width:700px){
+  .fab.call{display:none}.fabs{bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+  .mbar{position:fixed; left:0; right:0; bottom:0; z-index:65; display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px)); background:rgba(5,12,26,.97); border-top:1px solid var(--gold)}
+  .mbar .btn{min-height:50px}
+}
+.toast{position:fixed; left:50%; bottom:calc(104px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); z-index:130; background:#fff; color:#0A1931; padding:.7rem 1.3rem; border-radius:999px; font-weight:600; box-shadow:0 14px 40px rgba(0,0,0,.5); max-width:calc(100% - 32px); text-align:center}
+.lb{position:fixed; inset:0; z-index:120; background:rgba(3,8,20,.96); display:grid; grid-template-rows:1fr auto; place-items:center; gap:12px; padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px))}
+.lb img{max-width:100%; max-height:76vh; border-radius:18px}
+.lb-bar{display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; text-align:center; color:#fff}
+.masonry{columns:3 250px; column-gap:18px}
+.masonry figure{margin:0 0 18px; break-inside:avoid; position:relative; border-radius:24px; overflow:hidden; border:1px solid var(--line); background:#0b1d3a}
+.masonry button{all:unset; display:block; width:100%; cursor:zoom-in}
+.masonry button:focus-visible{outline:3px solid var(--glow); outline-offset:-3px}
+.masonry img{display:block; width:100%; transition:transform .7s}
+.masonry figure:hover img{transform:scale(1.05)}
+.masonry figcaption{position:absolute; left:0; right:0; bottom:0; padding:40px 16px 14px; font:600 1.15rem var(--f-display); background:linear-gradient(transparent,rgba(5,12,28,.94)); color:#fff}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important; transition:none!important} html{scroll-behavior:auto}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><linearGradient id="gld" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2b0"/><stop offset=".45" stop-color="#D4AF37"/><stop offset="1" stop-color="#8a6a12"/></linearGradient></defs>
+  <symbol id="i-logo" viewBox="0 0 24 24"><path fill="url(#gld)" d="M7 2.500C4.200 2.500 2.500 4.700 2.500 7.500c0 2.200.9 3.700 1.500 5.700.8 2.400 1 8.300 3.200 8.300 1.700 0 1.500-4 3.700-4s2 4 3.700 4c2.200 0 2.400-5.900 3.200-8.300.6-2 1.500-3.500 1.500-5.700 0-2.800-1.700-5-4.500-5-1.900 0-2.700.9-5 .9S8.900 2.500 7 2.500z"/></symbol>
+  <symbol id="i-tooth" viewBox="0 0 24 24"><path d="M7 3C4.500 3 3 5 3 7.500c0 2 .8 3.400 1.400 5.200.7 2.100.9 8.300 3 8.300 1.600 0 1.400-4 3.600-4s2 4 3.600 4c2.100 0 2.300-6.200 3-8.300.6-1.800 1.400-3.200 1.400-5.200C21 5 19.500 3 17 3c-1.800 0-2.500.8-5 .8S8.800 3 7 3z"/></symbol>
+  <symbol id="i-crown" viewBox="0 0 24 24"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/><path d="M5 19h14"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2l2.400 6.600L21 11l-6.600 2.400L12 20l-2.400-6.600L3 11l6.600-2.400z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.300-4.300"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.900 4.900l1.400 1.400M17.700 17.700l1.400 1.400M2 12h2M20 12h2M4.900 19.100l1.400-1.400M17.700 6.300l1.400-1.400"/></symbol>
+  <symbol id="i-braces" viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="8" rx="3"/><path d="M2 12h20M7 8v8M12 8v8M17 8v8"/></symbol>
+  <symbol id="i-bone" viewBox="0 0 24 24"><path d="M7 4a2.500 2.500 0 0 0-2 4 2.500 2.500 0 0 0 3 3l5 5a2.500 2.500 0 0 0 3 3 2.500 2.500 0 0 0 4-2 2.500 2.500 0 0 0-3-3l-5-5a2.500 2.500 0 0 0-3-3A2.500 2.500 0 0 0 7 4z"/></symbol>
+  <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.500 2.500 4 2.500S16 14 16 14M9 9.500h.01M15 9.500h.01"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.800 4.600a5.500 5.500 0 0 0-7.800 0L12 5.700l-1-1.100a5.500 5.500 0 0 0-7.800 7.800l1 1.100L12 21.300l7.800-7.800 1-1.100a5.500 5.500 0 0 0 0-7.800z"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></symbol>
+  <symbol id="i-access" viewBox="0 0 24 24"><circle cx="11" cy="4" r="1.800"/><path d="M11 7.500v6h5l2.500 5M11 10.500h5M8 12.500a5 5 0 1 0 7 6"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.500" y="5" width="17" height="15" rx="2.500"/><path d="M3.500 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6.500V12l3.500 2"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l3.100 6.300 6.900 1-5 4.900 1.200 6.900L12 17.800 5.800 21.100 7 14.200 2 9.300l6.900-1z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.500"/><path d="M2 21a7 7 0 0 1 14 0M16 4.500a3.500 3.500 0 0 1 0 7M18 21a6 6 0 0 0-3-5.200"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.500" cy="7.500" r="1.500"/></symbol>
+  <symbol id="i-xray" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 8v3c0 2 1 3 2 3s1-2 2-2 1 2 2 2 2-1 2-3V8"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.500 6 11a6 6 0 0 1-12 0c0-4.500 6-11 6-11z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.900v3a2 2 0 0 1-2.200 2 19.800 19.800 0 0 1-8.600-3.100 19.500 19.500 0 0 1-6-6A19.800 19.800 0 0 1 2.100 4.200 2 2 0 0 1 4.100 2h3a2 2 0 0 1 2 1.700c.1 1 .4 1.900.7 2.800a2 2 0 0 1-.5 2.100L8.100 9.900a16 16 0 0 0 6 6l1.300-1.300a2 2 0 0 1 2.100-.4c.9.3 1.800.6 2.800.7a2 2 0 0 1 1.700 2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 7l10 7 10-7"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.870 9.870 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.860 9.860 0 01-1.510-5.260c.001-5.450 4.436-9.884 9.888-9.884 2.640 0 5.122 1.030 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.450-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.050 0C5.495 0 .160 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.480-8.413z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 4v16M17 4v16"/></symbol>
+</svg>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<div class="app">
+<div class="topbar"><div class="wrap">
+  <span>&#9733; 4.9 &middot; 22 Google reviews</span>
+  <span>Open daily till 9 pm</span>
+  <a href="tel:+2348106977321">Call 0810 697 7321</a>
+</div></div>
+<header class="hdr">
+  <div class="wrap">
+    <a class="brand" href="#home" data-go="home" aria-label="NA&rsquo;IBI Dental Clinic home">
+      <span class="logo-mark"><svg aria-hidden="true"><use href="#i-logo"/></svg></span>
+      <span><b>NA&rsquo;IBI</b><small>Dental Clinic</small></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#home" data-go="home">Home</a>
+      <a href="#services" data-go="services">Services</a>
+      <a href="#about" data-go="about">About</a>
+      <a href="#why" data-go="why">Why us</a>
+      <a href="#gallery" data-go="gallery">Gallery</a>
+      <a href="#reviews" data-go="reviews">Reviews</a>
+      <a href="#blog" data-go="blog">Blog</a>
+      <a href="#contact" data-go="contact">Contact</a>
+      <a class="nav-more" href="#team" data-go="team">Our team</a>
+      <a class="nav-more" href="#pricing" data-go="pricing">Pricing</a>
+      <a class="nav-more" href="#faq" data-go="faq">FAQ</a>
+      <a class="nav-more" href="book.html" style="grid-column:1/-1;background:linear-gradient(135deg,#f3d467,#D4AF37);color:#0A1931;font-weight:700">Book online</a>
+    </nav>
+    <a class="btn btn-gold sm" href="book.html"><svg class="i"><use href="#i-calendar"/></svg>Book online</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav"><svg class="i"><use href="#i-menu"/></svg></button>
+  </div>
+</header>
+
+<main id="page"></main>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="brand" href="#home" data-go="home" style="margin-bottom:14px"><span class="logo-mark"><svg aria-hidden="true"><use href="#i-logo"/></svg></span><span><b>NA&rsquo;IBI</b><small>Dental Clinic</small></span></a>
+        <p>Clean environment, friendly staff, painless procedure. Rated 4.9 by 22 patients on Google.</p>
+        <p style="margin-top:12px">Social: @NAIBIDENTALCLINIC</p>
+        <div class="btn-row" style="margin-top:16px"><a class="btn btn-gold sm" href="book.html">Book online</a> <a class="btn btn-line sm" href="staff.html">Staff login</a></div>
+      </div>
+      <div><h4>Explore</h4><ul>
+        <li><button class="lk" data-go="services">Services</button></li><li><button class="lk" data-go="about">About</button></li><li><button class="lk" data-go="why">Why NA&rsquo;IBI</button></li><li><button class="lk" data-go="gallery">Gallery</button></li><li><button class="lk" data-go="reviews">Reviews</button></li><li><button class="lk" data-go="team">Our team</button></li><li><button class="lk" data-go="pricing">Pricing</button></li><li><button class="lk" data-go="blog">Blog</button></li><li><button class="lk" data-go="faq">FAQ</button></li></ul></div>
+      <div><h4>Popular treatments</h4><ul id="ftSvc"></ul></div>
+      <div><h4>Visit us</h4><ul>
+        <li>Gwarzo Road, Janbulo First Gate Road, LGA, opposite Haman Superstores, Kano</li>
+        <li>Open daily till 9 pm</li>
+        <li><a href="tel:+2348106977321">0810 697 7321</a></li>
+        <li>Credit cards, debit cards, NFC mobile payments</li>
+        <li><button class="lk" data-go="contact">Location &amp; map</button></li></ul></div>
+    </div>
+    <div class="credit" id="credit" hidden>
+      <img src="img/devlogo.jpg" alt="hamza-builds logo">
+      <div><small>Website by</small><b>hamza-builds</b>
+      <a href="tel:+2349116193168">+234 911 619 3168</a> &middot; <a href="mailto:awwalhamza2289@gmail.com">awwalhamza2289@gmail.com</a></div>
+    </div>
+    <div class="copy-r">&copy; 2026 NA&rsquo;IBI Dental Clinic, Kano. Appointments recommended. Services delivered by qualified dental surgeons, therapists and assistants.</div>
+  </div>
+</footer>
+</div>
+
+<div class="fabs">
+  <a class="fab wa" href="https://wa.me/2348106977321?text=Hello%20NAIBI%20Dental%20Clinic%2C%20I%20want%20to%20book..." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg class="i fill"><use href="#i-wa"/></svg></a>
+  <a class="fab call" href="tel:+2348106977321" aria-label="Call 0810 697 7321"><svg class="i"><use href="#i-phone"/></svg></a>
+</div>
+<div class="mbar">
+  <a class="btn btn-navy" href="tel:+2348106977321"><svg class="i"><use href="#i-phone"/></svg>Call now</a>
+  <a class="btn btn-gold" href="https://wa.me/2348106977321?text=Hello%20NAIBI%20Dental%20Clinic%2C%20I%20want%20to%20book..." target="_blank" rel="noopener"><svg class="i fill"><use href="#i-wa"/></svg>WhatsApp</a>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+<div class="lb" id="lb" hidden role="dialog" aria-label="Photo viewer">
+  <img id="lbImg" alt="">
+  <div class="lb-bar"><button class="btn btn-line sm" id="lbPrev" type="button"><svg class="i"><use href="#i-back"/></svg>Prev</button><span id="lbCap" style="max-width:420px"></span><button class="btn btn-line sm" id="lbNext" type="button">Next<svg class="i"><use href="#i-arrow"/></svg></button><button class="btn btn-gold sm" id="lbClose" type="button"><svg class="i"><use href="#i-close"/></svg>Close</button></div>
+</div>
+
+<script>
+(function(){
+var DEV={name:"hamza-builds"};
+var AUTOMAP=true;
+const PHONE='0810 697 7321', TEL='tel:+2348106977321', WA='2348106977321';
+const IMG={interior:"img/interior.jpg",chairside:"img/chairside.jpg",wlight:"img/whitening-light.jpg",appliance:"img/appliance.jpg",xray:"img/xray.jpg",stock:"img/dentist-stock.jpg",navy:"img/dentist-navy.jpg",tooth:"img/tooth.jpg",tools:"img/tools.jpg",gloved:"img/gloved-tools.jpg",braces:"img/braces.jpg"};
+const VID={whitening:{src:"media/whitening.mp4",poster:"media/whitening.jpg",label:"Teeth whitening"},denture:{src:"media/denture.mp4",poster:"media/denture.jpg",label:"Removable partial denture"}};
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const ic=(n,c='')=>'<svg class="i '+c+'" aria-hidden="true"><use href="#i-'+n+'"/></svg>';
+const waLink=t=>'https://wa.me/'+WA+'?text='+encodeURIComponent(t);
+const WA_GEN='https://wa.me/'+WA+'?text=Hello%20NAIBI%20Dental%20Clinic%2C%20I%20want%20to%20book...';
+const go=(r,label,cls)=>'<a class="btn '+(cls||'btn-line')+'" href="#'+r+'" data-go="'+r+'">'+label+'</a>';
+const bookBtn=(label,cls)=>'<a class="btn btn-gold '+(cls||'')+'" href="book.html">'+ic('calendar')+(label||'Book online')+'</a>';
+const waBtn=(label,cls)=>'<a class="btn btn-gold '+(cls||'')+'" href="'+WA_GEN+'" target="_blank" rel="noopener">'+ic('wa','fill')+(label||'Book on WhatsApp')+'</a>';
+const callBtn=(label,cls)=>'<a class="btn '+(cls||'btn-line')+'" href="'+TEL+'">'+ic('phone')+(label||'Call now')+'</a>';
+
+/* ---------- DATA ---------- */
+const SERVICES=[
+ {slug:'dental-crown',name:'Dental crown',icon:'crown',short:'A durable cap that restores a damaged tooth.',img:'tooth',alt:'Model tooth beside dental instruments',
+  over:'A dental crown is a custom-made cap that covers a tooth that is cracked, heavily filled, worn down or weakened after a root canal. It restores the shape, strength and look of the tooth so you can chew and smile comfortably again.',
+  inc:['Examination and a clear explanation of your options','Careful shaping of the tooth, with your comfort in mind','Impressions taken for a precise fit','A crown fitted and checked for a comfortable bite'],
+  good:['Cracked, broken or badly worn teeth','Teeth with large fillings','Teeth after a root canal','Improving the look of a discoloured or misshapen tooth'],
+  tip:'Clean carefully around the gum line of a crown every day, just as you would a natural tooth. Avoid chewing very hard objects such as ice.'},
+ {slug:'scaling-polishing',name:'Scaling and polishing',icon:'sparkle',short:'Remove plaque and tartar for fresh breath and healthy gums.',img:'stock',alt:'Dentist cleaning a patient’s teeth',
+  over:'Scaling removes the hard tartar that brushing cannot reach, and polishing smooths the surface so stains and plaque cling less. It is the simplest way to protect your gums and keep your breath fresh. Patients tell us the visit is gentle and quick.',
+  inc:['Gentle removal of plaque and tartar','Polishing to lift surface stains','Gum health check','Practical advice on brushing and cleaning between teeth'],
+  good:['Bleeding or swollen gums','Bad breath','Yellow or brown build-up near the gums','A routine clean about every six months'],
+  tip:'If you notice sensitivity during a clean, tell your dentist straight away so they can adjust.'},
+ {slug:'teeth-whitening',name:'Teeth whitening',icon:'sun',short:'Lift stains and brighten your smile.',img:'wlight',alt:'Whitening lamp glowing blue above a dental chair',
+  over:'Tea, coffee, kola and tobacco slowly stain teeth. Professional whitening lifts those stains so your smile looks brighter. Your dentist checks your teeth and gums first so the treatment is suitable for you.',
+  inc:['Check-up and shade assessment','Protection of the gums and lips','Whitening session in the chair','Aftercare advice to keep your result'],
+  good:['Yellow or dull teeth','Stains from tea, coffee or smoking','A brighter smile before a special event'],
+  tip:'Whitening works on natural teeth. Crowns and fillings do not change colour, so tell your dentist about any you have.'},
+ {slug:'braces',name:'Braces and orthodontics',icon:'braces',short:'Straighten crowded or uneven teeth.',img:'braces',alt:'Teeth with braces',
+  over:'Braces gently move teeth into better positions over time, improving both how they look and how they bite together. We also work with orthodontic appliances and retainers to guide and hold teeth in place.',
+  inc:['Consultation and assessment of your teeth and bite','Braces or an orthodontic appliance fitted','Regular adjustment visits','Advice on cleaning and on retainers'],
+  good:['Crowded, crooked or gapped teeth','Teeth that do not meet properly','Teens and adults who want a straighter smile'],
+  tip:'Brush after meals and avoid very hard or sticky foods while you wear braces.'},
+ {slug:'dental-implants',name:'Dental implants',icon:'bone',short:'A fixed, long-term replacement for missing teeth.',img:'xray',alt:'Panoramic dental X-ray',
+  over:'A dental implant is a small post placed in the jawbone to hold a replacement tooth. It feels and works much like a natural tooth. We assess your gums and bone with X-rays first, so the plan fits you.',
+  inc:['Assessment of gums and jawbone with X-rays','Treatment planning and a clear explanation','Implant placement','Fitting of the replacement tooth'],
+  good:['Missing teeth you want replaced permanently','Patients who do not want removable dentures'],
+  tip:'Healthy gums matter for implants. Good cleaning habits before and after treatment are essential.'},
+ {slug:'root-canal',name:'Root canal treatment',icon:'pulse',short:'Save an infected tooth and end the pain.',img:'navy',alt:'Dentist treating a patient',
+  over:'When the nerve inside a tooth is infected or inflamed, a root canal cleans the inside of the tooth and seals it. This can save a tooth that would otherwise need to be removed, and it relieves the pain.',
+  inc:['Examination and X-ray','Comfortable treatment','Cleaning and shaping the inside of the tooth','Sealing the tooth, often followed by a crown to protect it'],
+  good:['Severe or throbbing toothache','Pain with hot or cold that lingers','Swelling near a tooth'],
+  tip:'Throbbing pain or swelling needs prompt care. Call us before you come.'},
+ {slug:'fillings',name:'Teeth filling',icon:'tooth',short:'Repair cavities and chipped teeth.',img:'gloved',alt:'Gloved hand holding dental instruments',
+  over:'A filling removes decay and restores the tooth so it works and looks natural again. Treating a cavity early is simpler and protects the nerve inside the tooth.',
+  inc:['Examination to find the extent of decay','Comfortable treatment','Removal of decay and shaping the tooth','Filling placed and polished for a comfortable bite'],
+  good:['Toothache when eating sweets or cold drinks','Visible holes or dark spots','Chipped or worn teeth'],
+  tip:'If a tooth hurts when you bite or drink something cold, book soon. Small cavities grow quickly.'},
+ {slug:'extraction',name:'Tooth extraction',icon:'shield',short:'Safe, careful removal of problem teeth.',img:'chairside',alt:'Dentist in a white coat treating a patient',
+  over:'Sometimes a tooth is too damaged, loose, crowded or infected to save. We remove it carefully, explain how to look after the area as it heals, and talk through options to replace it.',
+  inc:['Examination and X-ray where needed','Comfortable, careful removal of the tooth','Aftercare instructions','Options to replace the tooth'],
+  good:['Severely decayed or broken teeth','Loose teeth from gum disease','Crowding before braces','Wisdom tooth problems'],
+  tip:'After an extraction, avoid spitting hard, smoking and very hot drinks for the first day so a clot can form.'},
+ {slug:'removable-dentures',name:'Removable partial dentures',icon:'smile',short:'Replace missing teeth with natural-looking dentures.',img:'appliance',alt:'Gloved hand holding a removable dental appliance',
+  over:'A removable partial denture replaces one or several missing teeth so you can eat, speak and smile with confidence. It clips comfortably to your remaining teeth and can be taken out for cleaning.',
+  inc:['Consultation and impressions','A denture made to fit your mouth','Fitting and adjustment for comfort','Care and cleaning instructions'],
+  good:['One or several missing teeth','Patients who want a removable option'],
+  tip:'Take your denture out at night and clean it daily with a soft brush.'},
+ {slug:'dental-xray',name:'Dental X-rays',icon:'xray',short:'See what a mirror cannot, for an accurate plan.',img:'xray',alt:'Panoramic dental X-ray',
+  over:'Dental X-rays show decay between teeth, infections at the root, bone levels and teeth that have not come through. They help your dentist give an accurate diagnosis and plan.',
+  inc:['Dental X-rays, including panoramic images','Explanation of what the images show','A treatment plan based on the results'],
+  good:['Persistent toothache with no visible cause','Planning for implants, braces or extractions','Checking for infection'],
+  tip:'Tell the team if you are or might be pregnant before any X-ray.'}
+];
+const BOOKSVC=SERVICES.map(s=>s.name).concat(['Check-up and consultation','Not sure, please advise']);
+const WHY=[
+ {i:'drop',t:'Painless procedure',d:'Patients choose NA’IBI because treatment is comfortable. Tell us if you feel anything and we adjust.',tag:'Our promise',cnt:''},
+ {i:'sparkle',t:'Clean environment',d:'A bright, tidy clinic with round mirrors, white basins and careful hygiene.',cnt:''},
+ {i:'users',t:'Friendly staff',d:'Welcoming from the first call to the last check.',cnt:'6'},
+ {i:'shield',t:'Safe environment',d:'Mentioned again and again in patient reviews on Google.',cnt:'6'},
+ {i:'heart',t:'Welcoming team',d:'A friendly greeting and clear answers to your questions.',cnt:'3'},
+ {i:'tag',t:'Fair pricing',d:'One patient wrote that we offer “the best price for any teeth care”.',cnt:''}
+];
+const REVIEWS=[
+ {n:'Mu’minah Suleiman',w:'1 year ago',t:'The clinic was relatively easy to access and I went for a simple scaling and polishing service. The Staff were welcoming, and I got satisfying answers to almost…',tags:['staff','service']},
+ {n:'safiyya daba',w:'2 months ago',t:'Main dental has the best price for any teeth care and what I love about the clinic is their customer relationship',tags:['price','staff']},
+ {n:'Najaatu Saleh',w:'',t:'During my visit to the dental clinic I was impressed with the professionalism and care shown by the staff. The dentist explained my treatment options clearl…',tags:['staff','service']},
+ {n:'Aliyu Bala Zakari',w:'',t:'Visited this dental clinic recently, had a fantastic experience. Friendly and welcoming staff, thorough and gentle dental hygienist. Clean, modern, and…',tags:['staff','clean']},
+ {n:'Rab’at Na’ibi Ibrahim',w:'',t:'My go-to clinic for excellent dental care. Above all, I like their professionalism and inter-personal relationship. Highly recommend.',tags:['staff','service']},
+ {n:'Shaheeda Ibrahim',w:'',t:'Amazing customer service, treatment is 100% satisfactory and professional, environment is friendly and convenient. This is your one stop dental clinic…',tags:['service','clean']}
+];
+const RF=[['all','All'],['staff','Friendly staff'],['clean','Clean environment'],['service','Dental care'],['price','Price']];
+const BADGES=[['Safe environment','6'],['Friendly staff','6'],['Welcoming staff','3'],['Dental care','3'],['Customer','2']];
+const FAQ=[
+ ['Is the procedure painless?','Patients describe our care as painless and gentle. Our aim is always a comfortable visit. Tell the dentist if you feel anything, and ask about comfort options for your treatment.'],
+ ['Until what time are you open?','We are open daily and close at 9 pm. Call 0810 697 7321 before you come if you are close to closing time.'],
+ ['Do you accept cards and mobile payments?','Yes. We accept credit cards, debit cards and NFC mobile payments.'],
+ ['Do I need an appointment?','Appointments are recommended so we can set time aside for you. You can book on WhatsApp in under a minute.'],
+ ['How long will my visit take?','Most visits last between 20 minutes and 3 hours, depending on the treatment. Ask us when you book.'],
+ ['Who will treat me?','Services are delivered by qualified dental surgeons, therapists and assistants.'],
+ ['Where are you?','Gwarzo Road, Janbulo First Gate Road, LGA, opposite Haman Superstores, Kano.'],
+ ['Is the clinic wheelchair accessible?','There is a wheelchair-accessible toilet. Call us if you need help with access and we will assist.'],
+ ['When is the clinic busiest?','Sundays around 11 am tend to be the busiest time. Book an appointment to avoid waiting.'],
+ ['How much does treatment cost?','Cost depends on the treatment. Select what you need on our pricing page and send a quote request on WhatsApp. A patient recently wrote that we have “the best price for any teeth care”.'],
+ ['How do I book?','Choose your services on the booking page and send the booking to our WhatsApp. You can also call 0810 697 7321.']
+];
+const POSTS=[
+ {id:'brushing',tag:'Oral health',min:3,t:'The right technique for brushing your teeth',img:'gloved',ex:'Two minutes, the right angle and the spots most people miss.',
+  b:[['p','Most people brush every day but miss the same spots. The technique matters as much as the time you spend.'],['h','Step by step'],['ol',['Use a soft toothbrush and a pea-sized amount of fluoride toothpaste.','Hold the brush at about 45 degrees to the gum line.','Use short, gentle circles. Do not scrub hard back and forth.','Brush the outside, inside and chewing surface of every tooth.','Brush your tongue gently to freshen breath.','Spend two minutes, morning and night.']],['h','Common mistakes'],['ul',['Pressing too hard, which wears enamel and irritates gums','Using an old, frayed brush. Replace it about every three months','Skipping the inner surfaces of the lower front teeth']],['h','Do not forget'],['p','Clean between your teeth once a day with floss or interdental brushes, and see your dentist for a check-up and clean.']]},
+ {id:'crown-care',tag:'Dental crowns',min:4,t:'How to take care of a dental crown',img:'tooth',ex:'Keep your crown strong, clean and comfortable for years.',
+  b:[['p','A dental crown protects a weak or damaged tooth. With good care it can last for many years.'],['h','Clean it every day'],['p','Brush twice a day with fluoride toothpaste and clean between your teeth daily. Pay extra attention to the gum line where the crown meets the tooth.'],['h','Be gentle with it'],['ul',['Avoid chewing ice, hard sweets and bones','Do not use your teeth to open bottles or packets','If you grind your teeth at night, ask about a night guard']],['h','See your dentist'],['p','Regular check-ups let your dentist check the crown and the tooth underneath. Call us if the crown feels loose, rough or painful to bite on.']]},
+ {id:'scaling',tag:'Cleaning',min:4,t:'Scaling and polishing: why it matters',img:'stock',ex:'What a professional clean removes and how often to book one.',
+  b:[['p','Plaque hardens into tartar, and tartar cannot be brushed away. Scaling removes it and polishing smooths the surface, which is why teeth look and feel cleaner afterwards.'],['h','What to expect'],['p','The dentist or hygienist removes the build-up from around and under the gum line, then polishes the teeth. A careful clean should feel comfortable.'],['h','Why it matters'],['ul',['Helps prevent gum disease','Freshens breath','Removes surface stains','Lets the dentist spot problems early']],['h','How often'],['p','Most people benefit from a clean about every six months. Your dentist may suggest something different for you.']]},
+ {id:'whitening',tag:'Whitening',min:3,t:'Teeth whitening: what to know before you start',img:'wlight',ex:'Who it suits, what to expect and how to keep the result.',
+  b:[['p','Whitening lifts stains from natural teeth, giving a brighter smile in a single visit.'],['h','Before you start'],['p','A check-up comes first, so the dentist can treat cavities or gum problems and confirm whitening suits you.'],['h','Who it suits'],['ul',['Stains from tea, coffee, kola or smoking','Naturally yellow teeth','Anyone who wants a brighter smile for an event']],['h','Keeping the result'],['ul',['Brush twice a day and clean between teeth','Limit dark drinks and avoid smoking','Book a scale and polish about every six months']],['p','Crowns and fillings do not change colour, so mention them at your visit.']]},
+ {id:'comfort',tag:'Comfortable care',min:3,t:'Nervous about the dentist? How we keep visits painless',img:'chairside',ex:'Simple ways to feel calm and comfortable in the chair.',
+  b:[['p','Many people put off treatment because they are afraid of pain. Patients tell us our visits are gentle, friendly and painless.'],['h','Before your visit'],['ul',['Tell us you are nervous when you book','Eat lightly and arrive a few minutes early','Bring someone with you if it helps']],['h','During your visit'],['p','Ask us to explain each step. Agree on a hand signal to pause at any time. Tell us straight away if you feel anything.'],['h','After your visit'],['p','Follow the aftercare advice and call us if you have questions. A calm first visit makes the next ones easier.']]}
+];
+const GAL=[
+ {img:'interior',cat:'clinic',cap:'Our treatment room',alt:'Treatment room with a round gold mirror, instrument trays and a monitor'},
+ {img:'wlight',cat:'clinic',cap:'Whitening suite',alt:'Whitening lamp glowing blue above a dental chair'},
+ {img:'chairside',cat:'care',cap:'Chairside care',alt:'Dentist in a white coat treating a patient'},
+ {img:'appliance',cat:'care',cap:'Orthodontic appliance',alt:'Gloved hand holding a removable orthodontic appliance'},
+ {img:'xray',cat:'care',cap:'Panoramic X-ray',alt:'Panoramic dental X-ray'},
+ {img:'stock',cat:'care',cap:'Gentle cleaning (placeholder photo)',alt:'Dentist cleaning a patient’s teeth'},
+ {img:'tooth',cat:'care',cap:'Crown and tooth care (placeholder photo)',alt:'Model tooth beside dental instruments'}
+];
+const SAYS=[
+ {i:'sparkle',t:'We are clean and calm',d:'White basins, bright rooms, tidy trays. The environment patients call safe and friendly.'},
+ {i:'users',t:'We work as a team',d:'Dental surgeons, therapists and assistants, all in the same room for your care.'},
+ {i:'xray',t:'We use modern tools',d:'X-rays, a whitening lamp and orthodontic appliances all in one clinic.'},
+ {i:'drop',t:'We keep it painless',d:'Everything in these photos is built around a comfortable visit.'}
+];
+
+/* ---------- HELPERS ---------- */
+const sel=new Set();
+let revIdx=0,revFilter='all';
+function idx(n){return String(n).padStart(2,'0')}
+function svcRow(s,i){return '<a class="row reveal" href="#service/'+s.slug+'" data-go="service/'+s.slug+'"><span class="n">'+idx(i+1)+'</span><span class="nm">'+s.name+'</span><span class="ds">'+s.short+'</span><span class="ar">'+ic('arrow')+'</span></a>'}
+function revCard(r){const ini=r.n.replace(/[^A-Za-z ]/g,'').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase();return '<article class="card quote reveal"><div class="stars" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><q>'+r.t+'</q><div class="who"><span class="av">'+ini+'</span><div><b>'+r.n+'</b><small>Google review'+(r.w?' &middot; '+r.w:'')+'</small></div></div></article>'}
+function postCard(p){return '<a class="card hov post-card reveal" href="#post/'+p.id+'" data-go="post/'+p.id+'"><div class="ph"><img src="'+IMG[p.img]+'" alt="" loading="lazy"></div><div class="pc"><span class="tag-s">'+p.tag+' &middot; '+p.min+' min read</span><h3>'+p.t+'</h3><p>'+p.ex+'</p><span class="go">Read article'+ic('arrow')+'</span></div></a>'}
+function head(k,h,p){return '<div class="sec-head reveal"><span class="kicker">'+k+'</span><h2>'+h+'</h2>'+(p?'<p class="lead">'+p+'</p>':'')+'</div>'}
+function headRow(k,h,btn){return '<div class="sec-head row-h reveal"><div style="display:grid;gap:14px"><span class="kicker">'+k+'</span><h2>'+h+'</h2></div>'+btn+'</div>'}
+function pageHead(k,h,p){return '<div class="sec-head reveal"><span class="kicker">'+k+'</span><h1 data-split>'+h+'</h1>'+(p?'<p class="lead">'+p+'</p>':'')+'</div>'}
+function crumbs(arr){return '<nav class="crumbs" aria-label="Breadcrumb"><a href="#home" data-go="home">Home</a>'+arr.map(a=>' / '+(a[1]?'<a href="#'+a[1]+'" data-go="'+a[1]+'">'+a[0]+'</a>':'<span>'+a[0]+'</span>')).join('')+'</nav>'}
+function finalCta(t,p){return '<div class="sec"><div class="wrap"><div class="banner reveal"><div class="copy"><span class="kicker">Open daily till 9 pm</span><h2>'+(t||'Your one-stop dental clinic in Kano')+'</h2><p class="lead">'+(p||'Message us on WhatsApp or call now. Clean, friendly and painless.')+'</p><div class="btn-row">'+bookBtn('Book online')+waBtn('Book on WhatsApp','wa-alt')+callBtn('Call '+PHONE)+'</div></div><div class="anchor cta" id="aCta"></div></div></div></div>'}
+function bookChips(q){
+  q=(q||'').trim().toLowerCase();const items=BOOKSVC.filter(s=>!q||s.toLowerCase().includes(q));
+  return items.length?'<div class="chipset">'+items.map(s=>'<button type="button" class="sc" data-pick="'+s+'" aria-pressed="'+sel.has(s)+'">'+(sel.has(s)?ic('check'):'')+s+'</button>').join('')+'</div>':'<p class="muted">No match. Message us on WhatsApp and we will help.</p>';
+}
+function updPick(){const b=$('#pickBar');if(b){b.hidden=!sel.size;$('#pickN').textContent=sel.size}
+  $$('.sc').forEach(c=>{const on=sel.has(c.dataset.pick);c.setAttribute('aria-pressed',on);c.innerHTML=(on?ic('check'):'')+c.dataset.pick})}
+function pickBar(){return '<div class="pickbar" id="pickBar" '+(sel.size?'':'hidden')+'><span><b id="pickN">'+sel.size+'</b> selected</span><div class="btn-row"><button class="btn btn-line sm" type="button" id="pickClear">Clear</button><a class="btn btn-gold sm" href="#booking" data-go="booking">Continue to booking'+ic('arrow')+'</a></div></div>'}
+function reel(){
+  return '<div><div class="phone"><div class="screen"><video id="reelV" muted loop playsinline preload="metadata" poster="'+VID.whitening.poster+'" src="'+VID.whitening.src+'" aria-label="Short treatment video"></video><button class="pp" type="button" id="reelPP" aria-label="Pause video">'+ic('pause')+'</button></div></div><div class="reel-tabs" role="group" aria-label="Choose a video"><button class="rtab" type="button" data-reel="whitening" aria-pressed="true">Teeth whitening</button><button class="rtab" type="button" data-reel="denture" aria-pressed="false">Partial denture</button></div></div>';
+}
+function reviewMain(){
+  const list=REVIEWS.filter(r=>revFilter==='all'||r.tags.includes(revFilter));if(!list.length)return '';
+  const r=list[((revIdx%list.length)+list.length)%list.length];
+  const ini=r.n.replace(/[^A-Za-z ]/g,'').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase();
+  return '<div class="rev-main"><div class="stars" style="font-size:1.4rem;position:relative" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><q>'+r.t+'</q><div class="rev-ctl"><div class="who"><span class="av">'+ini+'</span><div><b>'+r.n+'</b><small>Google review'+(r.w?' &middot; '+r.w:'')+'</small></div></div><div style="display:flex;gap:14px;align-items:center"><div class="dots">'+list.map((_,i)=>'<button class="dot" type="button" data-dot="'+i+'" aria-label="Review '+(i+1)+'" '+(i===((revIdx%list.length)+list.length)%list.length?'aria-current="true"':'')+'></button>').join('')+'</div><div class="sc-nav"><button class="round" type="button" id="rvPrev" aria-label="Previous review">'+ic('back')+'</button><button class="round" type="button" id="rvNext" aria-label="Next review">'+ic('arrow')+'</button></div></div></div></div>';
+}
+function reviewsBlock(){
+  return '<div class="rev-wrap"><div style="display:flex;flex-wrap:wrap;gap:22px;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:20px"><span class="stat" style="padding:0"><b>4.9</b></span><div><div class="stars" style="font-size:1.5rem" aria-label="4.9 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="muted">Based on 22 Google reviews</div></div></div><div class="chipset">'+BADGES.map(b=>'<span class="chip">'+b[0]+' <b>'+b[1]+'</b></span>').join('')+'</div></div>'+
+  '<div class="tabs" role="group" aria-label="Filter reviews">'+RF.map(f=>'<button class="tab" type="button" data-rf="'+f[0]+'" aria-pressed="'+(f[0]===revFilter)+'">'+f[1]+'</button>').join('')+'</div><div id="revMain">'+reviewMain()+'</div></div>';
+}
+function mapBlock(){
+  if(AUTOMAP)return '<div class="map" id="mapBox"><iframe title="Map of NA’IBI Dental Clinic, Gwarzo Road, Kano" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=NA%27IBI+DENTAL+CLINIC+Gwarzo+road+Janbulo+Kano&output=embed"></iframe></div><div class="btn-row" style="margin-top:14px"><a class="btn btn-gold sm" href="https://www.google.com/maps/dir/?api=1&destination=NA%27IBI%20Dental%20Clinic%20Gwarzo%20Road%20Janbulo%20Kano" target="_blank" rel="noopener">'+ic('pin')+'Get directions</a></div>';
+  return '<div id="mapWrap"><div class="map" id="mapBox"><div class="map-art"><div class="pin"><div class="dotp">'+ic('pin')+'</div><b>NA’IBI Dental Clinic</b><span>Gwarzo Road, Janbulo, Kano</span></div></div></div><div class="btn-row" style="margin-top:14px"><button class="btn btn-line sm" type="button" id="loadMap">'+ic('pin')+'Load live Google map</button><a class="btn btn-gold sm" href="https://www.google.com/maps/dir/?api=1&destination=NA%27IBI%20Dental%20Clinic%20Gwarzo%20Road%20Janbulo%20Kano" target="_blank" rel="noopener">'+ic('ext')+'Get directions</a></div></div>';
+}
+function infoBlock(){
+  return '<div class="split" style="align-items:start"><div>'+mapBlock()+'</div><div class="info">'+
+  '<div class="info-row"><span class="ico">'+ic('pin')+'</span><div><b>Address</b><span>Gwarzo Road, Janbulo First Gate Road, LGA, opposite Haman Superstores, Kano</span></div></div>'+
+  '<div class="info-row"><span class="ico">'+ic('clock')+'</span><div><b>Hours</b><span>Open daily, closes 9 pm. Appointments recommended.</span></div></div>'+
+  '<div class="info-row"><span class="ico">'+ic('phone')+'</span><div><b>Call or WhatsApp</b><span class="num-big">'+PHONE+'</span></div></div>'+
+  '<div class="btn-row">'+waBtn('WhatsApp us')+callBtn('Call now')+'<button class="btn btn-line" type="button" data-copy="'+PHONE+'">'+ic('copy')+'Copy number</button></div></div></div>';
+}
+function planner(){
+  return '<div class="planner"><div class="card plan glass"><span class="kicker">Busiest time</span><span class="big">Sundays, 11 am</span><p>Book an appointment to skip the wait.</p></div><div class="card plan glass"><span class="kicker">Closing time</span><span class="big">9 pm daily</span><p>Open every day. Call before you come near closing.</p></div><div class="card plan glass"><span class="kicker">Typical visit</span><span class="big">20 min to 3 hr</span><p>Depends on your treatment. Ask us when you book.</p></div></div>'+
+  '<div class="card glass" style="margin-top:20px"><h3>How long visits usually last</h3><div class="range" role="img" aria-label="Visits usually last between 20 minutes and 3 hours"><div class="track"><div class="fill"></div></div><div class="mk a"><b>20 min</b></div><div class="mk b"><b>3 hr</b></div><div class="ax"><span>0</span><span>1 hr</span><span>2 hr</span><span>3 hr</span></div></div></div>';
+}
+function facilities(){
+  const f=[['Accessibility',['Wheelchair-accessible toilet']],['Amenities',['Toilet on site']],['Planning',['Appointments recommended']],['Payments',['Credit cards','Debit cards','NFC mobile payments']]];
+  return '<div class="grid g4">'+f.map(c=>'<div class="card reveal"><h3>'+c[0]+'</h3><ul class="feat-list">'+c[1].map(x=>'<li>'+ic('check')+x+'</li>').join('')+'</ul></div>').join('')+'</div>';
+}
+function faqBlock(n){return FAQ.slice(0,n||FAQ.length).map(q=>'<details class="reveal"><summary>'+q[0]+'</summary><p>'+q[1]+'</p></details>').join('')}
+
+/* ---------- PAGES ---------- */
+const PAGES={};
+PAGES.home=()=>
+'<section class="hero dk"><div class="wrap"><div class="hero-grid"><div class="hero-copy">'+
+ '<div class="badges"><span class="badge"><span class="st">&#9733;</span> 4.9 &middot; 22 reviews</span><span class="badge pain"><span class="dot"></span>Painless procedure</span><span class="badge">Open daily till 9 pm</span></div>'+
+ '<h1 data-split>Painless dental care in a <em class="gold">clean, safe</em> environment</h1>'+
+ '<p class="lead reveal">Clean environment, friendly staff, painless procedure. Rated 4.9 by patients in Kano and delivered by qualified dental surgeons, therapists and assistants.</p>'+
+ '<div class="btn-row reveal">'+bookBtn('Book online')+waBtn('Book on WhatsApp','wa-alt')+callBtn('Call '+PHONE)+'</div></div><div class="anchor" id="aHero"></div></div>'+
+ '<div class="trust reveal"><div>'+ic('users')+'<span><b>Qualified surgeons</b><small>Therapists and assistants</small></span></div><div>'+ic('drop')+'<span><b>Painless procedure</b><small>Gentle, comfortable care</small></span></div><div>'+ic('clock')+'<span><b>Closes 9 pm daily</b><small>Appointments recommended</small></span></div></div></div>'+
+ '<div class="marq" aria-hidden="true"><div class="marq-track">'+[0,1,2,3].map(()=>['Clean environment','Friendly staff','Painless procedure','Safe environment','Welcoming staff','Qualified dental surgeons'].map(x=>'<span>'+x+ic('tooth')+'</span>').join('')).join('')+'</div></div></section>'+
+'<div class="sec tight"><div class="wrap"><div class="grid g4"><div class="stat reveal"><b data-count="4.9" data-dec="1">4.9</b><span>Google rating</span></div><div class="stat reveal"><b data-count="22">22</b><span>Google reviews</span></div><div class="stat reveal"><b data-count="6">6</b><span>Mentions of a safe environment</span></div><div class="stat reveal"><b data-count="10">10</b><span>Treatments offered</span></div></div></div></div>'+
+'<hr class="rule">'+
+'<div class="sec"><div class="wrap">'+head('Why NA’IBI is different','Six reasons patients choose us')+'<div class="bento">'+WHY.map((w,i)=>'<article class="card tile hov reveal'+(i===0?' big':'')+'">'+(w.cnt?'<span class="cnt" aria-hidden="true">'+w.cnt+'</span>':'')+'<div class="ico">'+ic(w.i)+'</div>'+(w.tag?'<span class="tag">'+w.tag+'</span>':'')+'<h3>'+w.t+'</h3><p>'+w.d+'</p>'+(w.cnt?'<span class="help">'+w.cnt+' mentions in Google reviews</span>':'')+'</article>').join('')+'</div><div class="btn-row" style="margin-top:28px">'+go('why','Read more about why patients choose us'+ic('arrow'))+'</div></div></div>'+
+'<div class="cr"><div class="sec"><div class="wrap">'+headRow('Core services','Treatments for every smile',go('services','All services'+ic('arrow')))+'<div class="index">'+SERVICES.map(svcRow).join('')+'</div></div></div></div>'+
+'<div class="sec dk"><div class="wrap"><div class="feat"><div style="display:grid;gap:20px" class="reveal"><span class="kicker">Dental crown</span><h2>A crown that restores strength and shine</h2><p class="lead">A custom-made cap protects a cracked, worn or weakened tooth, and restores how it looks and works. See our team at work in the clips beside this text.</p><ol class="steps-inline"><li>Examination and a clear plan</li><li>Careful shaping of the tooth</li><li>Impression for a precise fit</li><li>Crown fitted and checked for your bite</li></ol><div class="btn-row">'+go('service/dental-crown','Dental crown details'+ic('arrow'),'btn-gold')+waBtn('Ask about a crown')+'</div></div><div class="anchor sm" id="aFeat"></div><div class="reveal">'+reel()+'</div></div></div></div>'+
+'<div class="wh"><div class="sec"><div class="wrap">'+headRow('A tour of our clinic','Clean, bright and calm',"<div class=\"sc-nav\"><button class=\"round\" type=\"button\" id=\"stPrev\" aria-label=\"Scroll left\">"+ic('back')+"</button><button class=\"round\" type=\"button\" id=\"stNext\" aria-label=\"Scroll right\">"+ic('arrow')+"</button></div>")+'<div class="strip reveal" id="strip">'+GAL.slice(0,5).map((g,i)=>'<figure'+(g.img==='xray'?' class="land"':'')+'><button type="button" data-lb="'+i+'" aria-label="Open photo: '+g.cap+'"><img src="'+IMG[g.img]+'" alt="'+g.alt+'" loading="lazy"></button><figcaption>'+g.cap+'</figcaption></figure>').join('')+'</div><div class="btn-row" style="margin-top:20px">'+go('gallery','Open the full gallery'+ic('arrow'))+'</div></div></div></div>'+
+'<div class="sec"><div class="wrap">'+headRow('Reviews that matter','4.9 stars from 22 patients',go('reviews','All reviews'+ic('arrow')))+reviewsBlock()+'</div></div>'+
+'<div class="cr"><div class="sec"><div class="wrap split"><div style="display:grid;gap:18px" class="reveal"><span class="kicker">Our qualified team</span><h2>Care from dental surgeons, therapists and assistants</h2><p class="lead">Every treatment at NA’IBI is delivered by qualified dental surgeons, therapists and assistants, who work side by side so you always have someone to ask.</p><ul class="checks"><li>'+ic('check')+'Dental surgeons lead your diagnosis and treatment</li><li>'+ic('check')+'Therapists help keep gums and teeth clean and healthy</li><li>'+ic('check')+'Assistants look after your comfort and your questions</li></ul><div class="btn-row">'+go('team','Meet the team'+ic('arrow'),'btn-line')+'</div></div><figure class="shot par reveal" style="margin:0;aspect-ratio:4/5"><img data-par src="'+IMG.chairside+'" alt="Dentist in a white coat treating a patient"></figure></div></div></div>'+
+'<div class="sec"><div class="wrap">'+head('Visit planner','Plan your visit','When to come, how long to set aside and how to find us.')+planner()+'<div style="margin-top:34px" class="reveal">'+infoBlock()+'</div></div></div>'+
+'<div class="cr"><div class="sec"><div class="wrap">'+head('How painless care works','Three simple steps')+'<div class="timeline" style="margin-top:40px"><div class="tl reveal"><span class="n">1</span><h3>Book</h3><p>Pick your treatments and send the booking on WhatsApp, or call us.</p></div><div class="tl reveal"><span class="n">2</span><h3>Painless treatment</h3><p>We explain each step and keep you comfortable. Tell us if you feel anything.</p></div><div class="tl reveal"><span class="n">3</span><h3>Smile</h3><p>Leave with clear aftercare advice and a smile you are proud of.</p></div></div><div class="btn-row" style="margin-top:30px">'+go('booking','Start booking'+ic('arrow'),'btn-gold')+'</div></div></div></div>'+
+'<div class="sec"><div class="wrap"><div class="split"><div style="display:grid;gap:18px" class="reveal"><span class="kicker">Pricing transparency</span><p class="quote-big">“The best price for any teeth care.”</p><p class="muted">What patient safiyya daba wrote about us on Google. We agree on a clear price with you before treatment starts.</p><div class="btn-row">'+go('pricing','Get a price quote'+ic('arrow'),'btn-gold')+'</div></div><div class="grid" style="gap:14px"><div class="card glass reveal"><div class="ico">'+ic('tag')+'</div><h3>Clear quote first</h3><p>Tell us what you need and we tell you the cost before we begin.</p></div><div class="card glass reveal"><div class="ico">'+ic('card')+'</div><h3>Pay your way</h3><p>Credit cards, debit cards and NFC mobile payments are accepted.</p></div></div></div></div></div>'+
+'<div class="cr"><div class="sec"><div class="wrap">'+headRow('From the blog','Simple advice for healthy teeth',go('blog','All articles'+ic('arrow')))+'<div class="grid g3">'+POSTS.slice(0,3).map(postCard).join('')+'</div></div></div></div>'+
+'<div class="sec"><div class="wrap" style="max-width:900px">'+head('FAQ','Questions patients ask')+faqBlock(6)+'<div class="btn-row" style="margin-top:22px">'+go('faq','See all questions'+ic('arrow'))+'</div></div></div>'+
+finalCta('Your one-stop dental clinic in Kano');
+
+PAGES.about=()=>'<div class="sec"><div class="wrap">'+crumbs([['About']])+'<div class="split"><div style="display:grid;gap:20px"><span class="kicker reveal">About us</span><h1 data-split>Gentle dentistry, delivered by a qualified team</h1><p class="lead reveal">NA’IBI Dental Clinic is a dental clinic in Kano, opposite Haman Superstores on Gwarzo Road. Our services are delivered by qualified dental surgeons, therapists and assistants.</p><p class="muted reveal">Patients tell us the clinic is clean, the environment is safe and friendly, and the procedures are painless. We offer everyday and advanced care, from scaling and polishing, fillings and extractions to crowns, whitening, braces and implants.</p><div class="btn-row reveal">'+waBtn('Book on WhatsApp')+go('services','Our services')+'</div></div><figure class="shot par reveal" style="margin:0;aspect-ratio:4/5"><img data-par src="'+IMG.interior+'" alt="Treatment room with a round gold mirror and monitor"><figcaption>Our treatment room</figcaption></figure></div></div></div>'+
+'<div class="sec tight"><div class="wrap"><div class="grid g3"><div class="card hov reveal"><div class="ico">'+ic('heart')+'</div><h3>Our approach</h3><p>We explain what we are doing, go at your pace and keep treatment as comfortable as possible.</p></div><div class="card hov reveal"><div class="ico">'+ic('sparkle')+'</div><h3>Our standards</h3><p>A clean, bright, safe clinic with careful hygiene in every room.</p></div><div class="card hov reveal"><div class="ico">'+ic('drop')+'</div><h3>Our promise</h3><p>Painless, friendly dental care with a clear price before we begin.</p></div></div></div></div>'+
+'<div class="cr"><div class="sec"><div class="wrap">'+head('Good to know','Facilities and payments')+facilities()+'</div></div></div>'+
+'<div class="sec"><div class="wrap">'+head('Visit planner','Plan your visit')+planner()+'</div></div>'+finalCta();
+
+PAGES.why=()=>'<div class="sec"><div class="wrap">'+crumbs([['Why NA’IBI']])+pageHead('Why NA’IBI','Why patients choose NA’IBI Dental Clinic','Every reason below comes from what our patients say on Google, and from how the clinic is run.')+'<div class="bento">'+WHY.map((w,i)=>'<article class="card tile hov reveal'+(i===0?' big':'')+'">'+(w.cnt?'<span class="cnt" aria-hidden="true">'+w.cnt+'</span>':'')+'<div class="ico">'+ic(w.i)+'</div>'+(w.tag?'<span class="tag">'+w.tag+'</span>':'')+'<h3>'+w.t+'</h3><p>'+w.d+'</p></article>').join('')+'</div></div></div>'+
+'<div class="cr"><div class="sec"><div class="wrap">'+head('In patients’ words','What our reviewers say')+'<div class="grid g3">'+REVIEWS.slice(0,3).map(revCard).join('')+'</div><div class="btn-row" style="margin-top:26px">'+go('reviews','Read all reviews'+ic('arrow'))+'</div></div></div></div>'+finalCta();
+
+PAGES.services=()=>'<div class="sec"><div class="wrap">'+crumbs([['Services']])+pageHead('Services','Complete dental care','Choose a treatment to learn more, or select everything you need on the booking page.')+'<div class="index">'+SERVICES.map(svcRow).join('')+'</div></div></div>'+
+'<div class="cr"><div class="sec"><div class="wrap">'+head('Book it all at once','Select everything you need')+bookChips('')+pickBar()+'</div></div></div>'+finalCta();
+
+PAGES.service=(slug)=>{
+  const s=SERVICES.find(x=>x.slug===slug);if(!s)return null;
+  const others=SERVICES.filter(x=>x.slug!==slug).slice(0,3);
+  return '<div class="sec"><div class="wrap">'+crumbs([['Services','services'],[s.name]])+'<div class="split" style="align-items:start"><div style="display:grid;gap:20px"><span class="kicker reveal">'+ic(s.icon)+' Service</span><h1 data-split>'+s.name+'</h1><p class="lead reveal">'+s.over+'</p><div class="btn-row reveal"><a class="btn btn-gold" href="'+waLink('Hello NAIBI Dental Clinic, I want to book: '+s.name)+'" target="_blank" rel="noopener">'+ic('wa','fill')+'Book '+s.name.toLowerCase()+'</a>'+callBtn('Call now')+'</div></div><figure class="shot reveal" style="margin:0"><img src="'+IMG[s.img]+'" alt="'+s.alt+'" style="aspect-ratio:4/3"></figure></div></div></div>'+
+  '<div class="cr"><div class="sec"><div class="wrap"><div class="grid g2"><div class="card reveal"><h3>What is included</h3><ul class="checks" style="margin-top:14px">'+s.inc.map(x=>'<li>'+ic('check')+x+'</li>').join('')+'</ul></div><div class="card reveal"><h3>Good for</h3><ul class="checks" style="margin-top:14px">'+s.good.map(x=>'<li>'+ic('check')+x+'</li>').join('')+'</ul></div></div><div class="note reveal" style="margin-top:22px">'+ic('sparkle')+'<span><b>Tip:</b> '+s.tip+'</span></div>'+
+  (s.slug==='dental-crown'?'<div class="split reveal" style="margin-top:44px"><div>'+reel()+'</div><div style="display:grid;gap:14px"><h3>See our work</h3><p class="muted">These short clips show our team at work. Photos and videos of your own crown case can be added by the clinic at any time.</p></div></div>':'')+
+  '</div></div></div>'+
+  '<div class="sec tight"><div class="wrap">'+head('More services','You may also need')+'<div class="index">'+others.map((o,i)=>svcRow(o,SERVICES.indexOf(o))).join('')+'</div><div class="btn-row" style="margin-top:22px">'+go('services','All services'+ic('arrow'))+'</div></div></div>'+finalCta('Book '+s.name.toLowerCase()+' today')};
+
+PAGES.gallery=()=>'<div class="sec"><div class="wrap">'+crumbs([['Gallery']])+pageHead('Gallery','Inside NA’IBI Dental Clinic','Tap any photo to see it larger. Photos marked placeholder will be replaced with the clinic’s own.')+'<div class="masonry">'+GAL.map((g,i)=>'<figure class="reveal"><button type="button" data-lb="'+i+'" aria-label="Open photo: '+g.cap+'"><img src="'+IMG[g.img]+'" alt="'+g.alt+'" loading="lazy"></button><figcaption>'+g.cap+'</figcaption></figure>').join('')+'</div></div></div>'+
+'<div class="sec dk"><div class="wrap">'+head('Videos','Our team at work')+'<div class="split"><div class="reveal">'+reel()+'</div><div style="display:grid;gap:16px" class="reveal"><h3 style="font-size:2.2rem">Real treatments, shown honestly</h3><p class="lead">Short clips from our own channel: teeth whitening and a removable partial denture. Tap the video to pause.</p>'+waBtn('Ask about these treatments')+'</div></div></div></div>'+
+'<div class="cr"><div class="sec"><div class="wrap">'+head('What our gallery says about us','Four things you can see')+'<div class="grid g4">'+SAYS.map(s=>'<article class="card hov reveal"><div class="ico">'+ic(s.i)+'</div><h3>'+s.t+'</h3><p>'+s.d+'</p></article>').join('')+'</div><div class="btn-row" style="margin-top:26px">'+go('booking','Book your visit'+ic('arrow'),'btn-gold')+'</div></div></div></div>'+finalCta();
+
+PAGES.reviews=()=>'<div class="sec"><div class="wrap">'+crumbs([['Reviews']])+pageHead('Google reviews','4.9 stars from 22 patients')+reviewsBlock()+'<div class="grid g3" style="margin-top:36px">'+REVIEWS.map(revCard).join('')+'</div><div class="note" style="margin-top:26px">'+ic('heart')+'<span>These are reviews from the clinic’s Google listing. Some are shortened exactly as Google shortens them. Open Google to read each in full.</span></div><div class="btn-row" style="margin-top:20px"><a class="btn btn-line" href="https://www.google.com/maps/search/?api=1&query=NA%27IBI%20Dental%20Clinic%20Gwarzo%20Road%20Kano" target="_blank" rel="noopener">'+ic('ext')+'See all reviews on Google</a>'+waBtn('Book on WhatsApp')+'</div></div></div>'+finalCta();
+
+PAGES.team=()=>'<div class="sec"><div class="wrap">'+crumbs([['Our team']])+pageHead('Our qualified team','Dental surgeons, therapists and assistants','Services at NA’IBI Dental Clinic are delivered by a qualified team that works together on your care.')+'<div class="grid g3">'+[['users','Dental surgeons','Examine, diagnose and carry out your treatment, from fillings and extractions to crowns and implants.','01'],['sparkle','Therapists','Keep your gums and teeth clean and healthy with careful scaling, polishing and prevention advice.','02'],['heart','Assistants','Look after your comfort, prepare the room and answer your questions at every step.','03']].map(r=>'<article class="card hov role reveal"><span class="big" aria-hidden="true">'+r[3]+'</span><div class="ico">'+ic(r[0])+'</div><h3>'+r[1]+'</h3><p>'+r[2]+'</p></article>').join('')+'</div></div></div>'+
+'<div class="cr"><div class="sec"><div class="wrap split"><figure class="shot par reveal" style="margin:0;aspect-ratio:4/5"><img data-par src="'+IMG.chairside+'" alt="Dentist in a white coat treating a patient"></figure><div style="display:grid;gap:18px" class="reveal"><span class="kicker">Patient care</span><h2>You are never handled alone</h2><p class="lead">Patients praise the friendly, welcoming staff and thorough, gentle hygienists. Ask any question at any point. We would rather explain than assume.</p><div class="btn-row">'+waBtn('Book on WhatsApp')+go('reviews','Read reviews')+'</div></div></div></div></div>'+finalCta();
+
+PAGES.pricing=()=>'<div class="sec"><div class="wrap">'+crumbs([['Pricing']])+pageHead('Pricing','A clear price before every treatment','Prices depend on the treatment, so we quote you first. Select what you need and send a quote request on WhatsApp.')+
+'<div class="split" style="align-items:start"><div class="card glass reveal" style="display:grid;gap:18px"><h3>Request a quote</h3>'+bookChips('')+'<div class="fld"><label for="qName">Your name (optional)</label><input class="in" id="qName" placeholder="Your name" autocomplete="name"></div><div class="err" id="qErr" hidden role="alert"></div><a class="btn btn-gold" id="sendQuote" href="'+WA_GEN+'" target="_blank" rel="noopener">'+ic('wa','fill')+'Request price quote on WhatsApp</a><p class="help">We reply with a clear price. Nothing is charged until you agree.</p></div>'+
+'<div style="display:grid;gap:16px"><p class="quote-big reveal">“The best price for any teeth care.”</p><p class="muted reveal">A patient review on Google. What we value most is being open about cost.</p><div class="grid g2"><div class="card reveal"><div class="ico">'+ic('card')+'</div><h3>Payments</h3><p>Credit cards, debit cards and NFC mobile payments.</p></div><div class="card reveal"><div class="ico">'+ic('cal')+'</div><h3>Appointments</h3><p>Recommended, so we can set time aside for you.</p></div></div></div></div></div></div>'+finalCta();
+
+PAGES.blog=()=>'<div class="sec"><div class="wrap">'+crumbs([['Blog']])+pageHead('Oral health','Tips for a healthier smile','Short, practical reads from the NA’IBI team.')+'<div class="grid g3">'+POSTS.map(postCard).join('')+'</div></div></div>'+finalCta();
+
+PAGES.faq=()=>'<div class="sec"><div class="wrap" style="max-width:900px">'+crumbs([['FAQ']])+pageHead('FAQ','Questions patients ask')+faqBlock()+'<div class="btn-row" style="margin-top:26px">'+waBtn('Ask us on WhatsApp')+go('contact','Contact us')+'</div></div></div>'+finalCta();
+
+PAGES.contact=()=>'<div class="sec"><div class="wrap">'+crumbs([['Contact']])+pageHead('Location and contact','Find us on Gwarzo Road')+infoBlock()+'</div></div>'+
+'<div class="cr"><div class="sec"><div class="wrap">'+head('Before you visit','Facilities and payments')+facilities()+'</div></div></div>'+
+'<div class="sec"><div class="wrap">'+head('Visit planner','Plan your visit')+planner()+'</div></div>'+finalCta();
+
+PAGES.booking=()=>'<div class="sec"><div class="wrap">'+crumbs([['Booking']])+pageHead('Booking','Book your appointment','Book a time online and see the dentist who will treat you, or send your request on WhatsApp below.')+'<div class="card glass" style="margin-bottom:22px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between"><div><h3 style="margin:0">Pick a free time online</h3><p class="muted" style="margin-top:4px">Choose a service and a real free slot. No account needed.</p></div>'+bookBtn('Book online now')+'</div>'+
+ '<div class="book-grid"><form class="card frm glass" id="bookForm" novalidate>'+
+ '<div class="fld"><span class="legend">1. Choose your services</span><label class="search">'+ic('search')+'<input type="search" id="svcSearch" placeholder="Search services" aria-label="Search services"></label><div id="chipArea">'+bookChips('')+'</div></div>'+
+ '<div class="fld"><span class="legend">2. Your details</span></div>'+
+ '<div class="row2"><div class="fld"><label for="bName">Full name</label><input class="in" id="bName" autocomplete="name" placeholder="Your name"></div><div class="fld"><label for="bPhone">Phone number</label><input class="in" id="bPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 0810 000 0000"></div></div>'+
+ '<div class="row2"><div class="fld"><label for="bDate">Preferred date</label><input class="in" id="bDate" type="date"></div><div class="fld"><label for="bTime">Preferred time</label><select class="in" id="bTime"><option>Morning</option><option>Afternoon</option><option>Evening (before 9 pm)</option><option>Any time</option></select></div></div>'+
+ '<div class="fld"><span class="legend">Patient</span><div class="seg"><label class="on"><input type="radio" id="rp-adult" name="pt" value="Adult" checked>Adult</label><label><input type="radio" id="rp-child" name="pt" value="Child">Child</label></div></div>'+
+ '<div class="fld"><label for="bNotes">Anything we should know? (optional)</label><textarea class="in" id="bNotes" placeholder="Tooth pain, allergies, questions..."></textarea></div>'+
+ '<div class="err" id="bErr" hidden role="alert"></div>'+
+ '<div class="fld"><span class="legend">3. Send</span><a class="btn btn-gold" id="sendWA" href="'+WA_GEN+'" target="_blank" rel="noopener">'+ic('wa','fill')+'Send booking on WhatsApp</a><p class="help">WhatsApp opens with your booking written out. Press send there to reach the clinic. Your slot is confirmed when the clinic replies.</p></div></form>'+
+ '<aside class="card sticky glass" style="display:grid;gap:14px"><h3>Your booking</h3><ul class="sum-list" id="sumList"></ul><div class="help" id="sumCount"></div><h4 style="font-size:1.2rem;color:var(--gold)">Message preview</h4><div class="msg-prev" id="msgPrev"></div></aside></div></div></div>';
+
+PAGES.post=(id)=>{
+  const p=POSTS.find(x=>x.id===id);if(!p)return null;
+  const body=p.b.map(x=>x[0]==='p'?'<p>'+x[1]+'</p>':x[0]==='h'?'<h3>'+x[1]+'</h3>':'<'+x[0]+'>'+x[1].map(li=>'<li>'+li+'</li>').join('')+'</'+x[0]+'>').join('');
+  const more=POSTS.filter(x=>x.id!==id).slice(0,2);
+  return '<div class="sec"><div class="wrap"><article class="article">'+crumbs([['Blog','blog'],[p.tag]])+'<h1>'+p.t+'</h1><div class="meta">'+p.tag+' &middot; '+p.min+' min read &middot; NA’IBI Dental Clinic</div><img class="hero-img" src="'+IMG[p.img]+'" alt="">'+body+
+  '<div class="cta-box"><h3 style="margin:0">Questions about your own teeth?</h3><p class="muted">This article is general advice. For care that fits you, book a visit.</p><div class="btn-row">'+waBtn('Book on WhatsApp')+callBtn('Call now')+'</div></div><h3 style="margin-top:46px">Keep reading</h3><div class="grid g2" style="margin-top:16px">'+more.map(postCard).join('')+'</div></article></div></div>'};
+
+/* ---------- ROUTER ---------- */
+let current='',lbIdx=0;
+function resolve(route){
+  const parts=route.split('/'),k=parts[0];
+  if(k==='service'){const h=PAGES.service(parts[1]);if(h)return [h,'services']}
+  if(k==='post'){const h=PAGES.post(parts[1]);if(h)return [h,'blog']}
+  if(k!=='service'&&k!=='post'&&PAGES[k]){const nav={team:'about',pricing:'services',faq:'contact',booking:'contact'}[k]||k;return [PAGES[k](),nav]}
+  return [PAGES.home(),'home'];
+}
+function closeNav(){$('#nav').classList.remove('open');$('#menuBtn').setAttribute('aria-expanded','false');$('#menuBtn').innerHTML=ic('menu')}
+function show(route,quiet){
+  route=route||'home';
+  const r=resolve(route);
+  $('#page').innerHTML='<div class="page">'+r[0]+'</div>';
+  const k=route.split('/')[0];if(!PAGES[k])route='home';
+  $$('.nav a').forEach(a=>{a.dataset.go===r[1]?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current')});
+  closeNav();current=route;
+  try{history.replaceState(null,'','#'+route)}catch(e){}
+  window.scrollTo(0,0);
+  if($('#bookForm')){const t=new Date(),pad=n=>String(n).padStart(2,'0');$('#bDate').min=t.getFullYear()+'-'+pad(t.getMonth()+1)+'-'+pad(t.getDate());updBook()}
+  wireReels();
+  animatePage();
+  if(!quiet)window.dispatchEvent(new CustomEvent('naibi:route'));
+  window.dispatchEvent(new CustomEvent('naibi:render'));
+}
+document.addEventListener('click',e=>{
+  const a=e.target.closest('[data-go]');
+  if(a){e.preventDefault();show(a.dataset.go);return}
+  const pk=e.target.closest('[data-pick]');
+  if(pk){const v=pk.dataset.pick;sel.has(v)?sel.delete(v):sel.add(v);updPick();if($('#bookForm'))updBook();return}
+  if(e.target.closest('#pickClear')){sel.clear();updPick();if($('#bookForm'))updBook();return}
+  const rf=e.target.closest('[data-rf]');
+  if(rf){revFilter=rf.dataset.rf;revIdx=0;$$('[data-rf]').forEach(b=>b.setAttribute('aria-pressed',String(b===rf)));$('#revMain').innerHTML=reviewMain()||'<p class="muted">No review mentions this yet.</p>';return}
+  const dt=e.target.closest('[data-dot]');if(dt){revIdx=+dt.dataset.dot;$('#revMain').innerHTML=reviewMain();return}
+  if(e.target.closest('#rvPrev')){revIdx--;$('#revMain').innerHTML=reviewMain();return}
+  if(e.target.closest('#rvNext')){revIdx++;$('#revMain').innerHTML=reviewMain();return}
+  if(e.target.closest('#stPrev')){$('#strip').scrollBy({left:-340,behavior:'smooth'});return}
+  if(e.target.closest('#stNext')){$('#strip').scrollBy({left:340,behavior:'smooth'});return}
+  const lm=e.target.closest('#loadMap');
+  if(lm){$('#mapBox').innerHTML='<iframe title="Map of NA’IBI Dental Clinic, Gwarzo Road, Kano" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=NA%27IBI+DENTAL+CLINIC+Gwarzo+road+Janbulo+Kano&output=embed"></iframe>';lm.remove();return}
+  const lb=e.target.closest('[data-lb]');if(lb){openLb(+lb.dataset.lb);return}
+  const rt=e.target.closest('[data-reel]');if(rt){setReel(rt.dataset.reel);return}
+  if(e.target.closest('#reelPP')){const v=$('#reelV');if(v.paused)v.play().catch(()=>{});else v.pause();syncPP();return}
+  const cp=e.target.closest('[data-copy]');
+  if(cp){navigator.clipboard.writeText(cp.dataset.copy).then(()=>toast('Copied')).catch(()=>toast(cp.dataset.copy))}
+});
+document.addEventListener('input',e=>{
+  if(e.target.id==='svcSearch'){$('#chipArea').innerHTML=bookChips(e.target.value);return}
+  if(e.target.closest('#bookForm'))updBook();
+});
+document.addEventListener('change',e=>{if(e.target.closest('#bookForm'))updBook()});
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(h&&h!==current)show(h)});
+$('#menuBtn').addEventListener('click',()=>{const o=$('#nav').classList.toggle('open');$('#menuBtn').setAttribute('aria-expanded',String(o));$('#menuBtn').innerHTML=ic(o?'close':'menu')});
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>{t.hidden=true},2400)}
+
+/* reels */
+function syncPP(){const v=$('#reelV'),b=$('#reelPP');if(!v||!b)return;b.innerHTML=ic(v.paused?'play':'pause');b.setAttribute('aria-label',v.paused?'Play video':'Pause video')}
+function setReel(k){const v=$('#reelV');if(!v)return;const d=VID[k];v.poster=d.poster;v.src=d.src;v.load();v.play().catch(()=>{});$$('[data-reel]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.reel===k)));setTimeout(syncPP,200)}
+let reelIO;
+function wireReels(){
+  const v=$('#reelV');if(reelIO){reelIO.disconnect();reelIO=null}
+  if(!v)return;
+  v.addEventListener('play',syncPP);v.addEventListener('pause',syncPP);
+  if('IntersectionObserver' in window){reelIO=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){v.play().catch(()=>{})}else v.pause()})},{threshold:.4});reelIO.observe(v)}
+}
+
+/* lightbox */
+function openLb(i){lbIdx=(i+GAL.length)%GAL.length;const g=GAL[lbIdx];$('#lbImg').src=IMG[g.img];$('#lbImg').alt=g.alt;$('#lbCap').textContent=g.cap;$('#lb').hidden=false;$('#lbClose').focus()}
+$('#lbPrev').onclick=()=>openLb(lbIdx-1);$('#lbNext').onclick=()=>openLb(lbIdx+1);$('#lbClose').onclick=()=>{$('#lb').hidden=true};
+document.addEventListener('keydown',e=>{if($('#lb').hidden)return;if(e.key==='Escape')$('#lb').hidden=true;if(e.key==='ArrowLeft')openLb(lbIdx-1);if(e.key==='ArrowRight')openLb(lbIdx+1)});
+$('#lb').addEventListener('click',e=>{if(e.target.id==='lb')$('#lb').hidden=true});
+
+/* booking + quote */
+function form(){return{name:$('#bName').value.trim(),phone:$('#bPhone').value.trim(),date:$('#bDate').value,time:$('#bTime').value,pt:$('input[name=pt]:checked').value,notes:$('#bNotes').value.trim()}}
+function fmtDate(v){if(!v)return '';const [y,m,d]=v.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}
+function message(){
+  const f=form();const names=[...sel].map(s=>'- '+s);
+  return ['Hello NAIBI Dental Clinic, I want to book an appointment.','','Name: '+(f.name||'(not added yet)'),'Phone: '+(f.phone||'(not added yet)'),'','Services:'].concat(names.length?names:['(none selected yet)'],['','Patient: '+f.pt,'Preferred date: '+(fmtDate(f.date)||'(not added yet)'),'Preferred time: '+f.time],f.notes?['','Notes: '+f.notes]:[],['','Sent from the NAIBI Dental Clinic website']).join('\n');
+}
+function updBook(){
+  if(!$('#bookForm'))return;
+  $$('.seg label').forEach(l=>l.classList.toggle('on',l.querySelector('input').checked));
+  $('#sumList').innerHTML=sel.size?[...sel].map(s=>'<li>'+ic('check')+s+'</li>').join(''):'<li class="muted">No services selected yet</li>';
+  $('#sumCount').textContent=sel.size?sel.size+' selected':'Choose at least one service.';
+  const m=message();$('#msgPrev').textContent=m;$('#sendWA').href=waLink(m);
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('#sendWA');
+  if(b){const f=form(),errs=[];
+    if(!sel.size)errs.push('Choose at least one service.');
+    if(!f.name)errs.push('Add your name.');
+    if(f.phone.replace(/\D/g,'').length<7)errs.push('Add a phone number the clinic can reach.');
+    const box=$('#bErr');
+    if(errs.length){e.preventDefault();box.hidden=false;box.innerHTML=errs.join('<br>');box.scrollIntoView({block:'center',behavior:'smooth'})}else box.hidden=true;return}
+  const q=e.target.closest('#sendQuote');
+  if(q){const box=$('#qErr');
+    if(!sel.size){e.preventDefault();box.hidden=false;box.textContent='Choose at least one service first.';return}
+    box.hidden=true;const n=$('#qName').value.trim();
+    q.href=waLink('Hello NAIBI Dental Clinic, I would like a price quote for:\n'+[...sel].map(s=>'- '+s).join('\n')+(n?'\n\nName: '+n:'')+'\n\nSent from the NAIBI Dental Clinic website')}
+});
+$('#ftSvc').innerHTML=SERVICES.slice(0,6).map(s=>'<li><button class="lk" data-go="service/'+s.slug+'">'+s.name+'</button></li>').join('');
+if(DEV.name&&DEV.name.indexOf('{{')<0){$('#credit').hidden=false}
+
+/* ---------- GSAP ---------- */
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasG=!!(window.gsap&&window.ScrollTrigger)&&!reduceMotion;
+if(hasG){gsap.registerPlugin(ScrollTrigger);document.documentElement.classList.add('has-gsap');setTimeout(()=>document.documentElement.classList.add('force-show'),6000)}
+function splitWords(el){
+  if(el.dataset.done)return;el.dataset.done='1';
+  const walk=(node)=>{[...node.childNodes].forEach(n=>{
+    if(n.nodeType===3){const f=document.createDocumentFragment();n.textContent.split(/(\s+)/).forEach(t=>{if(!t)return;if(/^\s+$/.test(t)){f.appendChild(document.createTextNode(' '));return}const o=document.createElement('span');o.className='w';const i=document.createElement('span');i.textContent=t;o.appendChild(i);f.appendChild(o)});n.replaceWith(f)}
+    else if(n.nodeType===1&&!n.classList.contains('w'))walk(n)})};
+  walk(el);
+}
+function animatePage(){
+  if(!hasG)return;
+  try{
+    ScrollTrigger.getAll().forEach(t=>t.kill());
+    $$('#page [data-split]').forEach(splitWords);
+    const words=$$('#page [data-split] .w>span');
+    if(words.length)gsap.from(words,{yPercent:115,opacity:0,duration:1,ease:'power4.out',stagger:.045,delay:.1});
+    $$('#page .reveal').forEach(el=>{
+      gsap.to(el,{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 92%',once:true}});
+    });
+    $$('#page [data-count]').forEach(el=>{
+      const end=parseFloat(el.dataset.count),dec=+el.dataset.dec||0,o={v:0};
+      ScrollTrigger.create({trigger:el,start:'top 92%',once:true,onEnter:()=>gsap.to(o,{v:end,duration:1.6,ease:'power2.out',onUpdate:()=>{el.textContent=o.v.toFixed(dec)},onComplete:()=>{el.textContent=end.toFixed(dec)}})});
+    });
+    $$('#page [data-par]').forEach(img=>{
+      gsap.fromTo(img,{yPercent:-6},{yPercent:6,ease:'none',scrollTrigger:{trigger:img.parentElement,start:'top bottom',end:'bottom top',scrub:true}});
+    });
+    ScrollTrigger.refresh();
+  }catch(err){document.documentElement.classList.add('force-show')}
+}
+
+show(location.hash.slice(1)||'home',true);
+
+/* ---------- 3D ---------- */
+(function(){
+  const canvas=$('#bg');
+  if(!window.THREE){canvas.style.display='none';return}
+  let renderer;
+  try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){canvas.style.display='none';return}
+  const small=Math.min(innerWidth,innerHeight)<700;
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,small?1.5:2));
+  renderer.setClearColor(0x000000,0);
+  renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
+  const scene=new THREE.Scene();
+  scene.fog=new THREE.FogExp2(0x0A1931,0.026);
+  const FOV=50,CAMZ=14;
+  const camera=new THREE.PerspectiveCamera(FOV,1,.1,150);camera.position.set(0,0,CAMZ);
+  scene.add(new THREE.AmbientLight(0x8fa6d8,.55));
+  const key=new THREE.DirectionalLight(0xfff3d0,1.4);key.position.set(5,8,10);scene.add(key);
+  const goldL=new THREE.PointLight(0xffd75e,4,50);scene.add(goldL);
+  const blueL=new THREE.PointLight(0x5b8cff,3,50);scene.add(blueL);
+
+  /* environment so the gold reflects light */
+  try{
+    const pm=new THREE.PMREMGenerator(renderer),es=new THREE.Scene();
+    es.add(new THREE.Mesh(new THREE.SphereGeometry(50,32,16),new THREE.ShaderMaterial({side:THREE.BackSide,vertexShader:'varying vec3 vP;void main(){vP=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec3 vP;void main(){float h=normalize(vP).y*.5+.5;vec3 c=mix(vec3(.02,.04,.1),vec3(.75,.6,.3),smoothstep(.15,1.,h));gl_FragColor=vec4(c,1.);}'})));
+    [[20,10,10],[-20,6,8],[0,26,0],[0,-8,22]].forEach(p=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(22,9),new THREE.MeshBasicMaterial({color:new THREE.Color(5,4.5,3.5),side:THREE.DoubleSide}));m.position.set(p[0],p[1],p[2]);m.lookAt(0,0,0);es.add(m)});
+    scene.environment=pm.fromScene(es,.02).texture;pm.dispose();
+  }catch(e){}
+
+  const goldM=new THREE.MeshStandardMaterial({color:0xd4af37,metalness:1,roughness:.2,envMapIntensity:1.25});
+  const brightM=new THREE.MeshStandardMaterial({color:0xffe27a,metalness:1,roughness:.14,envMapIntensity:1.4});
+  const pearlM=new THREE.MeshPhysicalMaterial({color:0xf6f1e4,roughness:.2,metalness:.05,clearcoat:1,clearcoatRoughness:.1});
+  const holoM=new THREE.MeshBasicMaterial({color:0xffd75e,wireframe:true,transparent:true,opacity:.4});
+  const darkM=new THREE.MeshStandardMaterial({color:0x0a1931,roughness:.6,metalness:.2});
+
+  function crownGeo(){
+    const g=new THREE.SphereGeometry(1,72,52),p=g.attributes.position;
+    for(let i=0;i<p.count;i++){
+      let x=p.getX(i),y=p.getY(i),z=p.getZ(i);
+      const th=Math.atan2(z,x),sq=1+.14*Math.cos(4*th);x*=sq;z*=sq;
+      if(y>0){y*=.62;y+=.2*Math.cos(x*3.3)*Math.cos(z*3.3)*Math.min(1,y*2.2+.3)}
+      else{y=Math.max(y*.8,-.62);const t=1+y*.08;x*=t;z*=t}
+      p.setXYZ(i,x*1.1,y,z*1.1);
+    }
+    g.computeVertexNormals();return g;
+  }
+  function toothGeo(){
+    const g=new THREE.SphereGeometry(1,48,36),p=g.attributes.position;
+    for(let i=0;i<p.count;i++){let x=p.getX(i),y=p.getY(i),z=p.getZ(i);
+      if(y>0){y*=.78;y+=.12*Math.sin(x*3.4)*Math.sin(z*3.4)}else{const t=1+y*.36;x*=t;z*=t;y*=.8}
+      p.setXYZ(i,x*1.08,y,z)}
+    g.computeVertexNormals();return g;
+  }
+  const crownG=crownGeo(),toothG=toothGeo(),rootG=new THREE.ConeGeometry(.3,1.25,24);
+  function makeCrown(m,s){const g=new THREE.Group();g.add(new THREE.Mesh(crownG,m));const b=new THREE.Mesh(new THREE.CircleGeometry(.82,48),darkM);b.rotation.x=Math.PI/2;b.position.y=-.625;g.add(b);g.scale.setScalar(s);return g}
+  function makeTooth(m,s){const g=new THREE.Group();g.add(new THREE.Mesh(toothG,m));[-1,1].forEach(sg=>{const r=new THREE.Mesh(rootG,m);r.position.set(sg*.42,-1.22,0);r.rotation.z=Math.PI+sg*.16;g.add(r)});g.scale.setScalar(s);return g}
+
+  const anchored=new THREE.Group();scene.add(anchored);
+  const heroCrown=makeCrown(goldM,1);heroCrown.userData.base=2.9;anchored.add(heroCrown);
+  const featCrown=makeCrown(brightM,1);featCrown.userData.base=2.9;anchored.add(featCrown);
+  const ctaTooth=makeTooth(goldM,1);ctaTooth.userData.base=3.6;anchored.add(ctaTooth);
+  [heroCrown,featCrown,ctaTooth].forEach(o=>o.visible=false);
+  const halo=new THREE.Mesh(new THREE.TorusGeometry(2.1,.025,10,160),new THREE.MeshBasicMaterial({color:0xffd75e,transparent:true,opacity:.7}));halo.rotation.x=1.15;heroCrown.add(halo);
+  const halo2=halo.clone();halo2.scale.setScalar(1.3);halo2.rotation.set(.5,.8,0);heroCrown.add(halo2);
+
+  const bg=new THREE.Group();scene.add(bg);
+  const defs=[[-9,3,-6,'gold',.9,'t'],[9.5,3.6,-8,'pearl',1,'c'],[-7,-4.5,-5,'gold',.7,'c'],[8,-5,-6,'bright',.85,'t'],[0,7.5,-12,'holo',2,'t'],[-14,-1,-10,'pearl',1.3,'t'],[14,0,-12,'holo',1.6,'c'],[3,-8.5,-10,'gold',1,'t']];
+  const MAT={gold:goldM,pearl:pearlM,bright:brightM,holo:holoM};
+  const bgT=[];
+  defs.slice(0,small?5:defs.length).forEach((d,i)=>{const o=d[5]==='c'?makeCrown(MAT[d[3]],d[4]):makeTooth(MAT[d[3]],d[4]);o.position.set(d[0],d[1],d[2]);o.userData={by:d[1],s:.35+((i*37)%10)/24,r:i*1.3,tx:((i%3)-1)*.25};bg.add(o);bgT.push(o)});
+  const rings=[];
+  [[0xffd75e,-5,2,-8,3.2],[0xffffff,6,-2,-9,4.2],[0xd4af37,0,-3,-16,6.5],[0xffd75e,10,6,-13,2.4]].forEach((d,i)=>{
+    const r=new THREE.Mesh(new THREE.TorusGeometry(d[4],.035,10,120),new THREE.MeshBasicMaterial({color:d[0],transparent:true,opacity:.45}));
+    r.position.set(d[1],d[2],d[3]);r.rotation.set(1+i*.4,i*.7,0);r.userData={sp:.12+i*.05};bg.add(r);rings.push(r)});
+  function starTex(){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');const g=x.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.25,'rgba(255,240,180,.6)');g.addColorStop(1,'rgba(255,215,0,0)');x.fillStyle=g;x.fillRect(0,0,64,64);x.strokeStyle='rgba(255,245,200,.9)';x.lineWidth=2;x.beginPath();x.moveTo(32,2);x.lineTo(32,62);x.moveTo(2,32);x.lineTo(62,32);x.stroke();return new THREE.CanvasTexture(c)}
+  const tex=starTex();
+  function sparks(n,size,sp){const geo=new THREE.BufferGeometry(),pos=new Float32Array(n*3),col=new Float32Array(n*3);const pal=[0xffffff,0xffd75e,0xd4af37,0xfff2b0].map(c=>new THREE.Color(c));
+    for(let i=0;i<n;i++){pos[i*3]=(Math.random()-.5)*sp[0];pos[i*3+1]=(Math.random()-.5)*sp[1];pos[i*3+2]=(Math.random()-.5)*sp[2]-10;const c=pal[(Math.random()*pal.length)|0];col[i*3]=c.r;col[i*3+1]=c.g;col[i*3+2]=c.b}
+    geo.setAttribute('position',new THREE.BufferAttribute(pos,3));geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+    const p=new THREE.Points(geo,new THREE.PointsMaterial({size:size,map:tex,vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:.9}));bg.add(p);return p}
+  const sp1=sparks(small?140:320,.55,[46,30,26]),sp2=sparks(small?30:80,1.3,[40,26,20]);
+
+  let W=innerWidth,H=innerHeight,halfH=Math.tan(FOV*Math.PI/360)*CAMZ,halfW=halfH;
+  function resize(){W=innerWidth;H=innerHeight;renderer.setSize(W,H,false);camera.aspect=W/H;camera.updateProjectionMatrix();halfW=halfH*(W/H);const k=Math.min(1,(W/H)*.62+.05);bgT.forEach((t,i)=>{t.position.x=defs[i][0]*k})}
+  resize();addEventListener('resize',resize);
+  let mx=0,my=0,pulse=0,sY=0;
+  addEventListener('pointermove',e=>{mx=e.clientX/W*2-1;my=e.clientY/H*2-1},{passive:true});
+  addEventListener('scroll',()=>{sY=scrollY},{passive:true});
+  addEventListener('naibi:route',()=>{pulse=1});
+  function place(obj,sl){
+    const el=document.querySelector(sl);
+    if(!el||!el.getClientRects().length){obj.visible=false;return}
+    const r=el.getBoundingClientRect();
+    if(r.bottom<-80||r.top>H+80){obj.visible=false;return}
+    const cx=(r.left+r.width/2)/W*2-1,cy=-((r.top+r.height/2)/H*2-1);
+    obj.position.set(cx*halfW,cy*halfH,0);
+    obj.scale.setScalar(Math.min(r.width,r.height)/H*2*halfH/obj.userData.base);
+    obj.visible=true;
+  }
+  const clock=new THREE.Clock();let last=0;
+  function frame(){
+    const t=clock.getElapsedTime(),dt=Math.min(.05,t-last);last=t;
+    place(heroCrown,'#aHero');place(featCrown,'#aFeat');place(ctaTooth,'#aCta');
+    heroCrown.rotation.y=t*.7+mx*.4;heroCrown.rotation.x=.25+Math.sin(t*.6)*.15+my*.15;heroCrown.position.y+=Math.sin(t*1.1)*.12;
+    halo.rotation.z+=dt*.6;halo2.rotation.z-=dt*.4;
+    featCrown.rotation.y=-t*.8;featCrown.rotation.x=.3+Math.sin(t*.7)*.12;featCrown.position.y+=Math.sin(t*1.2)*.1;
+    ctaTooth.rotation.y=t*.6+mx*.3;ctaTooth.rotation.x=Math.sin(t*.7)*.15;ctaTooth.position.y+=Math.sin(t*1.2)*.1;
+    bgT.forEach((m,i)=>{m.rotation.y=t*.45*m.userData.s*2+m.userData.r;m.rotation.x=Math.sin(t*.5+i)*.3+m.userData.tx;m.position.y=m.userData.by+Math.sin(t*.8+i*1.7)*.55});
+    rings.forEach(r=>{r.rotation.z+=r.userData.sp*dt*2;r.rotation.x+=r.userData.sp*dt;r.scale.setScalar(1+pulse*.35)});
+    sp1.rotation.y=t*.02;sp1.rotation.z=t*.01;sp2.rotation.y=-t*.03;
+    goldL.position.set(Math.cos(t*.6)*10,Math.sin(t*.4)*6,6);blueL.position.set(-Math.cos(t*.5)*10,-Math.sin(t*.7)*6,7);
+    pulse=Math.max(0,pulse-dt*1.4);
+    bg.rotation.y=sY*.0004+mx*.05+Math.sin(t*.1)*.06;bg.position.y=sY*.0016;bg.position.x=mx*.5;
+    renderer.render(scene,camera);
+  }
+  if(reduceMotion){frame();['resize','scroll','naibi:render'].forEach(ev=>addEventListener(ev,frame));return}
+  let running=true;
+  document.addEventListener('visibilitychange',()=>{running=!document.hidden;if(running){clock.getDelta();loop()}});
+  function loop(){if(!running)return;frame();requestAnimationFrame(loop)}
+  loop();
+})();
+})();
+</script>
+<noscript><p style="color:#fff;padding:20px">NA'IBI Dental Clinic, Kano. Gwarzo road, Janbulo, opposite Haman superstores. Open daily till 9pm. Call 0810 697 7321.</p></noscript></body></html>
