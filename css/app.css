@@ -1,18 +1,18 @@
 /* NA'IBI booking + staff pages. Brand: white and light blue (matches the clinic logo). */
 :root{
-  --bg:#F5FAFE; --surface:#FFFFFF; --surface-2:#EAF4FB; --ink:#0F2A3D; --muted:#50697F; --line:#D5E5F1;
-  --brand:#1A78B3; --brand-ink:#FFFFFF; --brand-soft:#E1F1FB; --brand-deep:#125680; --sky:#7CC4EE;
+  --bg:#F7FAFF; --surface:#FFFFFF; --surface-2:#EAF4FD; --ink:#12195A; --muted:#58698F; --line:#D3E4F5;
+  --brand:#1260C0; --brand-ink:#FFFFFF; --brand-soft:#E3F0FD; --brand-deep:#0E4FA0; --sky:#30A0F0;
   --warn:#8F5500; --warn-soft:#FFF0D1; --ok:#0D7A3C; --ok-soft:#DDF5E7; --bad:#B3261E; --bad-soft:#FCE5E3;
-  --shadow:0 12px 32px -18px rgba(18,86,128,.38);
-  --display:"Cormorant Garamond",Georgia,serif; --body:"Jost","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+  --shadow:0 12px 32px -18px rgba(18,60,140,.38);
+  --display:"Montserrat","Segoe UI",system-ui,-apple-system,Roboto,sans-serif; --serif:"Playfair Display",Georgia,serif; --body:"Nunito Sans","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.55;
-  background-image:radial-gradient(900px 480px at 100% -10%,rgba(124,196,238,.28),transparent 62%),radial-gradient(700px 420px at -10% 0%,rgba(225,241,251,.9),transparent 60%);
+  background-image:radial-gradient(900px 480px at 100% -10%,rgba(48,160,240,.2),transparent 62%),radial-gradient(700px 420px at -10% 0%,rgba(227,240,253,.9),transparent 60%);
   background-repeat:no-repeat;min-height:100vh}
-h1,h2,h3,h4{font-family:var(--display);font-weight:700;line-height:1.1;margin:0;text-wrap:balance;color:var(--ink)}
-h1{font-size:clamp(2.1rem,6vw,3.3rem)} h2{font-size:clamp(1.55rem,3.6vw,2.1rem)} h3{font-size:1.3rem}
+h1,h2,h3,h4{font-family:var(--display);font-weight:800;letter-spacing:-.015em;line-height:1.15;margin:0;text-wrap:balance;color:var(--ink)}
+h1{font-size:clamp(1.8rem,5vw,2.7rem)} h2{font-size:clamp(1.4rem,3.2vw,1.85rem)} h3{font-size:1.12rem}
 p{margin:0}
 button{font:inherit;color:inherit}
 a{color:var(--brand-deep)}
@@ -23,9 +23,10 @@ a{color:var(--brand-deep)}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
-.logo{width:42px;height:42px;border-radius:50%;background:#fff;border:2px solid var(--sky);display:grid;place-items:center;color:var(--brand);box-shadow:0 6px 18px -8px rgba(26,120,179,.6)}
-.brand b{display:block;font-family:var(--display);font-size:1.45rem;letter-spacing:.04em;line-height:1;color:var(--brand-deep)}
-.brand small{display:block;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.brand img{display:block;height:46px;width:auto}
+.brand .bt{display:grid;gap:2px;line-height:1}
+.brand .bt b{font-family:var(--display);font-weight:800;font-size:1.02rem;letter-spacing:.01em;color:var(--ink)}
+.brand .bt small{font-family:var(--serif);font-weight:600;font-size:.95rem;color:var(--ink);text-align:center}
 .nav{display:flex;gap:2px;overflow-x:auto;max-width:100%}
 .nav a{padding:8px 13px;border-radius:99px;font-weight:500;font-size:.95rem;color:var(--muted);text-decoration:none;white-space:nowrap}
 .nav a:hover{background:var(--brand-soft);color:var(--brand-deep)}
