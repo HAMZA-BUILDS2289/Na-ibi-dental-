@@ -36,7 +36,7 @@
     var h = '<div class="hero"><h1>Book an appointment</h1><p>Choose a service and a time that is really free. No account or password needed.</p></div>' + tabs();
     h += '<div class="box"><h3><span class="stepno">1</span>Choose a service</h3><div style="display:grid;gap:8px;margin-top:12px">' +
       S.info.services.map(function (s) {
-        return '<button class="opt' + (S.svc === s.id ? ' on' : '') + '" data-a="svc" data-id="' + esc(s.id) + '"><span><b>' + esc(s.name) + '</b><span class="muted small">about ' + s.duration_min + ' min</span></span></button>';
+        return '<button class="opt' + (S.svc === s.id ? ' on' : '') + '" data-a="svc" data-id="' + esc(s.id) + '"><span><b>' + esc(s.name) + '</b><span class="muted small">about ' + s.duration_min + ' min</span></span>' + (s.price_ngn == null ? '' : '<span class="optpr">' + (s.price_from ? 'From ' : '') + '\u20A6' + Number(s.price_ngn).toLocaleString('en-NG') + '</span>') + '</button>';
       }).join('') + '</div></div>';
     if (S.svc) {
       h += '<div class="box"><h3><span class="stepno">2</span>Pick a date and time</h3>';

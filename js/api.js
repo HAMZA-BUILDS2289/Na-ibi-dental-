@@ -22,6 +22,8 @@
     bad_name: 'Please enter your full name.',
     bad_phone: 'Please enter a valid phone number.',
     bad_service: 'That service is not available.',
+    bad_price: 'The price must be a whole number of naira, or empty.',
+    service_in_use: 'This service already has bookings, so it cannot be deleted. Switch it off instead and it will disappear from the website.',
     bad_status: 'That status is not valid.',
     not_allowed: 'Your role does not allow this action.',
     not_found: 'That record was not found.',

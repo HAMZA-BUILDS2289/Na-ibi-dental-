@@ -15,7 +15,7 @@
     pat: { q: '', res: null, who: null, busy: false },
     msgF: 'queued', staffSel: null, roster: null, ns: { name: '', email: '', role: 'dentist', title: '', phone: '', password: '' },
     cred: null, leave: { from: '', to: '', reason: '' }, closed: { day: '', reason: '' },
-    sd: null, svcD: null, newSvc: { name: '', duration_min: 30, needs_tech: false }, pw: { open: false, v: '' },
+    sd: null, svcD: null, newSvc: { name: '', duration_min: 30, needs_tech: false, active: true, sort: 100, price_ngn: '', price_from: false, short: '', details: '' }, pw: { open: false, v: '' },
     login: { email: '', password: '' }
   };
 
@@ -93,7 +93,10 @@
       slot_step: String(c.slot_step), cutoff_min: c.cutoff_min, max_days: c.max_days, max_open_per_phone: c.max_open_per_phone,
       auto_confirm: c.auto_confirm, channel: c.channel, open_days: c.open_days.slice() };
   }
-  function svcDrafts() { var o = {}; S.D.services.forEach(function (s) { o[s.id] = { name: s.name, duration_min: s.duration_min, needs_tech: s.needs_tech, active: s.active }; }); return o; }
+  function svcDraft(s) { return { name: s.name, duration_min: s.duration_min, needs_tech: s.needs_tech, active: s.active, sort: s.sort, price_ngn: s.price_ngn == null ? '' : String(s.price_ngn), price_from: !!s.price_from, short: s.short || '', details: s.details || '' }; }
+  function svcDrafts() { var o = {}; S.D.services.forEach(function (s) { o[s.id] = svcDraft(s); }); return o; }
+  function svcBlank() { return { name: '', duration_min: 30, needs_tech: false, active: true, sort: 100, price_ngn: '', price_from: false, short: '', details: '' }; }
+  function svcPayload(x, id) { var p = { name: x.name.trim(), duration_min: Number(x.duration_min), needs_tech: !!x.needs_tech, active: !!x.active, sort: Number(x.sort) || 100, price_ngn: String(x.price_ngn).replace(/[^0-9]/g, ''), price_from: !!x.price_from, short: x.short, details: x.details }; if (id) p.id = id; return p; }
   function rosterDraft(id) {
     var rows = {};
     ORDER.forEach(function (d) {
@@ -130,7 +133,7 @@
   }
 
   function tabsFor(role) {
-    if (role === 'admin') return [['today', 'Today'], ['calendar', 'Calendar'], ['appointments', 'Appointments'], ['book', 'Book for patient'], ['patients', 'Patients'], ['messages', 'Messages'], ['staff', 'Staff and rosters'], ['settings', 'Settings']];
+    if (role === 'admin') return [['today', 'Today'], ['calendar', 'Calendar'], ['appointments', 'Appointments'], ['book', 'Book for patient'], ['patients', 'Patients'], ['messages', 'Messages'], ['staff', 'Staff and rosters'], ['services', 'Services and prices'], ['settings', 'Settings']];
     if (role === 'receptionist') return [['today', 'Today'], ['calendar', 'Calendar'], ['appointments', 'Appointments'], ['book', 'Book for patient'], ['patients', 'Patients'], ['messages', 'Messages']];
     if (role === 'dentist') return [['mine', 'My schedule'], ['calendar', 'Calendar'], ['patients', 'Patients']];
     return [['mine', 'My schedule'], ['calendar', 'Calendar']];
@@ -140,7 +143,7 @@
     if (!S.tab || !tabs.some(function (t) { return t[0] === S.tab; })) S.tab = tabs[0][0];
     var pend = isMgr() ? S.D.appointments.filter(function (a) { return a.status === 'pending' && a.day >= today(); }).length : 0;
     var queued = isMgr() ? S.D.messages.filter(function (m) { return m.status === 'queued'; }).length : 0;
-    var body = { today: vToday, mine: vMine, calendar: vCalendar, appointments: vAppointments, book: vBook, patients: vPatients, messages: vMessages, staff: vStaff, settings: vSettings }[S.tab]();
+    var body = { today: vToday, mine: vMine, calendar: vCalendar, appointments: vAppointments, book: vBook, patients: vPatients, messages: vMessages, staff: vStaff, services: vServices, settings: vSettings }[S.tab]();
     var h = '<div class="wrap" style="padding-block:18px 10px"><div class="who"><span class="avatar">' + esc(U.initials(me.name)) + '</span><div><b>' + esc(me.name) + '</b><br><span class="pill role">' + esc(me.role) + '</span> <span class="muted small">' + esc(me.email || '') + '</span></div>' +
       '<span class="row" style="margin-left:auto">';
     if (me.role === 'admin') {
@@ -393,6 +396,37 @@
     return credCard() + '<div class="cols two"><div>' + left + add + '</div><div>' + ed + '</div></div>';
   }
 
+  /* ---------- tab: services and prices (admin) ---------- */
+  function naira(n) { return '₦' + Number(n).toLocaleString('en-NG'); }
+  function svcFields(base, x, idp) {
+    var id = function (k) { return idp + '-' + k; };
+    return '<div class="cols" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:8px">' +
+      '<div class="field"><label for="' + id('n') + '">Service name</label><input id="' + id('n') + '" data-in="' + base + '.name" value="' + esc(x.name) + '" maxlength="80"></div>' +
+      '<div class="field"><label for="' + id('p') + '">Price in naira</label><input id="' + id('p') + '" inputmode="numeric" data-in="' + base + '.price_ngn" value="' + esc(x.price_ngn) + '" placeholder="e.g. 25000"></div>' +
+      '<div class="field"><label for="' + id('d') + '">Time needed (minutes)</label><input id="' + id('d') + '" type="number" min="15" max="480" step="15" data-in="' + base + '.duration_min" value="' + esc(x.duration_min) + '"></div>' +
+      '<div class="field"><label for="' + id('o') + '">Order on the website</label><input id="' + id('o') + '" type="number" min="1" max="999" data-in="' + base + '.sort" value="' + esc(x.sort) + '"></div></div>' +
+      '<div class="row" style="margin:6px 0 4px"><label class="check"><input type="checkbox" data-in="' + base + '.price_from" data-c="chk"' + (x.price_from ? ' checked' : '') + '> Show as “From” price</label>' +
+      '<label class="check"><input type="checkbox" data-in="' + base + '.needs_tech" data-c="chk"' + (x.needs_tech ? ' checked' : '') + '> Needs a technician</label>' +
+      '<label class="check"><input type="checkbox" data-in="' + base + '.active" data-c="chk"' + (x.active ? ' checked' : '') + '> Show on website and booking</label></div>' +
+      '<div class="field"><label for="' + id('s') + '">Short line (shown in lists)</label><input id="' + id('s') + '" data-in="' + base + '.short" value="' + esc(x.short) + '" maxlength="200" placeholder="Leave empty to use the standard text"></div>' +
+      '<div class="field"><label for="' + id('t') + '">About this treatment (shown on its page)</label><textarea id="' + id('t') + '" rows="3" data-in="' + base + '.details" maxlength="2000" placeholder="Leave empty to use the standard text">' + esc(x.details) + '</textarea></div>';
+  }
+  function vServices() {
+    var n = S.newSvc;
+    var h = '<div class="box"><b>Add a new service</b><p class="muted small" style="margin:2px 0 4px">It appears on the website and the booking page straight away, and every active dentist offers it until you change that in Staff and rosters. Leave the price empty and patients see “Ask for price”.</p>' +
+      svcFields('newSvc', n, 'ns') + '<div class="actions" style="margin-top:10px"><button class="btn primary small" data-a="svc-add">Add service</button></div></div>';
+    h += '<p class="muted small" style="margin:14px 2px 6px">' + S.D.services.length + ' service' + (S.D.services.length === 1 ? '' : 's') + '. Change anything, then tap <b>Save</b> on that service.</p>';
+    S.D.services.forEach(function (s) {
+      var x = S.svcD[s.id] || svcDraft(s), arm = S.arm === 'sdel-' + s.id;
+      h += '<div class="box"><div class="row" style="justify-content:space-between"><b>' + esc(s.name) + '</b><span>' +
+        (s.active ? '<span class="pill ok">on website</span>' : '<span class="pill off">hidden</span>') + ' <span class="pill role">' + (s.price_ngn == null ? 'ask for price' : (s.price_from ? 'from ' : '') + naira(s.price_ngn)) + '</span></span></div>' +
+        svcFields('svcD.' + s.id, x, 'sv-' + s.id) +
+        '<div class="actions" style="margin-top:10px"><button class="btn primary small" data-a="svc-row-save" data-id="' + esc(s.id) + '">Save</button>' +
+        '<button class="btn small danger' + (arm ? ' armed' : '') + '" data-a="svc-del" data-id="' + esc(s.id) + '">' + (arm ? 'Tap again to delete for good' : 'Delete') + '</button></div></div>';
+    });
+    return h;
+  }
+
   /* ---------- tab: settings (admin) ---------- */
   function vSettings() {
     var d = S.sd, c = S.D.settings;
@@ -410,12 +444,7 @@
       '<div class="field"><span class="lbl">Open days</span><div class="row">' + [1, 2, 3, 4, 5, 6, 0].map(function (x) { return '<label class="check"><input type="checkbox" data-c="od-toggle" data-d="' + x + '"' + (d.open_days.indexOf(x) > -1 ? ' checked' : '') + '> ' + DOWN[x] + '</label>'; }).join('') + '</div></div>' +
       '<label class="check"><input type="checkbox" data-in="sd.auto_confirm" data-c="chk"' + (d.auto_confirm ? ' checked' : '') + '> Confirm online bookings automatically (otherwise reception confirms each one)</label>' +
       '<div class="actions" style="margin-top:12px"><button class="btn primary small" data-a="settings-save">Save settings</button></div></div>';
-    h += '<div class="box"><b>Services</b><p class="muted small" style="margin:2px 0 8px">Length decides how much of the day a visit uses. “Technician” means a dental technician must also be free.</p><div class="tbl"><table><tr><th>Name</th><th>Minutes</th><th>Technician</th><th>Offered</th><th></th></tr>' +
-      S.D.services.map(function (s) {
-        var x = S.svcD[s.id] || { name: s.name, duration_min: s.duration_min, needs_tech: s.needs_tech, active: s.active };
-        return '<tr><td><input type="text" data-in="svcD.' + esc(s.id) + '.name" value="' + esc(x.name) + '" style="min-width:200px" aria-label="Name"></td><td><input type="number" min="15" step="15" data-in="svcD.' + esc(s.id) + '.duration_min" value="' + esc(x.duration_min) + '" style="width:84px" aria-label="Minutes"></td>' +
-          '<td><input type="checkbox" data-in="svcD.' + esc(s.id) + '.needs_tech" data-c="chk"' + (x.needs_tech ? ' checked' : '') + ' aria-label="Needs technician"></td><td><input type="checkbox" data-in="svcD.' + esc(s.id) + '.active" data-c="chk"' + (x.active ? ' checked' : '') + ' aria-label="Offered"></td><td><button class="btn small" data-a="svc-row-save" data-id="' + esc(s.id) + '">Save</button></td></tr>';
-      }).join('') + '</table></div><div class="row" style="margin-top:12px"><input data-in="newSvc.name" value="' + esc(S.newSvc.name) + '" placeholder="New service name" style="max-width:240px" aria-label="New service name"><input type="number" min="15" step="15" data-in="newSvc.duration_min" value="' + esc(S.newSvc.duration_min) + '" style="width:90px" aria-label="Minutes"><label class="check"><input type="checkbox" data-in="newSvc.needs_tech" data-c="chk"' + (S.newSvc.needs_tech ? ' checked' : '') + '> Technician</label><button class="btn small primary" data-a="svc-add">Add service</button></div></div>';
+    h += '<div class="box"><b>Services and prices</b><p class="muted small" style="margin:2px 0 8px">Treatments, prices and descriptions now have their own tab, <b>Services and prices</b>. Whatever you set there shows on the website and the booking page.</p></div>';
     h += '<div class="box"><b>Closed dates (holidays)</b>' + (S.D.closed.map(function (x) { return '<div class="row" style="margin:6px 0"><span class="pill off">' + U.fmtDL(x.day) + (x.reason ? ' · ' + esc(x.reason) : '') + '</span><button class="btn small" data-a="closed-del" data-day="' + x.day + '">Remove</button></div>'; }).join('') || '<p class="muted small" style="margin-top:6px">No closed dates.</p>') +
       '<div class="row" style="margin-top:10px"><input type="date" data-in="closed.day" value="' + esc(S.closed.day) + '" style="width:auto" aria-label="Closed date"><input data-in="closed.reason" value="' + esc(S.closed.reason) + '" placeholder="Reason (optional)" style="width:auto" aria-label="Reason"><button class="btn small primary" data-a="closed-add">Close this date</button></div></div>';
     h += '<div class="box"><b>Recent activity</b><div style="margin-top:8px">' + (S.D.audit.length ? S.D.audit.slice(0, 40).map(function (g) { return '<div class="msg"><small>' + new Date(g.at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + ' · ' + esc(g.actor_name || 'system') + ' · ' + esc(g.action) + '</small>' + esc(g.detail || '') + '</div>'; }).join('') : '<p class="muted small">Nothing yet.</p>') + '</div></div>';
@@ -472,7 +501,7 @@
 
   var A = {
     logout: function () { NB.logout().then(function () { S.state = 'login'; S.D = null; S.tab = null; S.sd = null; S.svcD = null; S.cred = null; render(); }); },
-    tab: function (t) { S.tab = t.dataset.t; S.arm = null; S.rs = null; S.notes = null; if (S.tab === 'settings') { S.sd = settingsDraft(); S.svcD = svcDrafts(); } if (S.tab === 'staff') selectStaff(S.staffSel); if (S.tab === 'book') S.book = { svc: '', date: '', slots: null, loading: false, time: null, name: '', phone: '', complaint: '', dentist: '', err: '', done: null, busy: false }; render(); },
+    tab: function (t) { S.tab = t.dataset.t; S.arm = null; S.rs = null; S.notes = null; if (S.tab === 'settings') { S.sd = settingsDraft(); } if (S.tab === 'services') { S.svcD = svcDrafts(); } if (S.tab === 'staff') selectStaff(S.staffSel); if (S.tab === 'book') S.book = { svc: '', date: '', slots: null, loading: false, time: null, name: '', phone: '', complaint: '', dentist: '', err: '', done: null, busy: false }; render(); },
     pwtoggle: function () { S.pw.open = !S.pw.open; S.pw.v = ''; render(); },
     pwsave: function () {
       if (S.pw.v.length < 8) return toast('Use at least 8 characters.');
@@ -556,8 +585,9 @@
       var o = U.tm(d.open), c = U.tm(d.close); if (!(c > o)) return toast('Closing time must be after opening time.');
       run(function () { return rpc('admin_save_settings', { p: { clinic_name: d.clinic_name, phone: d.phone, whatsapp: d.whatsapp, open_min: o, close_min: c, slot_step: Number(d.slot_step), cutoff_min: Number(d.cutoff_min), max_days: Number(d.max_days), max_open_per_phone: Number(d.max_open_per_phone), auto_confirm: !!d.auto_confirm, channel: d.channel, open_days: d.open_days } }); }, 'Settings saved.', function () { S.sd = settingsDraft(); });
     },
-    'svc-row-save': function (t) { var id = t.dataset.id, x = S.svcD[id]; if (!x.name.trim()) return toast('Give the service a name.'); run(function () { return rpc('admin_save_service', { p: { id: id, name: x.name, duration_min: Number(x.duration_min), needs_tech: !!x.needs_tech, active: !!x.active } }); }, 'Service saved.', function () { S.svcD = svcDrafts(); }); },
-    'svc-add': function () { var x = S.newSvc; if (x.name.trim().length < 2) return toast('Enter the service name.'); run(function () { return rpc('admin_save_service', { p: { name: x.name, duration_min: Number(x.duration_min), needs_tech: !!x.needs_tech } }); }, 'Service added and offered by every active dentist.', function () { S.newSvc = { name: '', duration_min: 30, needs_tech: false }; S.svcD = svcDrafts(); }); },
+    'svc-row-save': function (t) { var id = t.dataset.id, x = S.svcD[id]; if (x.name.trim().length < 2) return toast('Give the service a name.'); run(function () { return rpc('admin_save_service', { p: svcPayload(x, id) }); }, 'Service saved. The website shows it now.', function () { S.svcD = svcDrafts(); }); },
+    'svc-add': function () { var x = S.newSvc; if (x.name.trim().length < 2) return toast('Enter the service name.'); run(function () { return rpc('admin_save_service', { p: svcPayload(x) }); }, 'Service added. It shows on the website and the booking page now.', function () { S.newSvc = svcBlank(); S.svcD = svcDrafts(); }); },
+    'svc-del': function (t) { var id = t.dataset.id; if (S.arm !== 'sdel-' + id) { S.arm = 'sdel-' + id; return render(); } S.arm = null; run(function () { return rpc('admin_delete_service', { p_id: id }); }, 'Service deleted.', function () { S.svcD = svcDrafts(); }); },
     'closed-add': function () { var c = S.closed; if (!c.day) return toast('Pick a date.'); run(function () { return rpc('admin_add_closed', { p_day: c.day, p_reason: c.reason || null }); }, function (n) { return n ? 'Date closed. ' + n + ' booked visit' + (n > 1 ? 's' : '') + ' now need rescheduling.' : 'Date closed.'; }, function () { S.closed = { day: '', reason: '' }; }); },
     'closed-del': function (t) { run(function () { return rpc('admin_del_closed', { p_day: t.dataset.day }); }, 'Date reopened.'); }
   };

@@ -576,6 +576,17 @@ details{background:#fff; box-shadow:0 6px 20px rgba(18,60,140,.06)}
 .fab.call{background:var(--blue); color:#fff; border-color:var(--blue)}
 @media (max-width:700px){.mbar{background:rgba(255,255,255,.97); border-top:1px solid var(--line); box-shadow:0 -8px 30px rgba(18,60,140,.12)}.brand img{height:54px}}
 .toast{background:var(--ink); color:#fff}
+/* prices */
+.row .ds .pr{display:block; margin-top:4px; color:var(--blue); font-weight:800; font-size:.95rem}
+.pricebadge{background:var(--blue)!important; color:#fff!important; border-color:var(--blue)!important; font-weight:700}
+.pricebadge .i{width:1em; height:1em}
+.plist{display:grid; margin-top:10px}
+.prow{display:flex; justify-content:space-between; align-items:center; gap:14px; padding:14px 4px; border-top:1px solid var(--line); text-decoration:none; color:var(--head); font-weight:600}
+.prow:first-child{border-top:0}
+.prow small{display:block; color:var(--muted); font-weight:400; font-size:.85rem}
+.prow b{color:var(--blue); font-weight:800; white-space:nowrap; text-align:right}
+.prow:hover{background:var(--soft)}
+
 
 /* fixes after review */
 .sec.dk .btn-line,.banner .btn-line{background:transparent}
@@ -798,6 +809,7 @@ html[data-theme="dark"] .anchor.art::before{box-shadow:0 0 0 12px rgba(255,255,2
   <div class="lb-bar"><button class="btn btn-line sm" id="lbPrev" type="button"><svg class="i"><use href="#i-back"/></svg>Prev</button><span id="lbCap" style="max-width:420px"></span><button class="btn btn-line sm" id="lbNext" type="button">Next<svg class="i"><use href="#i-arrow"/></svg></button><button class="btn btn-gold sm" id="lbClose" type="button"><svg class="i"><use href="#i-close"/></svg>Close</button></div>
 </div>
 
+<script src="js/config.js"></script>
 <script>
 (function(){
 var DEV={name:"hamza-builds"};
@@ -815,7 +827,7 @@ const waBtn=(label,cls)=>'<a class="btn btn-gold '+(cls||'')+'" href="'+WA_GEN+'
 const callBtn=(label,cls)=>'<a class="btn '+(cls||'btn-line')+'" href="'+TEL+'">'+ic('phone')+(label||'Call now')+'</a>';
 
 /* ---------- DATA ---------- */
-const SERVICES=[
+const BUILTIN=[
  {slug:'dental-crown',name:'Dental crown',icon:'crown',short:'A durable cap that restores a damaged tooth.',img:'tooth',alt:'Model tooth beside dental instruments',
   over:'A dental crown is a custom-made cap that covers a tooth that is cracked, heavily filled, worn down or weakened after a root canal. It restores the shape, strength and look of the tooth so you can chew and smile comfortably again.',
   inc:['Examination and a clear explanation of your options','Careful shaping of the tooth, with your comfort in mind','Impressions taken for a precise fit','A crown fitted and checked for a comfortable bite'],
@@ -867,7 +879,34 @@ const SERVICES=[
   good:['Persistent toothache with no visible cause','Planning for implants, braces or extractions','Checking for infection'],
   tip:'Tell the team if you are or might be pregnant before any X-ray.'}
 ];
-const BOOKSVC=SERVICES.map(s=>s.name).concat(['Check-up and consultation','Not sure, please advise']);
+/* Services come from the clinic's database (the admin edits them in the staff portal). BUILTIN is only the rich text and fallback. */
+const BMAP={crown:'dental-crown',scaling:'scaling-polishing',whitening:'teeth-whitening',braces:'braces',implant:'dental-implants',rct:'root-canal',filling:'fillings',extraction:'extraction',denture:'removable-dentures',xray:'dental-xray'};
+let SERVICES=[],BOOKSVC=[];
+const money=n=>'₦'+Number(n).toLocaleString('en-NG');
+const priceTxt=s=>s.price==null?'Ask for price':(s.from?'From ':'')+money(s.price);
+function applyServices(rows){
+  if(Array.isArray(rows)){
+    SERVICES=rows.map(r=>{const bs=BMAP[r.id]?BUILTIN.find(x=>x.slug===BMAP[r.id]):null,b=bs||{};
+      return{id:r.id,slug:bs?bs.slug:r.id,name:r.name,icon:r.icon||b.icon||'tooth',short:r.short||b.short||'Ask us about this treatment.',
+        over:r.details||b.over||(r.name+' at NA’IBI Dental Clinic. Message us on WhatsApp or book online, and we will explain the treatment and the price before we start.'),
+        inc:b.inc||[],good:b.good||[],tip:b.tip||'',img:b.img||'stock',alt:b.alt||r.name,price:r.price_ngn==null?null:r.price_ngn,from:!!r.price_from,dur:r.duration_min}});
+    BOOKSVC=SERVICES.map(s=>s.name).concat(['Not sure, please advise']);
+  }else{
+    SERVICES=BUILTIN.map(b=>Object.assign({},b,{id:b.slug,price:null,from:false,dur:null}));
+    BOOKSVC=SERVICES.map(s=>s.name).concat(['Check-up and consultation','Not sure, please advise']);
+  }
+  const f=$('#ftSvc');if(f)f.innerHTML=SERVICES.slice(0,6).map(s=>'<li><button class="lk" data-go="service/'+s.slug+'">'+s.name+'</button></li>').join('');
+}
+applyServices(null);
+const CFG=window.NAIBI||{},SVC_KEY='naibi-services-v1';
+function loadServices(){
+  return new Promise(res=>{
+    const k=CFG.SUPABASE_ANON_KEY||'',u=(CFG.SUPABASE_URL||'').replace(/\/$/,'');
+    if(!u||!k||/PASTE/.test(u+k))return res(null);
+    const h={apikey:k,'Content-Type':'application/json'};if(/^eyJ/.test(k))h.Authorization='Bearer '+k;
+    fetch(u+'/rest/v1/rpc/public_info',{method:'POST',headers:h,body:'{}'}).then(r=>r.ok?r.json():null).then(j=>res(j&&Array.isArray(j.services)?j.services:null),()=>res(null));
+  });
+}
 const WHY=[
  {i:'drop',t:'Painless procedure',d:'Patients choose NA’IBI because treatment is comfortable. Tell us if you feel anything and we adjust.',tag:'Our promise',cnt:''},
  {i:'sparkle',t:'Clean environment',d:'A bright, tidy clinic with round mirrors, white basins and careful hygiene.',cnt:''},
@@ -931,7 +970,7 @@ const SAYS=[
 const sel=new Set();
 let revIdx=0,revFilter='all';
 function idx(n){return String(n).padStart(2,'0')}
-function svcRow(s,i){return '<a class="row reveal" href="#service/'+s.slug+'" data-go="service/'+s.slug+'"><span class="n">'+idx(i+1)+'</span><span class="nm">'+s.name+'</span><span class="ds">'+s.short+'</span><span class="ar">'+ic('arrow')+'</span></a>'}
+function svcRow(s,i){return '<a class="row reveal" href="#service/'+s.slug+'" data-go="service/'+s.slug+'"><span class="n">'+idx(i+1)+'</span><span class="nm">'+s.name+'</span><span class="ds">'+s.short+'<b class="pr">'+priceTxt(s)+'</b></span><span class="ar">'+ic('arrow')+'</span></a>'}
 function revCard(r){const ini=r.n.replace(/[^A-Za-z ]/g,'').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase();return '<article class="card quote reveal"><div class="stars" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><q>'+r.t+'</q><div class="who"><span class="av">'+ini+'</span><div><b>'+r.n+'</b><small>Google review'+(r.w?' &middot; '+r.w:'')+'</small></div></div></article>'}
 function postCard(p){return '<a class="card hov post-card reveal" href="#post/'+p.id+'" data-go="post/'+p.id+'"><div class="ph"><img src="'+IMG[p.img]+'" alt="" loading="lazy"></div><div class="pc"><span class="tag-s">'+p.tag+' &middot; '+p.min+' min read</span><h3>'+p.t+'</h3><p>'+p.ex+'</p><span class="go">Read article'+ic('arrow')+'</span></div></a>'}
 function head(k,h,p){return '<div class="sec-head reveal"><span class="kicker">'+k+'</span><h2>'+h+'</h2>'+(p?'<p class="lead">'+p+'</p>':'')+'</div>'}
@@ -990,11 +1029,11 @@ PAGES.home=()=>
  '<div class="btn-row reveal">'+bookBtn('Book online')+waBtn('Book on WhatsApp','wa-alt')+callBtn('Call '+PHONE)+'</div></div><div class="anchor" id="aHero"></div></div>'+
  '<div class="trust reveal"><div>'+ic('users')+'<span><b>Qualified surgeons</b><small>Therapists and assistants</small></span></div><div>'+ic('drop')+'<span><b>Painless procedure</b><small>Gentle, comfortable care</small></span></div><div>'+ic('clock')+'<span><b>Closes 9 pm daily</b><small>Appointments recommended</small></span></div></div></div>'+
  '<div class="marq" aria-hidden="true"><div class="marq-track">'+[0,1,2,3].map(()=>['Clean environment','Friendly staff','Painless procedure','Safe environment','Welcoming staff','Qualified dental surgeons'].map(x=>'<span>'+x+ic('tooth')+'</span>').join('')).join('')+'</div></div></section>'+
-'<div class="sec tight"><div class="wrap"><div class="grid g4"><div class="stat reveal"><b data-count="4.9" data-dec="1">4.9</b><span>Google rating</span></div><div class="stat reveal"><b data-count="22">22</b><span>Google reviews</span></div><div class="stat reveal"><b data-count="6">6</b><span>Mentions of a safe environment</span></div><div class="stat reveal"><b data-count="10">10</b><span>Treatments offered</span></div></div></div></div>'+
+'<div class="sec tight"><div class="wrap"><div class="grid g4"><div class="stat reveal"><b data-count="4.9" data-dec="1">4.9</b><span>Google rating</span></div><div class="stat reveal"><b data-count="22">22</b><span>Google reviews</span></div><div class="stat reveal"><b data-count="6">6</b><span>Mentions of a safe environment</span></div><div class="stat reveal"><b data-count="'+SERVICES.length+'">'+SERVICES.length+'</b><span>Treatments offered</span></div></div></div></div>'+
 '<hr class="rule">'+
 '<div class="sec"><div class="wrap">'+head('Why NA’IBI is different','Six reasons patients choose us')+'<div class="bento">'+WHY.map((w,i)=>'<article class="card tile hov reveal'+(i===0?' big':'')+'">'+(w.cnt?'<span class="cnt" aria-hidden="true">'+w.cnt+'</span>':'')+'<div class="ico">'+ic(w.i)+'</div>'+(w.tag?'<span class="tag">'+w.tag+'</span>':'')+'<h3>'+w.t+'</h3><p>'+w.d+'</p>'+(w.cnt?'<span class="help">'+w.cnt+' mentions in Google reviews</span>':'')+'</article>').join('')+'</div><div class="btn-row" style="margin-top:28px">'+go('why','Read more about why patients choose us'+ic('arrow'))+'</div></div></div>'+
 '<div class="cr"><div class="sec"><div class="wrap">'+headRow('Core services','Treatments for every smile',go('services','All services'+ic('arrow')))+'<div class="index">'+SERVICES.map(svcRow).join('')+'</div></div></div></div>'+
-'<div class="sec dk"><div class="wrap"><div class="feat"><div style="display:grid;gap:20px" class="reveal"><span class="kicker">Dental crown</span><h2>A crown that restores strength and shine</h2><p class="lead">A custom-made cap protects a cracked, worn or weakened tooth, and restores how it looks and works. See our team at work in the clips beside this text.</p><ol class="steps-inline"><li>Examination and a clear plan</li><li>Careful shaping of the tooth</li><li>Impression for a precise fit</li><li>Crown fitted and checked for your bite</li></ol><div class="btn-row">'+go('service/dental-crown','Dental crown details'+ic('arrow'),'btn-gold')+waBtn('Ask about a crown')+'</div></div><div class="anchor sm art" id="aFeatArt"></div><div class="reveal">'+reel()+'</div></div></div></div>'+
+(SERVICES.some(x=>x.slug==='dental-crown')?'<div class="sec dk"><div class="wrap"><div class="feat"><div style="display:grid;gap:20px" class="reveal"><span class="kicker">Dental crown</span><h2>A crown that restores strength and shine</h2><p class="lead">A custom-made cap protects a cracked, worn or weakened tooth, and restores how it looks and works. See our team at work in the clips beside this text.</p><ol class="steps-inline"><li>Examination and a clear plan</li><li>Careful shaping of the tooth</li><li>Impression for a precise fit</li><li>Crown fitted and checked for your bite</li></ol><div class="btn-row">'+go('service/dental-crown','Dental crown details'+ic('arrow'),'btn-gold')+waBtn('Ask about a crown')+'</div></div><div class="anchor sm art" id="aFeatArt"></div><div class="reveal">'+reel()+'</div></div></div></div>':'')+
 '<div class="wh"><div class="sec"><div class="wrap">'+headRow('A tour of our clinic','Clean, bright and calm',"<div class=\"sc-nav\"><button class=\"round\" type=\"button\" id=\"stPrev\" aria-label=\"Scroll left\">"+ic('back')+"</button><button class=\"round\" type=\"button\" id=\"stNext\" aria-label=\"Scroll right\">"+ic('arrow')+"</button></div>")+'<div class="strip reveal" id="strip">'+GAL.slice(0,5).map((g,i)=>'<figure'+(g.img==='xray'?' class="land"':'')+'><button type="button" data-lb="'+i+'" aria-label="Open photo: '+g.cap+'"><img src="'+IMG[g.img]+'" alt="'+g.alt+'" loading="lazy"></button><figcaption>'+g.cap+'</figcaption></figure>').join('')+'</div><div class="btn-row" style="margin-top:20px">'+go('gallery','Open the full gallery'+ic('arrow'))+'</div></div></div></div>'+
 '<div class="sec"><div class="wrap">'+headRow('Reviews that matter','4.9 stars from 22 patients',go('reviews','All reviews'+ic('arrow')))+reviewsBlock()+'</div></div>'+
 '<div class="cr"><div class="sec"><div class="wrap split"><div style="display:grid;gap:18px" class="reveal"><span class="kicker">Our qualified team</span><h2>Care from dental surgeons, therapists and assistants</h2><p class="lead">Every treatment at NA’IBI is delivered by qualified dental surgeons, therapists and assistants, who work side by side so you always have someone to ask.</p><ul class="checks"><li>'+ic('check')+'Dental surgeons lead your diagnosis and treatment</li><li>'+ic('check')+'Therapists help keep gums and teeth clean and healthy</li><li>'+ic('check')+'Assistants look after your comfort and your questions</li></ul><div class="btn-row">'+go('team','Meet the team'+ic('arrow'),'btn-line')+'</div></div><figure class="shot par reveal" style="margin:0;aspect-ratio:4/5"><img data-par src="'+IMG.chairside+'" alt="Dentist in a white coat treating a patient"></figure></div></div></div>'+
@@ -1013,14 +1052,14 @@ PAGES.about=()=>'<div class="sec"><div class="wrap">'+crumbs([['About']])+'<div 
 PAGES.why=()=>'<div class="sec"><div class="wrap">'+crumbs([['Why NA’IBI']])+pageHead('Why NA’IBI','Why patients choose NA’IBI Dental Clinic','Every reason below comes from what our patients say on Google, and from how the clinic is run.')+'<div class="bento">'+WHY.map((w,i)=>'<article class="card tile hov reveal'+(i===0?' big':'')+'">'+(w.cnt?'<span class="cnt" aria-hidden="true">'+w.cnt+'</span>':'')+'<div class="ico">'+ic(w.i)+'</div>'+(w.tag?'<span class="tag">'+w.tag+'</span>':'')+'<h3>'+w.t+'</h3><p>'+w.d+'</p></article>').join('')+'</div></div></div>'+
 '<div class="cr"><div class="sec"><div class="wrap">'+head('In patients’ words','What our reviewers say')+'<div class="grid g3">'+REVIEWS.slice(0,3).map(revCard).join('')+'</div><div class="btn-row" style="margin-top:26px">'+go('reviews','Read all reviews'+ic('arrow'))+'</div></div></div></div>'+finalCta();
 
-PAGES.services=()=>'<div class="sec"><div class="wrap">'+crumbs([['Services']])+pageHead('Services','Complete dental care','Choose a treatment to learn more, or select everything you need on the booking page.')+'<div class="index">'+SERVICES.map(svcRow).join('')+'</div></div></div>'+
+PAGES.services=()=>'<div class="sec"><div class="wrap">'+crumbs([['Services']])+pageHead('Services','Complete dental care','Choose a treatment to learn more, or select everything you need on the booking page.')+(SERVICES.length?'<div class="index">'+SERVICES.map(svcRow).join('')+'</div>':'<div class="note">'+ic('sparkle')+'<span>Our treatment list is being updated. Please call or message us on WhatsApp and we will help.</span></div>')+'</div></div>'+
 '<div class="cr"><div class="sec"><div class="wrap">'+head('Book it all at once','Select everything you need')+bookChips('')+pickBar()+'</div></div></div>'+finalCta();
 
 PAGES.service=(slug)=>{
   const s=SERVICES.find(x=>x.slug===slug);if(!s)return null;
   const others=SERVICES.filter(x=>x.slug!==slug).slice(0,3);
-  return '<div class="sec"><div class="wrap">'+crumbs([['Services','services'],[s.name]])+'<div class="split" style="align-items:start"><div style="display:grid;gap:20px"><span class="kicker reveal">'+ic(s.icon)+' Service</span><h1 data-split>'+s.name+'</h1><p class="lead reveal">'+s.over+'</p><div class="btn-row reveal"><a class="btn btn-gold" href="'+waLink('Hello NAIBI Dental Clinic, I want to book: '+s.name)+'" target="_blank" rel="noopener">'+ic('wa','fill')+'Book '+s.name.toLowerCase()+'</a>'+callBtn('Call now')+'</div></div><figure class="shot reveal" style="margin:0"><img src="'+IMG[s.img]+'" alt="'+s.alt+'" style="aspect-ratio:4/3"></figure></div></div></div>'+
-  '<div class="cr"><div class="sec"><div class="wrap"><div class="grid g2"><div class="card reveal"><h3>What is included</h3><ul class="checks" style="margin-top:14px">'+s.inc.map(x=>'<li>'+ic('check')+x+'</li>').join('')+'</ul></div><div class="card reveal"><h3>Good for</h3><ul class="checks" style="margin-top:14px">'+s.good.map(x=>'<li>'+ic('check')+x+'</li>').join('')+'</ul></div></div><div class="note reveal" style="margin-top:22px">'+ic('sparkle')+'<span><b>Tip:</b> '+s.tip+'</span></div>'+
+  return '<div class="sec"><div class="wrap">'+crumbs([['Services','services'],[s.name]])+'<div class="split" style="align-items:start"><div style="display:grid;gap:20px"><span class="kicker reveal">'+ic(s.icon)+' Service</span><h1 data-split>'+s.name+'</h1><p class="lead reveal">'+s.over+'</p><div class="badges reveal"><span class="badge pricebadge">'+ic('tag')+priceTxt(s)+'</span>'+(s.dur?'<span class="badge">'+ic('clock')+'About '+(s.dur>=60&&s.dur%60===0?(s.dur/60)+(s.dur===60?' hour':' hours'):s.dur+' min')+'</span>':'')+'</div><div class="btn-row reveal"><a class="btn btn-gold" href="'+waLink('Hello NAIBI Dental Clinic, I want to book: '+s.name)+'" target="_blank" rel="noopener">'+ic('wa','fill')+'Book '+s.name.toLowerCase()+'</a>'+callBtn('Call now')+'</div></div><figure class="shot reveal" style="margin:0"><img src="'+IMG[s.img]+'" alt="'+s.alt+'" style="aspect-ratio:4/3"></figure></div></div></div>'+
+  '<div class="cr"><div class="sec"><div class="wrap">'+(s.inc.length||s.good.length?'<div class="grid g2">'+(s.inc.length?'<div class="card reveal"><h3>What is included</h3><ul class="checks" style="margin-top:14px">'+s.inc.map(x=>'<li>'+ic('check')+x+'</li>').join('')+'</ul></div>':'')+(s.good.length?'<div class="card reveal"><h3>Good for</h3><ul class="checks" style="margin-top:14px">'+s.good.map(x=>'<li>'+ic('check')+x+'</li>').join('')+'</ul></div>':'')+'</div>':'<div class="card reveal"><h3>How it works</h3><p>Book online or message us. We examine you first, explain the treatment and confirm the price before we start.</p></div>')+(s.tip?'<div class="note reveal" style="margin-top:22px">'+ic('sparkle')+'<span><b>Tip:</b> '+s.tip+'</span></div>':'')+
   (s.slug==='dental-crown'?'<div class="split reveal" style="margin-top:44px"><div>'+reel()+'</div><div style="display:grid;gap:14px"><h3>See our work</h3><p class="muted">These short clips show our team at work. Photos and videos of your own crown case can be added by the clinic at any time.</p></div></div>':'')+
   '</div></div></div>'+
   '<div class="sec tight"><div class="wrap">'+head('More services','You may also need')+'<div class="index">'+others.map((o,i)=>svcRow(o,SERVICES.indexOf(o))).join('')+'</div><div class="btn-row" style="margin-top:22px">'+go('services','All services'+ic('arrow'))+'</div></div></div>'+finalCta('Book '+s.name.toLowerCase()+' today')};
@@ -1034,7 +1073,8 @@ PAGES.reviews=()=>'<div class="sec"><div class="wrap">'+crumbs([['Reviews']])+pa
 PAGES.team=()=>'<div class="sec"><div class="wrap">'+crumbs([['Our team']])+pageHead('Our qualified team','Dental surgeons, therapists and assistants','Services at NA’IBI Dental Clinic are delivered by a qualified team that works together on your care.')+'<div class="grid g3">'+[['users','Dental surgeons','Examine, diagnose and carry out your treatment, from fillings and extractions to crowns and implants.','01'],['sparkle','Therapists','Keep your gums and teeth clean and healthy with careful scaling, polishing and prevention advice.','02'],['heart','Assistants','Look after your comfort, prepare the room and answer your questions at every step.','03']].map(r=>'<article class="card hov role reveal"><span class="big" aria-hidden="true">'+r[3]+'</span><div class="ico">'+ic(r[0])+'</div><h3>'+r[1]+'</h3><p>'+r[2]+'</p></article>').join('')+'</div></div></div>'+
 '<div class="cr"><div class="sec"><div class="wrap split"><figure class="shot par reveal" style="margin:0;aspect-ratio:4/5"><img data-par src="'+IMG.chairside+'" alt="Dentist in a white coat treating a patient"></figure><div style="display:grid;gap:18px" class="reveal"><span class="kicker">Patient care</span><h2>You are never handled alone</h2><p class="lead">Patients praise the friendly, welcoming staff and thorough, gentle hygienists. Ask any question at any point. We would rather explain than assume.</p><div class="btn-row">'+waBtn('Book on WhatsApp')+go('reviews','Read reviews')+'</div></div></div></div></div>'+finalCta();
 
-PAGES.pricing=()=>'<div class="sec"><div class="wrap">'+crumbs([['Pricing']])+pageHead('Pricing','A clear price before every treatment','Prices depend on the treatment, so we quote you first. Select what you need and send a quote request on WhatsApp.')+
+PAGES.pricing=()=>'<div class="sec"><div class="wrap">'+crumbs([['Pricing']])+pageHead('Pricing','A clear price before every treatment','Here are our current prices. Where a price says \u201CFrom\u201D or \u201CAsk for price\u201D, we quote you first. Select what you need and send a quote request on WhatsApp.')+
+(SERVICES.length?'<div class="card reveal" style="margin-bottom:22px"><h3>Our prices</h3><div class="plist">'+SERVICES.map(s=>'<a class="prow" href="#service/'+s.slug+'" data-go="service/'+s.slug+'"><span>'+s.name+(s.dur?'<small>'+(s.dur>=60&&s.dur%60===0?(s.dur/60)+(s.dur===60?' hour':' hours'):s.dur+' min')+'</small>':'')+'</span><b>'+priceTxt(s)+'</b></a>').join('')+'</div></div>':'')+
 '<div class="split" style="align-items:start"><div class="card glass reveal" style="display:grid;gap:18px"><h3>Request a quote</h3>'+bookChips('')+'<div class="fld"><label for="qName">Your name (optional)</label><input class="in" id="qName" placeholder="Your name" autocomplete="name"></div><div class="err" id="qErr" hidden role="alert"></div><a class="btn btn-gold" id="sendQuote" href="'+WA_GEN+'" target="_blank" rel="noopener">'+ic('wa','fill')+'Request price quote on WhatsApp</a><p class="help">We reply with a clear price. Nothing is charged until you agree.</p></div>'+
 '<div style="display:grid;gap:16px"><p class="quote-big reveal">“The best price for any teeth care.”</p><p class="muted reveal">A patient review on Google. What we value most is being open about cost.</p><div class="grid g2"><div class="card reveal"><div class="ico">'+ic('card')+'</div><h3>Payments</h3><p>Credit cards, debit cards and NFC mobile payments.</p></div><div class="card reveal"><div class="ico">'+ic('cal')+'</div><h3>Appointments</h3><p>Recommended, so we can set time aside for you.</p></div></div></div></div></div></div>'+finalCta();
 
@@ -1165,7 +1205,6 @@ document.addEventListener('click',e=>{
     box.hidden=true;const n=$('#qName').value.trim();
     q.href=waLink('Hello NAIBI Dental Clinic, I would like a price quote for:\n'+[...sel].map(s=>'- '+s).join('\n')+(n?'\n\nName: '+n:'')+'\n\nSent from the NAIBI Dental Clinic website')}
 });
-$('#ftSvc').innerHTML=SERVICES.slice(0,6).map(s=>'<li><button class="lk" data-go="service/'+s.slug+'">'+s.name+'</button></li>').join('');
 if(DEV.name&&DEV.name.indexOf('{{')<0){$('#credit').hidden=false}
 
 /* ---------- GSAP ---------- */
@@ -1200,7 +1239,20 @@ function animatePage(){
   }catch(err){document.documentElement.classList.add('force-show')}
 }
 
-show(location.hash.slice(1)||'home',true);
+(function boot(){
+  let cached=null;try{cached=JSON.parse(localStorage.getItem(SVC_KEY)||'null')}catch(e){}
+  let shown=false;
+  const first=()=>{if(shown)return;shown=true;show(location.hash.slice(1)||'home',true)};
+  if(Array.isArray(cached)){applyServices(cached);first()}
+  loadServices().then(rows=>{
+    if(!Array.isArray(rows)){first();return}
+    const fresh=JSON.stringify(rows),old=JSON.stringify(Array.isArray(cached)?cached:null);
+    try{localStorage.setItem(SVC_KEY,fresh)}catch(e){}
+    if(fresh!==old){applyServices(rows);if(shown){const y=window.scrollY;show(current||location.hash.slice(1)||'home',true);window.scrollTo(0,y)}else first()}
+    else first();
+  });
+  setTimeout(first,1800);
+})();
 
 /* ---------- layered scroll (sections stack like pages) ---------- */
 (function(){

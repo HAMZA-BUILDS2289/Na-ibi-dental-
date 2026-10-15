@@ -32,7 +32,12 @@ create table if not exists public.services (
   duration_min int not null check (duration_min between 15 and 480),
   needs_tech boolean not null default false,
   active boolean not null default true,
-  sort int not null default 100
+  sort int not null default 100,
+  price_ngn int check (price_ngn is null or price_ngn between 0 and 100000000),
+  price_from boolean not null default false,
+  short text,
+  details text,
+  icon text
 );
 
 create table if not exists public.staff (
@@ -341,7 +346,8 @@ create or replace function public.public_info() returns jsonb language sql stabl
 set search_path = public, pg_temp as $$
   select jsonb_build_object(
     'clinic', (select to_jsonb(c) - 'auto_confirm' - 'max_open_per_phone' from clinic_settings c where id = 1),
-    'services', (select coalesce(jsonb_agg(jsonb_build_object('id', id, 'name', name, 'duration_min', duration_min)
+    'services', (select coalesce(jsonb_agg(jsonb_build_object('id', id, 'name', name, 'duration_min', duration_min,
+                 'price_ngn', price_ngn, 'price_from', price_from, 'short', short, 'details', details, 'icon', icon)
                  order by sort, name), '[]') from services where active),
     'closed', (select coalesce(jsonb_agg(day), '[]') from closed_dates where day >= private.today()),
     'today', private.today(), 'nowmin', private.nowmin())
@@ -629,19 +635,28 @@ end $$;
 create or replace function public.admin_save_service(p jsonb) returns text
 language plpgsql volatile security definer set search_path = public, pg_temp as $$
 declare sid text := nullif(btrim(p->>'id'), '');
+        pr int := nullif(btrim(coalesce(p->>'price_ngn', '')), '')::int;
 begin
   perform private.need(array['admin']);
+  if length(btrim(coalesce(p->>'name', ''))) < 2 then raise exception 'bad_service'; end if;
+  if pr is not null and (pr < 0 or pr > 100000000) then raise exception 'bad_price'; end if;
   if sid is null then
     sid := lower(regexp_replace(btrim(p->>'name'), '[^a-zA-Z0-9]+', '-', 'g'));
     sid := trim(both '-' from sid);
     if sid = '' then raise exception 'bad_service'; end if;
     if exists (select 1 from services where id = sid) then sid := sid || '-' || substr(gen_random_uuid()::text, 1, 4); end if;
   end if;
-  insert into services (id, name, duration_min, needs_tech, active, sort)
+  insert into services (id, name, duration_min, needs_tech, active, sort, price_ngn, price_from, short, details, icon)
   values (sid, btrim(p->>'name'), (p->>'duration_min')::int, coalesce((p->>'needs_tech')::boolean, false),
-          coalesce((p->>'active')::boolean, true), coalesce((p->>'sort')::int, 100))
+          coalesce((p->>'active')::boolean, true), coalesce((p->>'sort')::int, 100),
+          pr, coalesce((p->>'price_from')::boolean, false),
+          nullif(left(btrim(coalesce(p->>'short', '')), 200), ''),
+          nullif(left(btrim(coalesce(p->>'details', '')), 2000), ''),
+          nullif(left(btrim(coalesce(p->>'icon', '')), 20), ''))
   on conflict (id) do update set name = excluded.name, duration_min = excluded.duration_min,
-    needs_tech = excluded.needs_tech, active = excluded.active, sort = excluded.sort;
+    needs_tech = excluded.needs_tech, active = excluded.active, sort = excluded.sort,
+    price_ngn = excluded.price_ngn, price_from = excluded.price_from,
+    short = excluded.short, details = excluded.details, icon = excluded.icon;
   -- a new service is offered by every active dentist until the admin changes it
   if not (p ? 'id') then
     insert into staff_services (staff_id, service_id) select id, sid from staff where role = 'dentist' and active
@@ -649,6 +664,18 @@ begin
   end if;
   perform private.log('service', btrim(p->>'name'));
   return sid;
+end $$;
+
+create or replace function public.admin_delete_service(p_id text) returns void
+language plpgsql volatile security definer set search_path = public, pg_temp as $$
+declare nm text;
+begin
+  perform private.need(array['admin']);
+  select name into nm from services where id = p_id;
+  if nm is null then return; end if;
+  if exists (select 1 from appointments where service_id = p_id) then raise exception 'service_in_use'; end if;
+  delete from services where id = p_id;
+  perform private.log('service deleted', nm);
 end $$;
 
 create or replace function public.admin_save_staff(p_id uuid, p_name text, p_title text, p_phone text,
@@ -783,6 +810,7 @@ grant execute on function public.queue_reminder(uuid) to authenticated;
 grant execute on function public.mark_message_sent(bigint) to authenticated;
 grant execute on function public.admin_save_settings(jsonb) to authenticated;
 grant execute on function public.admin_save_service(jsonb) to authenticated;
+grant execute on function public.admin_delete_service(text) to authenticated;
 grant execute on function public.admin_save_staff(uuid, text, text, text, boolean) to authenticated;
 grant execute on function public.admin_set_staff_services(uuid, text[]) to authenticated;
 grant execute on function public.admin_set_hours(uuid, jsonb) to authenticated;
