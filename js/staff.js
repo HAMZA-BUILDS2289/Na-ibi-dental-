@@ -638,7 +638,29 @@
     load(true);
   }, 30000);
 
+  /* auto sign-out: 3 minutes after the person leaves the site (tab hidden, phone locked, app switched or tab closed) */
+  var AWAY_MS = 3 * 60 * 1000, SEEN = 'naibi-seen-v1', awayTimer = null;
+  function seen(t) { try { if (t === null) localStorage.removeItem(SEEN); else localStorage.setItem(SEEN, String(t === undefined ? Date.now() : t)); } catch (e) {} }
+  function lastSeen() { try { return Number(localStorage.getItem(SEEN)) || 0; } catch (e) { return 0; } }
+  function awayOut(msg) {
+    clearTimeout(awayTimer); seen(null);
+    if (!NB.signedIn()) return;
+    NB.logout().then(function () {
+      S.state = 'login'; S.D = null; S.tab = null; S.sd = null; S.svcD = null; S.cred = null; S.busy = false;
+      render(); toast(msg || 'You were signed out because you were away. Please sign in again.');
+    });
+  }
+  function checkAway() { var t = lastSeen(); if (t && Date.now() - t > AWAY_MS) { awayOut(); return true; } return false; }
+  document.addEventListener('visibilitychange', function () {
+    clearTimeout(awayTimer);
+    if (document.hidden) { seen(); awayTimer = setTimeout(function () { if (document.hidden) awayOut(); }, AWAY_MS); }
+    else if (!checkAway()) seen();
+  });
+  window.addEventListener('pagehide', function () { seen(); });
+  setInterval(function () { if (!document.hidden && NB.signedIn()) seen(); }, 10000);
+
   window.__staff = S;
+  checkAway();
   if (!NB.configured()) { S.state = 'login'; render(); }
   else if (NB.signedIn()) { render(); load(); }
   else { S.state = 'login'; render(); }
