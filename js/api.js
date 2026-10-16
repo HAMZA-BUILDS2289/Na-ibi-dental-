@@ -27,6 +27,8 @@
     bad_status: 'That status is not valid.',
     not_allowed: 'Your role does not allow this action.',
     not_found: 'That record was not found.',
+    wrong_day: 'This booking is not for today, so it cannot be checked in. Reschedule it first if the patient came on a different day.',
+    not_valid: 'This booking was cancelled or marked as a no-show, so it cannot be checked in.',
     last_admin: 'You cannot deactivate yourself or the last admin.',
     network: 'No internet connection. Please check your network and try again.',
     not_signed_in: 'Please sign in again.',

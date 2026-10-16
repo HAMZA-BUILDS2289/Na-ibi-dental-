@@ -29,7 +29,7 @@
       return '<div class="box done"><div class="big"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div>' +
         '<h2>' + (a.status === 'confirmed' ? 'Appointment confirmed' : 'Request received') + '</h2>' +
         '<p class="muted" style="margin:6px 0 14px">' + (a.status === 'confirmed' ? 'Your time is reserved.' : 'The clinic will confirm shortly. Your time is held for you.') + '</p>' +
-        '<p class="ref">' + esc(a.ref) + '</p><p class="small muted">Keep this reference. You need it with your phone number to check your booking.</p>' +
+        '<p class="ref">' + esc(a.ref) + '</p>' + qrBox(a.ref) + '<p class="small muted">Keep this reference. You need it with your phone number to check your booking.</p>' +
         '<p style="margin:14px 0"><b>' + esc(a.service_name) + '</b><br>' + U.fmtDL(a.day) + ' at ' + U.fmtT(a.start_min) + '<br>With ' + esc(a.dentist_name) + '</p>' +
         '<div class="row" style="justify-content:center"><a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/' + WA + '?text=' + encodeURIComponent(share) + '">Tell the clinic on WhatsApp</a><button class="btn" data-a="again">Book another</button></div></div>';
     }
@@ -81,10 +81,19 @@
       h += '<div class="box"><div class="row" style="justify-content:space-between"><h3>' + esc(r.service_name) + '</h3><span class="pill ' + r.status + '">' + r.status.replace('_', ' ') + '</span></div>' +
         '<p style="margin-top:8px"><b>' + U.fmtDL(r.day) + '</b> at ' + U.fmtT(r.start_min) + ' to ' + U.fmtT(r.start_min + r.dur_min) + '</p>' +
         '<p class="muted">With ' + esc(r.dentist_name) + ' · Ref ' + esc(r.ref) + '</p>' +
+        (r.status === 'cancelled' || r.status === 'no_show' || r.status === 'completed' ? '' : qrBox(r.ref)) +
         '<p class="muted small" style="margin-top:8px">To change or cancel, please call or message the clinic.</p>' +
         '<div class="row" style="margin-top:12px"><a class="btn" href="tel:+2348106977321">Call ' + PHONE + '</a><a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/' + WA + '?text=' + encodeURIComponent('Hello NAIBI Dental Clinic, about my booking ' + r.ref + '.') + '">WhatsApp</a></div></div>';
     }
     return h;
+  }
+
+  /* QR code the patient shows at the clinic; staff scan it from their login. It holds only a link with the booking reference. */
+  function qrUrl(ref) { return location.origin + '/staff.html?checkin=' + encodeURIComponent(ref); }
+  function qrBox(ref) {
+    if (!window.NBQR) return '';
+    return '<div class="qrbox"><div class="qrimg">' + NBQR.svg(qrUrl(ref), 190) + '</div><p><b>Show this QR code at the clinic</b></p><p class="small muted">The receptionist scans it to check you in. Take a screenshot or save it.</p>' +
+      '<button class="btn small" data-a="saveqr" data-ref="' + esc(ref) + '">Save QR picture</button></div>';
   }
 
   function render() {
@@ -115,6 +124,15 @@
     svc: function (t) { S.svc = t.dataset.id; S.formErr = ''; loadDays(); },
     date: function (t) { S.date = t.dataset.d; loadSlots(); },
     time: function (t) { S.time = Number(t.dataset.m); render(); },
+    saveqr: function (t) {
+      var ref = t.dataset.ref, img = new Image(), data = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(NBQR.svg(qrUrl(ref), 600));
+      img.onload = function () {
+        var c = document.createElement('canvas'); c.width = c.height = 600; var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, 600, 600); x.drawImage(img, 0, 0, 600, 600);
+        var l = document.createElement('a'); l.download = 'naibi-booking-' + ref + '.png'; l.href = c.toDataURL('image/png'); document.body.appendChild(l); l.click(); l.remove();
+      };
+      img.onerror = function () { toast('Please take a screenshot of the QR code instead.'); };
+      img.src = data;
+    },
     again: function () { S.done = null; S.svc = null; S.days = null; S.date = null; S.slots = null; S.time = null; S.complaint = ''; render(); },
     submit: function () {
       if (S.busy) return;

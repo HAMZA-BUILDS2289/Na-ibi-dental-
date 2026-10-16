@@ -100,6 +100,7 @@ create table if not exists public.appointments (
   source text not null default 'online' check (source in ('online','reception')),
   notes text,
   cancel_reason text,
+  arrived_at timestamptz,
   created_at timestamptz not null default now(),
   created_by uuid,
   updated_at timestamptz not null default now()
@@ -558,6 +559,36 @@ begin
   return private.appt_json(a);
 end $$;
 
+-- ---------------------------------------------------------------- QR check-in (any signed-in staff)
+create or replace function public.staff_lookup(p_ref text) returns jsonb
+language plpgsql stable security definer set search_path = public, pg_temp as $$
+declare a appointments%rowtype;
+begin
+  perform private.need(array['admin','receptionist','dentist','technician']);
+  select * into a from appointments where ref = upper(btrim(coalesce(p_ref, '')));
+  if not found then raise exception 'not_found'; end if;
+  return private.appt_json(a) || jsonb_build_object('is_today', a.day = private.today());
+end $$;
+
+create or replace function public.staff_checkin(p_ref text) returns jsonb
+language plpgsql volatile security definer set search_path = public, pg_temp as $$
+declare a appointments%rowtype; again boolean := false;
+begin
+  perform private.need(array['admin','receptionist','dentist','technician']);
+  select * into a from appointments where ref = upper(btrim(coalesce(p_ref, ''))) for update;
+  if not found then raise exception 'not_found'; end if;
+  if a.status in ('cancelled','no_show') then raise exception 'not_valid'; end if;
+  if a.day <> private.today() then raise exception 'wrong_day'; end if;
+  if a.arrived_at is not null then again := true;
+  else
+    update appointments set arrived_at = now(), updated_at = now(),
+      status = case when status = 'pending' then 'confirmed' else status end
+    where id = a.id returning * into a;
+    perform private.log('checked in', a.ref || ' ' || a.patient_name);
+  end if;
+  return private.appt_json(a) || jsonb_build_object('already', again);
+end $$;
+
 create or replace function public.reschedule_appt(p_id uuid, p_day date, p_start int) returns jsonb
 language plpgsql volatile security definer set search_path = public, pg_temp as $$
 declare a appointments%rowtype; sv services%rowtype; pk uuid[];
@@ -804,6 +835,8 @@ grant execute on function public.patient_history(text) to authenticated;
 grant execute on function public.staff_slots(text, date, uuid) to authenticated;
 grant execute on function public.staff_book(text, date, int, text, text, text, uuid) to authenticated;
 grant execute on function public.set_appt_status(uuid, text, text) to authenticated;
+grant execute on function public.staff_lookup(text) to authenticated;
+grant execute on function public.staff_checkin(text) to authenticated;
 grant execute on function public.reschedule_appt(uuid, date, int) to authenticated;
 grant execute on function public.set_appt_notes(uuid, text) to authenticated;
 grant execute on function public.queue_reminder(uuid) to authenticated;

@@ -16,6 +16,7 @@
     msgF: 'queued', staffSel: null, roster: null, ns: { name: '', email: '', role: 'dentist', title: '', phone: '', password: '' },
     cred: null, leave: { from: '', to: '', reason: '' }, closed: { day: '', reason: '' },
     sd: null, svcD: null, newSvc: { name: '', duration_min: 30, needs_tech: false, active: true, sort: 100, price_ngn: '', price_from: false, short: '', details: '' }, pw: { open: false, v: '' },
+    ck: { ref: '', res: null, err: '', busy: false, done: false },
     login: { email: '', password: '' }
   };
 
@@ -80,6 +81,7 @@
       if (!S.svcD) S.svcD = svcDrafts();
       if (!S.staffSel) { var f = D.staff.filter(function (s) { return s.role === 'dentist'; })[0] || D.staff[0]; S.staffSel = f && f.id; }
       render();
+      if (pendingRef) { var pr = pendingRef; pendingRef = ''; S.tab = 'checkin'; ckLookup(pr); }
     }, function (e) {
       if (e.code === 'not_allowed') { S.state = 'nostaff'; render(); return; }
       if (e.code === 'not_signed_in' || e.status === 401) { NB.logout(); S.state = 'login'; render(); return; }
@@ -133,17 +135,17 @@
   }
 
   function tabsFor(role) {
-    if (role === 'admin') return [['today', 'Today'], ['calendar', 'Calendar'], ['appointments', 'Appointments'], ['book', 'Book for patient'], ['patients', 'Patients'], ['messages', 'Messages'], ['staff', 'Staff and rosters'], ['services', 'Services and prices'], ['settings', 'Settings']];
-    if (role === 'receptionist') return [['today', 'Today'], ['calendar', 'Calendar'], ['appointments', 'Appointments'], ['book', 'Book for patient'], ['patients', 'Patients'], ['messages', 'Messages']];
-    if (role === 'dentist') return [['mine', 'My schedule'], ['calendar', 'Calendar'], ['patients', 'Patients']];
-    return [['mine', 'My schedule'], ['calendar', 'Calendar']];
+    if (role === 'admin') return [['today', 'Today'], ['checkin', 'Scan check-in'], ['calendar', 'Calendar'], ['appointments', 'Appointments'], ['book', 'Book for patient'], ['patients', 'Patients'], ['messages', 'Messages'], ['staff', 'Staff and rosters'], ['services', 'Services and prices'], ['settings', 'Settings']];
+    if (role === 'receptionist') return [['today', 'Today'], ['checkin', 'Scan check-in'], ['calendar', 'Calendar'], ['appointments', 'Appointments'], ['book', 'Book for patient'], ['patients', 'Patients'], ['messages', 'Messages']];
+    if (role === 'dentist') return [['mine', 'My schedule'], ['checkin', 'Scan check-in'], ['calendar', 'Calendar'], ['patients', 'Patients']];
+    return [['mine', 'My schedule'], ['checkin', 'Scan check-in'], ['calendar', 'Calendar']];
   }
   function vShell() {
     var e = eff(), me = S.D.me, tabs = tabsFor(e.role);
     if (!S.tab || !tabs.some(function (t) { return t[0] === S.tab; })) S.tab = tabs[0][0];
     var pend = isMgr() ? S.D.appointments.filter(function (a) { return a.status === 'pending' && a.day >= today(); }).length : 0;
     var queued = isMgr() ? S.D.messages.filter(function (m) { return m.status === 'queued'; }).length : 0;
-    var body = { today: vToday, mine: vMine, calendar: vCalendar, appointments: vAppointments, book: vBook, patients: vPatients, messages: vMessages, staff: vStaff, services: vServices, settings: vSettings }[S.tab]();
+    var body = { today: vToday, checkin: vCheckin, mine: vMine, calendar: vCalendar, appointments: vAppointments, book: vBook, patients: vPatients, messages: vMessages, staff: vStaff, services: vServices, settings: vSettings }[S.tab]();
     var h = '<div class="wrap" style="padding-block:18px 10px"><div class="who"><span class="avatar">' + esc(U.initials(me.name)) + '</span><div><b>' + esc(me.name) + '</b><br><span class="pill role">' + esc(me.role) + '</span> <span class="muted small">' + esc(me.email || '') + '</span></div>' +
       '<span class="row" style="margin-left:auto">';
     if (me.role === 'admin') {
@@ -166,7 +168,7 @@
     o = o || {};
     var e = eff(), mgr = isMgr(), mine = e.role === 'dentist' && a.dentist_id === e.id, bad = attn(a);
     var h = '<div class="appt ' + a.status + (bad ? ' attn' : '') + '"><div class="head"><span class="time">' + U.fmtD(a.day) + ' · ' + U.fmtT(a.start_min) + ' to ' + U.fmtT(a.start_min + a.dur_min) + '</span><span class="row" style="gap:6px">' +
-      (bad ? '<span class="pill attn">needs rescheduling</span>' : '') + '<span class="pill ' + a.status + '">' + STATUS_LABEL[a.status] + '</span></span></div>' +
+      (bad ? '<span class="pill attn">needs rescheduling</span>' : '') + (a.arrived_at ? '<span class="pill confirmed">arrived ' + clock(a.arrived_at) + '</span>' : '') + '<span class="pill ' + a.status + '">' + STATUS_LABEL[a.status] + '</span></span></div>' +
       '<div class="meta"><span><b>' + esc(a.patient_name) + '</b> · ' + esc(a.phone) + '</span><span>' + esc(a.service_name) + '</span>' +
       '<span>Problem: ' + esc(a.complaint || '-') + '</span><span>Dentist: <b>' + esc(a.dentist_name) + '</b>' + (a.tech_name ? ' · Technician: <b>' + esc(a.tech_name) + '</b>' : '') + '</span>' +
       '<span class="small">Ref ' + esc(a.ref) + ' · ' + (a.source === 'reception' ? 'booked by reception' : 'booked online') + (a.cancel_reason ? ' · reason: ' + esc(a.cancel_reason) : '') + '</span>' +
@@ -396,6 +398,66 @@
     return credCard() + '<div class="cols two"><div>' + left + add + '</div><div>' + ed + '</div></div>';
   }
 
+  /* ---------- tab: scan check-in (all staff) ---------- */
+  function clock(iso) { try { return new Date(iso).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Lagos' }); } catch (e) { return ''; } }
+  function refFrom(text) { var m = /NB-[A-Z0-9]{6,12}/i.exec(String(text || '')); return m ? m[0].toUpperCase() : ''; }
+  var pendingRef = refFrom((new URLSearchParams(location.search)).get('checkin'));
+  if (pendingRef) { try { history.replaceState(null, '', location.pathname); } catch (e) {} }
+  var scan = { stream: null, timer: null, el: null };
+  function stopScan() {
+    clearInterval(scan.timer); scan.timer = null;
+    if (scan.stream) { scan.stream.getTracks().forEach(function (t) { t.stop(); }); scan.stream = null; }
+    if (scan.el) { scan.el.remove(); scan.el = null; }
+  }
+  function ckLookup(raw) {
+    var ref = refFrom(raw);
+    if (!ref) { S.ck.err = 'That does not look like a booking code. It starts with NB- and has 8 letters or numbers.'; S.ck.res = null; S.ck.done = false; render(); return; }
+    S.ck.ref = ref; S.ck.busy = true; S.ck.err = ''; S.ck.done = false; render();
+    rpc('staff_lookup', { p_ref: ref }).then(function (r) { S.ck.busy = false; S.ck.res = r; render(); },
+      function (e) { S.ck.busy = false; S.ck.res = null; S.ck.err = e.code === 'not_found' ? 'No booking found with that code.' : e.message; render(); });
+  }
+  function startScan() {
+    if (!('BarcodeDetector' in window) || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      return toast('This phone cannot scan inside the page. Open your normal Camera app, point it at the QR code and tap the link that appears.');
+    }
+    var det; try { det = new BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { return toast('Scanning is not available here. Use the Camera app or type the code.'); }
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false }).then(function (stream) {
+      stopScan(); scan.stream = stream;
+      var el = document.createElement('div'); el.className = 'scanner';
+      el.innerHTML = '<video playsinline muted autoplay></video><div class="scanframe"></div><p>Point the camera at the patient’s QR code</p><button class="btn" type="button">Close</button>';
+      document.body.appendChild(el); scan.el = el;
+      var v = el.querySelector('video'); v.srcObject = stream; v.play().catch(function () {});
+      el.querySelector('button').addEventListener('click', stopScan);
+      var busy = false;
+      scan.timer = setInterval(function () {
+        if (busy || !v.videoWidth) return; busy = true;
+        det.detect(v).then(function (codes) {
+          busy = false; if (!scan.el) return;
+          for (var i = 0; i < codes.length; i++) { var ref = refFrom(codes[i].rawValue); if (ref) { stopScan(); ckLookup(ref); return; } }
+        }, function () { busy = false; });
+      }, 350);
+    }, function () { toast('The camera is blocked. Allow camera access for this site in the browser, or type the code.'); });
+  }
+  function vCheckin() {
+    var c = S.ck, r = c.res;
+    var h = '<h2 style="margin-bottom:6px">Scan check-in</h2><p class="muted small" style="margin-bottom:12px">When a patient arrives, scan the QR code on their phone, or type the booking code.</p>' +
+      '<div class="box"><div class="actions"><button class="btn primary" data-a="ck-scan">Scan QR code</button></div>' +
+      '<p class="small muted" style="margin-top:8px">Tip: you can also scan with the phone’s normal Camera app. Tap the link and this page opens with the booking.</p>' +
+      '<div class="field" style="margin-top:12px"><label for="ck-ref">Or type the booking code</label><div class="row"><input id="ck-ref" data-in="ck.ref" value="' + esc(c.ref) + '" placeholder="NB-XXXXXXXX" autocapitalize="characters" autocomplete="off" style="flex:1;min-width:0"><button class="btn" data-a="ck-find"' + (c.busy ? ' disabled' : '') + '>Find</button></div></div></div>';
+    if (c.err) h += '<div class="notice bad">' + esc(c.err) + '</div>';
+    if (c.busy) h += '<p class="muted">Looking up...</p>';
+    if (r) {
+      h += apptCard(r, { readonly: true });
+      if (c.done) h += '<div class="notice ok"><b>Checked in at ' + clock(r.arrived_at) + '.</b> The patient can now go in.</div>';
+      else if (r.status === 'cancelled' || r.status === 'no_show') h += '<div class="notice bad">This booking is ' + (r.status === 'cancelled' ? 'cancelled' : 'marked as a no-show') + ', so it cannot be checked in.</div>';
+      else if (r.arrived_at) h += '<div class="notice warn"><b>Already checked in at ' + clock(r.arrived_at) + '.</b> This QR code was used before.</div>';
+      else if (!r.is_today) h += '<div class="notice warn"><b>This booking is for ' + U.fmtDL(r.day) + ', not today.</b> Ask the patient, or reschedule it in Appointments.</div>';
+      else h += '<div class="actions" style="margin-top:12px"><button class="btn primary" data-a="ck-do"' + (S.busy ? ' disabled' : '') + '>Check in ' + esc(r.patient_name) + '</button></div>';
+      h += '<div class="actions" style="margin-top:10px"><button class="btn small" data-a="ck-next">Scan next patient</button></div>';
+    }
+    return h;
+  }
+
   /* ---------- tab: services and prices (admin) ---------- */
   function naira(n) { return '₦' + Number(n).toLocaleString('en-NG'); }
   function svcFields(base, x, idp) {
@@ -586,6 +648,15 @@
       run(function () { return rpc('admin_save_settings', { p: { clinic_name: d.clinic_name, phone: d.phone, whatsapp: d.whatsapp, open_min: o, close_min: c, slot_step: Number(d.slot_step), cutoff_min: Number(d.cutoff_min), max_days: Number(d.max_days), max_open_per_phone: Number(d.max_open_per_phone), auto_confirm: !!d.auto_confirm, channel: d.channel, open_days: d.open_days } }); }, 'Settings saved.', function () { S.sd = settingsDraft(); });
     },
     'svc-row-save': function (t) { var id = t.dataset.id, x = S.svcD[id]; if (x.name.trim().length < 2) return toast('Give the service a name.'); run(function () { return rpc('admin_save_service', { p: svcPayload(x, id) }); }, 'Service saved. The website shows it now.', function () { S.svcD = svcDrafts(); }); },
+    'ck-scan': function () { startScan(); },
+    'ck-find': function () { ckLookup(S.ck.ref); },
+    'ck-next': function () { S.ck = { ref: '', res: null, err: '', busy: false, done: false }; render(); },
+    'ck-do': function () {
+      var ref = S.ck.res && S.ck.res.ref; if (!ref || S.busy) return;
+      S.busy = true;
+      rpc('staff_checkin', { p_ref: ref }).then(function (r) { S.busy = false; S.ck.res = r; S.ck.done = !r.already; toast(r.already ? 'Already checked in earlier.' : 'Checked in.'); load(true); render(); },
+        function (e) { S.busy = false; toast(e.message); render(); });
+    },
     'svc-add': function () { var x = S.newSvc; if (x.name.trim().length < 2) return toast('Enter the service name.'); run(function () { return rpc('admin_save_service', { p: svcPayload(x) }); }, 'Service added. It shows on the website and the booking page now.', function () { S.newSvc = svcBlank(); S.svcD = svcDrafts(); }); },
     'svc-del': function (t) { var id = t.dataset.id; if (S.arm !== 'sdel-' + id) { S.arm = 'sdel-' + id; return render(); } S.arm = null; run(function () { return rpc('admin_delete_service', { p_id: id }); }, 'Service deleted.', function () { S.svcD = svcDrafts(); }); },
     'closed-add': function () { var c = S.closed; if (!c.day) return toast('Pick a date.'); run(function () { return rpc('admin_add_closed', { p_day: c.day, p_reason: c.reason || null }); }, function (n) { return n ? 'Date closed. ' + n + ' booked visit' + (n > 1 ? 's' : '') + ' now need rescheduling.' : 'Date closed.'; }, function () { S.closed = { day: '', reason: '' }; }); },
@@ -628,13 +699,14 @@
   });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && e.target.id === 'pq') { e.preventDefault(); patSearch(); }
+    if (e.key === 'Enter' && e.target.id === 'ck-ref') { e.preventDefault(); ckLookup(S.ck.ref); }
   });
 
   /* keep the screen fresh without interrupting typing */
   setInterval(function () {
     if (S.state !== 'ready' || S.busy || document.hidden) return;
     var el = document.activeElement; if (el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) return;
-    if (S.cred) return;
+    if (S.cred || scan.el) return;
     load(true);
   }, 30000);
 

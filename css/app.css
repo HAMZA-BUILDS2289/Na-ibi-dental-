@@ -169,3 +169,11 @@ html[data-theme="dark"] .toast{background:#1E2E6B}
 html[data-theme="dark"] .btn.wa{background:#1FA855}
 
 .opt .optpr{margin-left:auto;font-weight:800;color:var(--brand);white-space:nowrap;padding-left:10px}
+
+.qrbox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin:14px auto;max-width:280px;display:grid;gap:6px;justify-items:center}
+.qrimg{background:#fff;border-radius:12px;padding:4px;line-height:0}
+.qrimg svg{max-width:100%;height:auto}
+.scanner{position:fixed;inset:0;z-index:200;background:#000;display:grid;grid-template-rows:1fr auto auto;justify-items:center;gap:12px;padding:0 0 calc(18px + env(safe-area-inset-bottom,0px));color:#fff;text-align:center}
+.scanner video{width:100%;height:100%;object-fit:cover;min-height:0}
+.scanner .scanframe{position:absolute;left:50%;top:38%;width:min(64vw,280px);aspect-ratio:1;transform:translate(-50%,-50%);border:3px solid #fff;border-radius:20px;box-shadow:0 0 0 100vmax rgba(0,0,0,.45)}
+.scanner p{margin:0;padding:0 18px}
