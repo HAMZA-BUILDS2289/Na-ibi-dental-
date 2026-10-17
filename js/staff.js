@@ -213,6 +213,7 @@
   function byTime(a, b) { return (a.day + U.pad(a.start_min / 60 | 0) + U.pad(a.start_min % 60)).localeCompare(b.day + U.pad(b.start_min / 60 | 0) + U.pad(b.start_min % 60)); }
 
   /* ---------- tab: today (admin, receptionist) ---------- */
+  function lagosDay(iso) { try { return new Date(iso).toLocaleDateString('en-CA', { timeZone: 'Africa/Lagos' }); } catch (e) { return ''; } }
   function stat(n, label) { return '<div class="stat"><b>' + n + '</b><span>' + label + '</span></div>'; }
   function vToday() {
     var t = today(), all = S.D.appointments;
@@ -220,10 +221,13 @@
     var pend = all.filter(function (a) { return a.status === 'pending' && a.day >= t && !attn(a); }).sort(byTime);
     var bad = all.filter(attn).sort(byTime);
     var done = td.filter(function (a) { return a.status === 'completed'; }).length;
-    var h = '<h2 style="margin-bottom:12px">' + U.fmtDL(t) + '</h2><div class="stats">' + stat(td.length, 'visits today') + stat(done, 'completed today') + stat(all.filter(function (a) { return a.status === 'pending' && a.day >= t; }).length, 'waiting to be confirmed') + stat(bad.length, 'need rescheduling') + '</div>';
+    var up = all.filter(function (a) { return a.day > t && (a.status === 'pending' || a.status === 'confirmed'); }).sort(function (a, b) { return a.day < b.day ? -1 : a.day > b.day ? 1 : a.start_min - b.start_min; });
+    var newToday = all.filter(function (a) { return lagosDay(a.created_at) === t; }).length;
+    var h = '<h2 style="margin-bottom:12px">' + U.fmtDL(t) + '</h2><div class="stats">' + stat(td.length, 'visits today') + stat(up.length, 'upcoming visits') + stat(newToday, 'booked today') + stat(done, 'completed today') + stat(all.filter(function (a) { return a.status === 'pending' && a.day >= t; }).length, 'waiting to be confirmed') + stat(bad.length, 'need rescheduling') + '</div>';
     if (bad.length) h += '<div class="notice bad"><b>' + bad.length + ' booked visit' + (bad.length > 1 ? 's' : '') + ' can no longer go ahead</b> (leave, a changed roster or a closed day). Reschedule them below.</div><h3 style="margin:8px 0">Needs rescheduling</h3>' + list(bad, '');
     if (pend.length) h += '<h3 style="margin:14px 0 8px">Waiting for confirmation</h3>' + list(pend.slice(0, 25), '');
     h += '<h3 style="margin:14px 0 8px">Today’s visits</h3>' + list(td, 'No visits booked for today.');
+    if (up.length) h += '<h3 style="margin:18px 0 8px">Coming up (' + up.length + ')</h3>' + list(up.slice(0, 30), '');
     return h;
   }
 
@@ -238,7 +242,8 @@
     h += '<div class="box"><b>My roster</b><p class="small muted" style="margin-top:6px">' + (hrs.join(' · ') || 'No days set yet. Ask the admin to set your roster.') + '</p>' +
       (lv.length ? '<p class="small muted">Leave: ' + lv.map(function (l) { return U.fmtD(l.from_date) + ' to ' + U.fmtD(l.to_date); }).join(', ') + '</p>' : '') + '</div>';
     var td = onDay(t, 'all').filter(live);
-    h += '<div class="stats">' + stat(td.length, 'visits today') + stat(td.filter(function (a) { return a.status === 'completed'; }).length, 'completed') + '</div>';
+    var upc = myAppts().filter(function (a) { return a.day > t && (a.status === 'pending' || a.status === 'confirmed'); }).length;
+    h += '<div class="stats">' + stat(td.length, 'visits today') + stat(upc, 'upcoming visits') + stat(td.filter(function (a) { return a.status === 'completed'; }).length, 'completed') + '</div>';
     for (var i = 0; i < 8; i++) {
       var d = U.addDays(t, i), l = onDay(d, 'all').filter(live);
       if (l.length) { any = true; h += '<h3 style="margin:14px 0 8px">' + (i === 0 ? 'Today · ' : '') + U.fmtDL(d) + '</h3>' + l.map(function (a) { return apptCard(a); }).join(''); }
