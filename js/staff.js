@@ -164,6 +164,15 @@
 
   /* ---------- appointment card ---------- */
   function waLink(phone, text) { return 'https://wa.me/' + U.intl(phone) + '?text=' + encodeURIComponent(text); }
+  function startBtn(a) {
+    if (a.day <= today()) return '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="in_progress">Start treatment</button>';
+    return '<button class="btn small" disabled title="Treatment can be started on the day of the visit">Start treatment (' + U.fmtD(a.day) + ')</button>';
+  }
+  function staffSteps(a) {
+    var idx = { pending: 0, confirmed: 1, in_progress: 2, completed: 3 }[a.status]; if (idx === undefined) return '';
+    var names = ['Booked', 'Confirmed', 'In treatment', 'Completed'];
+    return '<ol class="steps" aria-label="Progress">' + names.map(function (n, i) { return '<li class="' + (i < idx ? 'done' : i === idx ? 'now' : '') + '"><i>' + (i < idx ? '\u2713' : i + 1) + '</i><span>' + n + '</span></li>'; }).join('') + '</ol>';
+  }
   function apptCard(a, o) {
     o = o || {};
     var e = eff(), mgr = isMgr(), mine = e.role === 'dentist' && a.dentist_id === e.id, inCharge = mine || (e.role === 'technician' && a.tech_id === e.id), bad = attn(a);
@@ -172,13 +181,13 @@
       '<div class="meta"><span><b>' + esc(a.patient_name) + '</b> · ' + esc(a.phone) + '</span><span>' + esc(a.service_name) + '</span>' +
       '<span>Problem: ' + esc(a.complaint || '-') + '</span><span>Dentist: <b>' + esc(a.dentist_name) + '</b>' + (a.tech_name ? ' · Technician: <b>' + esc(a.tech_name) + '</b>' : '') + '</span>' +
       '<span class="small">Ref ' + esc(a.ref) + ' · ' + (a.source === 'reception' ? 'booked by reception' : 'booked online') + (a.cancel_reason ? ' · reason: ' + esc(a.cancel_reason) : '') + '</span>' +
-      (a.notes ? '<span class="small"><b>Notes:</b> ' + esc(a.notes) + '</span>' : '') + '</div>';
+      (a.notes ? '<span class="small"><b>Notes:</b> ' + esc(a.notes) + '</span>' : '') + '</div>' + staffSteps(a);
     if (o.readonly) return h + '</div>';
     var act = '';
     if (mgr) {
       if (a.status === 'pending') act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="confirmed">Confirm</button>';
       if (a.status === 'pending' || a.status === 'confirmed') act += '<button class="btn small" data-a="rs-open" data-id="' + a.id + '">Reschedule</button><button class="btn small" data-a="remind" data-id="' + a.id + '">Queue reminder</button><a class="btn small wa" target="_blank" rel="noopener" href="' + waLink(a.phone, 'Hello ' + a.patient_name.split(' ')[0] + ', this is NA’IBI Dental Clinic about your appointment ' + a.ref + '.') + '">WhatsApp</a>';
-      if ((a.status === 'pending' || a.status === 'confirmed') && a.day <= today()) act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="in_progress">Start treatment</button>';
+      if (a.status === 'pending' || a.status === 'confirmed') act += startBtn(a);
       if (a.status === 'in_progress') act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="completed">Finish treatment</button>';
       if (a.status === 'confirmed' && a.day <= today()) act += '<button class="btn small" data-a="status" data-id="' + a.id + '" data-s="completed">Mark completed</button><button class="btn small" data-a="status" data-id="' + a.id + '" data-s="no_show">No-show</button>';
       if (a.status === 'pending' || a.status === 'confirmed') act += '<button class="btn small danger" data-a="arm" data-id="' + a.id + '">Cancel</button>';
@@ -186,7 +195,7 @@
     } else if (inCharge) {
       if (a.status === 'pending') act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="confirmed">Accept and confirm</button>';
       if (a.status === 'pending' || a.status === 'confirmed') act += '<button class="btn small" data-a="rs-open" data-id="' + a.id + '">Reschedule</button>';
-      if ((a.status === 'pending' || a.status === 'confirmed') && a.day <= today()) act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="in_progress">Start treatment</button>';
+      if (a.status === 'pending' || a.status === 'confirmed') act += startBtn(a);
       if (a.status === 'in_progress') act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="completed">Finish treatment</button>';
       if ((a.status === 'pending' || a.status === 'confirmed') && a.day <= today()) act += '<button class="btn small" data-a="status" data-id="' + a.id + '" data-s="no_show">No-show</button>';
     }
@@ -223,7 +232,7 @@
     var done = td.filter(function (a) { return a.status === 'completed'; }).length;
     var up = all.filter(function (a) { return a.day > t && (a.status === 'pending' || a.status === 'confirmed'); }).sort(function (a, b) { return a.day < b.day ? -1 : a.day > b.day ? 1 : a.start_min - b.start_min; });
     var newToday = all.filter(function (a) { return lagosDay(a.created_at) === t; }).length;
-    var h = '<h2 style="margin-bottom:12px">' + U.fmtDL(t) + '</h2><div class="stats">' + stat(td.length, 'visits today') + stat(up.length, 'upcoming visits') + stat(newToday, 'booked today') + stat(done, 'completed today') + stat(all.filter(function (a) { return a.status === 'pending' && a.day >= t; }).length, 'waiting to be confirmed') + stat(bad.length, 'need rescheduling') + '</div>';
+    var h = '<h2 style="margin-bottom:12px">' + U.fmtDL(t) + '</h2><div class="stats">' + stat(td.length, 'visits today') + stat(td.filter(function (a) { return a.status === 'in_progress'; }).length, 'in treatment now') + stat(up.length, 'upcoming visits') + stat(newToday, 'booked today') + stat(done, 'completed today') + stat(all.filter(function (a) { return a.status === 'pending' && a.day >= t; }).length, 'waiting to be confirmed') + stat(bad.length, 'need rescheduling') + '</div>';
     if (bad.length) h += '<div class="notice bad"><b>' + bad.length + ' booked visit' + (bad.length > 1 ? 's' : '') + ' can no longer go ahead</b> (leave, a changed roster or a closed day). Reschedule them below.</div><h3 style="margin:8px 0">Needs rescheduling</h3>' + list(bad, '');
     if (pend.length) h += '<h3 style="margin:14px 0 8px">Waiting for confirmation</h3>' + list(pend.slice(0, 25), '');
     h += '<h3 style="margin:14px 0 8px">Today’s visits</h3>' + list(td, 'No visits booked for today.');

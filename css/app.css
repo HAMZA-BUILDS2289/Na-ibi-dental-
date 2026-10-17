@@ -194,3 +194,4 @@ html[data-theme="dark"] .pill.in_progress{background:#4A3510;color:#FFD58A}
 .star{border:0;background:none;font-size:2.2rem;line-height:1;color:#C9D3E3;cursor:pointer;padding:2px}
 .star.on{color:#F2A900}
 .rvstars{color:#F2A900;font-size:1.5rem;letter-spacing:3px;margin:6px 0}
+.appt .steps{margin:6px 0 2px}.appt .steps li{font-size:.7rem}.appt .steps li i{width:24px;height:24px;font-size:.72rem}.appt .steps li:not(:last-child)::after{top:12px;left:calc(50% + 14px);right:calc(-50% + 14px)}
