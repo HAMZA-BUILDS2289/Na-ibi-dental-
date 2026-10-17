@@ -971,6 +971,34 @@ const sel=new Set();
 let revIdx=0,revFilter='all';
 function idx(n){return String(n).padStart(2,'0')}
 function svcRow(s,i){return '<a class="row reveal" href="#service/'+s.slug+'" data-go="service/'+s.slug+'"><span class="n">'+idx(i+1)+'</span><span class="nm">'+s.name+'</span><span class="ds">'+s.short+'<b class="pr">'+priceTxt(s)+'</b></span><span class="ar">'+ic('arrow')+'</span></a>'}
+/* reviews left by patients on the booking page (managed by the clinic admin) */
+let SITEREV={count:0,avg:null,list:[]};const REV_KEY='naibi-reviews-v1';
+const escH=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function starsHtml(n){let o='';for(let i=1;i<=5;i++)o+=i<=n?'&#9733;':'&#9734;';return o}
+function siteRevCard(r){const ini=String(r.author||'').replace(/[^A-Za-z ]/g,'').split(' ').map(x=>x[0]).filter(Boolean).slice(0,2).join('').toUpperCase()||'P';return '<article class="card quote reveal"><div class="stars" aria-label="'+r.rating+' stars">'+starsHtml(r.rating)+'</div><q>'+escH(r.body)+'</q><div class="who"><span class="av">'+ini+'</span><div><b>'+escH(r.author)+'</b><small>Patient'+(r.service_name?' &middot; '+escH(r.service_name):'')+'</small></div></div></article>'}
+function siteRevBlock(inner){
+  if(!SITEREV||!SITEREV.list||!SITEREV.list.length)return '';
+  const body=head('From our patients','Reviews left after treatment here'+(SITEREV.avg?' &middot; '+SITEREV.avg+' stars from '+SITEREV.count+' patient'+(SITEREV.count>1?'s':''):''))+'<div class="grid g3">'+SITEREV.list.map(siteRevCard).join('')+'</div><div class="btn-row" style="margin-top:22px">'+bookBtn('Book your visit')+'</div>';
+  return inner?'<div style="margin-top:44px">'+body+'</div>':'<div class="sec"><div class="wrap">'+body+'</div></div>'
+}
+function loadReviews(){
+  return new Promise(res=>{
+    const k=CFG.SUPABASE_ANON_KEY||'',u=(CFG.SUPABASE_URL||'').replace(/\/$/,'');
+    if(!u||!k||/PASTE/.test(u+k))return res(null);
+    const h={apikey:k,'Content-Type':'application/json'};if(/^eyJ/.test(k))h.Authorization='Bearer '+k;
+    fetch(u+'/rest/v1/rpc/public_reviews',{method:'POST',headers:h,body:'{}'}).then(r=>r.ok?r.json():null).then(j=>res(j&&Array.isArray(j.list)?j:null),()=>res(null));
+  });
+}
+function revBoot(){
+  let cached=null;try{cached=JSON.parse(localStorage.getItem(REV_KEY)||'null')}catch(e){}
+  if(cached&&Array.isArray(cached.list))SITEREV=cached;
+  loadReviews().then(j=>{
+    if(!j)return;const fresh=JSON.stringify(j),old=JSON.stringify(SITEREV);
+    try{localStorage.setItem(REV_KEY,fresh)}catch(e){}
+    SITEREV=j;
+    if(fresh!==old&&current&&(current==='home'||current==='reviews')){const y=window.scrollY;show(current,true);window.scrollTo(0,y)}
+  });
+}
 function revCard(r){const ini=r.n.replace(/[^A-Za-z ]/g,'').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase();return '<article class="card quote reveal"><div class="stars" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><q>'+r.t+'</q><div class="who"><span class="av">'+ini+'</span><div><b>'+r.n+'</b><small>Google review'+(r.w?' &middot; '+r.w:'')+'</small></div></div></article>'}
 function postCard(p){return '<a class="card hov post-card reveal" href="#post/'+p.id+'" data-go="post/'+p.id+'"><div class="ph"><img src="'+IMG[p.img]+'" alt="" loading="lazy"></div><div class="pc"><span class="tag-s">'+p.tag+' &middot; '+p.min+' min read</span><h3>'+p.t+'</h3><p>'+p.ex+'</p><span class="go">Read article'+ic('arrow')+'</span></div></a>'}
 function head(k,h,p){return '<div class="sec-head reveal"><span class="kicker">'+k+'</span><h2>'+h+'</h2>'+(p?'<p class="lead">'+p+'</p>':'')+'</div>'}
@@ -1035,7 +1063,7 @@ PAGES.home=()=>
 '<div class="cr"><div class="sec"><div class="wrap">'+headRow('Core services','Treatments for every smile',go('services','All services'+ic('arrow')))+'<div class="index">'+SERVICES.map(svcRow).join('')+'</div></div></div></div>'+
 (SERVICES.some(x=>x.slug==='dental-crown')?'<div class="sec dk"><div class="wrap"><div class="feat"><div style="display:grid;gap:20px" class="reveal"><span class="kicker">Dental crown</span><h2>A crown that restores strength and shine</h2><p class="lead">A custom-made cap protects a cracked, worn or weakened tooth, and restores how it looks and works. See our team at work in the clips beside this text.</p><ol class="steps-inline"><li>Examination and a clear plan</li><li>Careful shaping of the tooth</li><li>Impression for a precise fit</li><li>Crown fitted and checked for your bite</li></ol><div class="btn-row">'+go('service/dental-crown','Dental crown details'+ic('arrow'),'btn-gold')+waBtn('Ask about a crown')+'</div></div><div class="anchor sm art" id="aFeatArt"></div><div class="reveal">'+reel()+'</div></div></div></div>':'')+
 '<div class="wh"><div class="sec"><div class="wrap">'+headRow('A tour of our clinic','Clean, bright and calm',"<div class=\"sc-nav\"><button class=\"round\" type=\"button\" id=\"stPrev\" aria-label=\"Scroll left\">"+ic('back')+"</button><button class=\"round\" type=\"button\" id=\"stNext\" aria-label=\"Scroll right\">"+ic('arrow')+"</button></div>")+'<div class="strip reveal" id="strip">'+GAL.slice(0,5).map((g,i)=>'<figure'+(g.img==='xray'?' class="land"':'')+'><button type="button" data-lb="'+i+'" aria-label="Open photo: '+g.cap+'"><img src="'+IMG[g.img]+'" alt="'+g.alt+'" loading="lazy"></button><figcaption>'+g.cap+'</figcaption></figure>').join('')+'</div><div class="btn-row" style="margin-top:20px">'+go('gallery','Open the full gallery'+ic('arrow'))+'</div></div></div></div>'+
-'<div class="sec"><div class="wrap">'+headRow('Reviews that matter','4.9 stars from 22 patients',go('reviews','All reviews'+ic('arrow')))+reviewsBlock()+'</div></div>'+
+'<div class="sec"><div class="wrap">'+headRow('Reviews that matter','4.9 stars from 22 patients',go('reviews','All reviews'+ic('arrow')))+reviewsBlock()+'</div></div>'+siteRevBlock()+
 '<div class="cr"><div class="sec"><div class="wrap split"><div style="display:grid;gap:18px" class="reveal"><span class="kicker">Our qualified team</span><h2>Care from dental surgeons, therapists and assistants</h2><p class="lead">Every treatment at NA’IBI is delivered by qualified dental surgeons, therapists and assistants, who work side by side so you always have someone to ask.</p><ul class="checks"><li>'+ic('check')+'Dental surgeons lead your diagnosis and treatment</li><li>'+ic('check')+'Therapists help keep gums and teeth clean and healthy</li><li>'+ic('check')+'Assistants look after your comfort and your questions</li></ul><div class="btn-row">'+go('team','Meet the team'+ic('arrow'),'btn-line')+'</div></div><figure class="shot par reveal" style="margin:0;aspect-ratio:4/5"><img data-par src="'+IMG.chairside+'" alt="Dentist in a white coat treating a patient"></figure></div></div></div>'+
 '<div class="sec"><div class="wrap">'+head('Visit planner','Plan your visit','When to come, how long to set aside and how to find us.')+planner()+'<div style="margin-top:34px" class="reveal">'+infoBlock()+'</div></div></div>'+
 '<div class="cr"><div class="sec"><div class="wrap">'+head('How painless care works','Three simple steps')+'<div class="timeline" style="margin-top:40px"><div class="tl reveal"><span class="n">1</span><h3>Book</h3><p>Pick your treatments and send the booking on WhatsApp, or call us.</p></div><div class="tl reveal"><span class="n">2</span><h3>Painless treatment</h3><p>We explain each step and keep you comfortable. Tell us if you feel anything.</p></div><div class="tl reveal"><span class="n">3</span><h3>Smile</h3><p>Leave with clear aftercare advice and a smile you are proud of.</p></div></div><div class="btn-row" style="margin-top:30px">'+go('booking','Start booking'+ic('arrow'),'btn-gold')+'</div></div></div></div>'+
@@ -1068,7 +1096,7 @@ PAGES.gallery=()=>'<div class="sec"><div class="wrap">'+crumbs([['Gallery']])+pa
 '<div class="sec dk"><div class="wrap">'+head('Videos','Our team at work')+'<div class="split"><div class="reveal">'+reel()+'</div><div style="display:grid;gap:16px" class="reveal"><h3 style="font-size:2.2rem">Real treatments, shown honestly</h3><p class="lead">Short clips from our own channel: teeth whitening and a removable partial denture. Tap the video to pause.</p>'+waBtn('Ask about these treatments')+'</div></div></div></div>'+
 '<div class="cr"><div class="sec"><div class="wrap">'+head('What our gallery says about us','Four things you can see')+'<div class="grid g4">'+SAYS.map(s=>'<article class="card hov reveal"><div class="ico">'+ic(s.i)+'</div><h3>'+s.t+'</h3><p>'+s.d+'</p></article>').join('')+'</div><div class="btn-row" style="margin-top:26px">'+go('booking','Book your visit'+ic('arrow'),'btn-gold')+'</div></div></div></div>'+finalCta();
 
-PAGES.reviews=()=>'<div class="sec"><div class="wrap">'+crumbs([['Reviews']])+pageHead('Google reviews','4.9 stars from 22 patients')+reviewsBlock()+'<div class="grid g3" style="margin-top:36px">'+REVIEWS.map(revCard).join('')+'</div><div class="note" style="margin-top:26px">'+ic('heart')+'<span>These are reviews from the clinic’s Google listing. Some are shortened exactly as Google shortens them. Open Google to read each in full.</span></div><div class="btn-row" style="margin-top:20px"><a class="btn btn-line" href="https://www.google.com/maps/search/?api=1&query=NA%27IBI%20Dental%20Clinic%20Gwarzo%20Road%20Kano" target="_blank" rel="noopener">'+ic('ext')+'See all reviews on Google</a>'+waBtn('Book on WhatsApp')+'</div></div></div>'+finalCta();
+PAGES.reviews=()=>'<div class="sec"><div class="wrap">'+crumbs([['Reviews']])+pageHead('Google reviews','4.9 stars from 22 patients')+reviewsBlock()+'<div class="grid g3" style="margin-top:36px">'+REVIEWS.map(revCard).join('')+'</div>'+siteRevBlock(true)+'<div class="note" style="margin-top:26px">'+ic('heart')+'<span>These are reviews from the clinic’s Google listing. Some are shortened exactly as Google shortens them. Open Google to read each in full.</span></div><div class="btn-row" style="margin-top:20px"><a class="btn btn-line" href="https://www.google.com/maps/search/?api=1&query=NA%27IBI%20Dental%20Clinic%20Gwarzo%20Road%20Kano" target="_blank" rel="noopener">'+ic('ext')+'See all reviews on Google</a>'+waBtn('Book on WhatsApp')+'</div></div></div>'+finalCta();
 
 PAGES.team=()=>'<div class="sec"><div class="wrap">'+crumbs([['Our team']])+pageHead('Our qualified team','Dental surgeons, therapists and assistants','Services at NA’IBI Dental Clinic are delivered by a qualified team that works together on your care.')+'<div class="grid g3">'+[['users','Dental surgeons','Examine, diagnose and carry out your treatment, from fillings and extractions to crowns and implants.','01'],['sparkle','Therapists','Keep your gums and teeth clean and healthy with careful scaling, polishing and prevention advice.','02'],['heart','Assistants','Look after your comfort, prepare the room and answer your questions at every step.','03']].map(r=>'<article class="card hov role reveal"><span class="big" aria-hidden="true">'+r[3]+'</span><div class="ico">'+ic(r[0])+'</div><h3>'+r[1]+'</h3><p>'+r[2]+'</p></article>').join('')+'</div></div></div>'+
 '<div class="cr"><div class="sec"><div class="wrap split"><figure class="shot par reveal" style="margin:0;aspect-ratio:4/5"><img data-par src="'+IMG.chairside+'" alt="Dentist in a white coat treating a patient"></figure><div style="display:grid;gap:18px" class="reveal"><span class="kicker">Patient care</span><h2>You are never handled alone</h2><p class="lead">Patients praise the friendly, welcoming staff and thorough, gentle hygienists. Ask any question at any point. We would rather explain than assume.</p><div class="btn-row">'+waBtn('Book on WhatsApp')+go('reviews','Read reviews')+'</div></div></div></div></div>'+finalCta();
@@ -1252,6 +1280,7 @@ function animatePage(){
     else first();
   });
   setTimeout(first,1800);
+  revBoot();
 })();
 
 /* ---------- layered scroll (sections stack like pages) ---------- */

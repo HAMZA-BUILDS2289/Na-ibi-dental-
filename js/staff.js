@@ -4,7 +4,7 @@
   'use strict';
   var U = NB.u, esc = U.esc, app = document.getElementById('app');
   var DOWN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], ORDER = [1, 2, 3, 4, 5, 6, 0];
-  var STATUS_LABEL = { pending: 'pending', confirmed: 'confirmed', completed: 'completed', cancelled: 'cancelled', no_show: 'no show' };
+  var STATUS_LABEL = { pending: 'pending', confirmed: 'confirmed', in_progress: 'in treatment', completed: 'completed', cancelled: 'cancelled', no_show: 'no show' };
 
   var S = {
     D: null, state: 'boot', loginErr: '', busy: false, tab: null, viewAs: '',
@@ -135,7 +135,7 @@
   }
 
   function tabsFor(role) {
-    if (role === 'admin') return [['today', 'Today'], ['checkin', 'Scan check-in'], ['calendar', 'Calendar'], ['appointments', 'Appointments'], ['book', 'Book for patient'], ['patients', 'Patients'], ['messages', 'Messages'], ['staff', 'Staff and rosters'], ['services', 'Services and prices'], ['settings', 'Settings']];
+    if (role === 'admin') return [['today', 'Today'], ['checkin', 'Scan check-in'], ['calendar', 'Calendar'], ['appointments', 'Appointments'], ['book', 'Book for patient'], ['patients', 'Patients'], ['messages', 'Messages'], ['staff', 'Staff and rosters'], ['services', 'Services and prices'], ['reviews', 'Reviews'], ['settings', 'Settings']];
     if (role === 'receptionist') return [['today', 'Today'], ['checkin', 'Scan check-in'], ['calendar', 'Calendar'], ['appointments', 'Appointments'], ['book', 'Book for patient'], ['patients', 'Patients'], ['messages', 'Messages']];
     if (role === 'dentist') return [['mine', 'My schedule'], ['checkin', 'Scan check-in'], ['calendar', 'Calendar'], ['patients', 'Patients']];
     return [['mine', 'My schedule'], ['checkin', 'Scan check-in'], ['calendar', 'Calendar']];
@@ -145,7 +145,7 @@
     if (!S.tab || !tabs.some(function (t) { return t[0] === S.tab; })) S.tab = tabs[0][0];
     var pend = isMgr() ? S.D.appointments.filter(function (a) { return a.status === 'pending' && a.day >= today(); }).length : 0;
     var queued = isMgr() ? S.D.messages.filter(function (m) { return m.status === 'queued'; }).length : 0;
-    var body = { today: vToday, checkin: vCheckin, mine: vMine, calendar: vCalendar, appointments: vAppointments, book: vBook, patients: vPatients, messages: vMessages, staff: vStaff, services: vServices, settings: vSettings }[S.tab]();
+    var body = { today: vToday, checkin: vCheckin, mine: vMine, calendar: vCalendar, appointments: vAppointments, book: vBook, patients: vPatients, messages: vMessages, staff: vStaff, services: vServices, reviews: vReviews, settings: vSettings }[S.tab]();
     var h = '<div class="wrap" style="padding-block:18px 10px"><div class="who"><span class="avatar">' + esc(U.initials(me.name)) + '</span><div><b>' + esc(me.name) + '</b><br><span class="pill role">' + esc(me.role) + '</span> <span class="muted small">' + esc(me.email || '') + '</span></div>' +
       '<span class="row" style="margin-left:auto">';
     if (me.role === 'admin') {
@@ -166,7 +166,7 @@
   function waLink(phone, text) { return 'https://wa.me/' + U.intl(phone) + '?text=' + encodeURIComponent(text); }
   function apptCard(a, o) {
     o = o || {};
-    var e = eff(), mgr = isMgr(), mine = e.role === 'dentist' && a.dentist_id === e.id, bad = attn(a);
+    var e = eff(), mgr = isMgr(), mine = e.role === 'dentist' && a.dentist_id === e.id, inCharge = mine || (e.role === 'technician' && a.tech_id === e.id), bad = attn(a);
     var h = '<div class="appt ' + a.status + (bad ? ' attn' : '') + '"><div class="head"><span class="time">' + U.fmtD(a.day) + ' · ' + U.fmtT(a.start_min) + ' to ' + U.fmtT(a.start_min + a.dur_min) + '</span><span class="row" style="gap:6px">' +
       (bad ? '<span class="pill attn">needs rescheduling</span>' : '') + (a.arrived_at ? '<span class="pill confirmed">arrived ' + clock(a.arrived_at) + '</span>' : '') + '<span class="pill ' + a.status + '">' + STATUS_LABEL[a.status] + '</span></span></div>' +
       '<div class="meta"><span><b>' + esc(a.patient_name) + '</b> · ' + esc(a.phone) + '</span><span>' + esc(a.service_name) + '</span>' +
@@ -178,11 +178,17 @@
     if (mgr) {
       if (a.status === 'pending') act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="confirmed">Confirm</button>';
       if (a.status === 'pending' || a.status === 'confirmed') act += '<button class="btn small" data-a="rs-open" data-id="' + a.id + '">Reschedule</button><button class="btn small" data-a="remind" data-id="' + a.id + '">Queue reminder</button><a class="btn small wa" target="_blank" rel="noopener" href="' + waLink(a.phone, 'Hello ' + a.patient_name.split(' ')[0] + ', this is NA’IBI Dental Clinic about your appointment ' + a.ref + '.') + '">WhatsApp</a>';
+      if ((a.status === 'pending' || a.status === 'confirmed') && a.day <= today()) act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="in_progress">Start treatment</button>';
+      if (a.status === 'in_progress') act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="completed">Finish treatment</button>';
       if (a.status === 'confirmed' && a.day <= today()) act += '<button class="btn small" data-a="status" data-id="' + a.id + '" data-s="completed">Mark completed</button><button class="btn small" data-a="status" data-id="' + a.id + '" data-s="no_show">No-show</button>';
       if (a.status === 'pending' || a.status === 'confirmed') act += '<button class="btn small danger" data-a="arm" data-id="' + a.id + '">Cancel</button>';
       if (a.status === 'cancelled' || a.status === 'no_show') act += '<button class="btn small" data-a="rs-open" data-id="' + a.id + '">Rebook</button>';
-    } else if (mine && (a.status === 'confirmed' || a.status === 'pending') && a.day <= today()) {
-      act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="completed">Mark completed</button><button class="btn small" data-a="status" data-id="' + a.id + '" data-s="no_show">No-show</button>';
+    } else if (inCharge) {
+      if (a.status === 'pending') act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="confirmed">Accept and confirm</button>';
+      if (a.status === 'pending' || a.status === 'confirmed') act += '<button class="btn small" data-a="rs-open" data-id="' + a.id + '">Reschedule</button>';
+      if ((a.status === 'pending' || a.status === 'confirmed') && a.day <= today()) act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="in_progress">Start treatment</button>';
+      if (a.status === 'in_progress') act += '<button class="btn small primary" data-a="status" data-id="' + a.id + '" data-s="completed">Finish treatment</button>';
+      if ((a.status === 'pending' || a.status === 'confirmed') && a.day <= today()) act += '<button class="btn small" data-a="status" data-id="' + a.id + '" data-s="no_show">No-show</button>';
     }
     if (mgr || mine) act += '<button class="btn small" data-a="notes-open" data-id="' + a.id + '">Notes</button>';
     if (mgr || e.role === 'dentist') act += '<button class="btn small" data-a="history" data-phone="' + esc(a.phone) + '">Patient history</button>';
@@ -292,7 +298,7 @@
     }).sort(byTime);
     if (p.range === 'past') arr.reverse();
     var sel = function (key, opts) { return '<select data-in="ap.' + key + '" data-c="rerender" aria-label="' + key + '">' + opts.map(function (o) { return '<option value="' + o[0] + '"' + (p[key] === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select>'; };
-    return '<div class="cal-bar">' + sel('status', [['all', 'All statuses'], ['pending', 'Pending'], ['confirmed', 'Confirmed'], ['completed', 'Completed'], ['cancelled', 'Cancelled'], ['no_show', 'No-show'], ['attention', 'Needs rescheduling']]) +
+    return '<div class="cal-bar">' + sel('status', [['all', 'All statuses'], ['pending', 'Pending'], ['confirmed', 'Confirmed'], ['in_progress', 'In treatment'], ['completed', 'Completed'], ['cancelled', 'Cancelled'], ['no_show', 'No-show'], ['attention', 'Needs rescheduling']]) +
       sel('range', [['upcoming', 'Upcoming'], ['today', 'Today'], ['past', 'Past'], ['all', 'All dates']]) +
       '<input id="q" data-in="ap.q" data-live="1" value="' + esc(p.q) + '" placeholder="Search name, phone or ref" style="max-width:250px" aria-label="Search"></div>' +
       '<p class="muted small" style="margin-bottom:10px">' + arr.length + ' appointment' + (arr.length === 1 ? '' : 's') + ' · showing the last 30 days and the next 90 days</p>' + list(arr.slice(0, 120), 'Nothing matches.');
@@ -458,6 +464,24 @@
     return h;
   }
 
+  /* ---------- tab: reviews (admin) ---------- */
+  function stars(n) { var o = ''; for (var i = 1; i <= 5; i++) o += i <= n ? '\u2605' : '\u2606'; return o; }
+  function loadReviews() { S.rv = S.rv || null; rpc('admin_reviews', {}).then(function (r) { S.rv = r || []; render(); }, function (e) { S.rv = []; toast(e.message); render(); }); }
+  function vReviews() {
+    var h = '<h2 style="margin-bottom:6px">Patient reviews</h2><p class="muted small" style="margin-bottom:12px">Patients can review after their treatment is finished. Reviews with a comment show on the website straight away. Hide one if it should not be public.</p>';
+    if (!S.rv) return h + '<p class="muted">Loading...</p>';
+    if (!S.rv.length) return h + '<div class="box"><p class="muted">No reviews yet. They appear here after a patient finishes treatment and leaves one.</p></div>';
+    var shown = S.rv.filter(function (v) { return v.published; }), avg = shown.length ? (shown.reduce(function (t, v) { return t + v.rating; }, 0) / shown.length).toFixed(1) : '-';
+    h += '<div class="stats">' + stat(S.rv.length, 'reviews') + stat(avg, 'average stars') + '</div>';
+    return h + S.rv.map(function (v) {
+      return '<div class="box"><div class="row" style="justify-content:space-between"><b>' + esc(v.author) + '</b><span class="pill ' + (v.published ? 'confirmed' : 'off') + '">' + (v.published ? 'showing on website' : 'hidden') + '</span></div>' +
+        '<p style="margin:6px 0;color:var(--warn);font-size:1.15rem;letter-spacing:2px" aria-label="' + v.rating + ' out of 5">' + stars(v.rating) + '</p>' +
+        (v.body ? '<p>' + esc(v.body) + '</p>' : '<p class="muted small">No comment, rating only (not shown on the website).</p>') +
+        '<p class="muted small" style="margin-top:6px">' + esc(v.service_name || '') + ' · ' + U.fmtD(String(v.created_at).slice(0, 10)) + ' · Ref ' + esc(v.ref) + '</p>' +
+        '<div class="actions" style="margin-top:8px"><button class="btn small' + (v.published ? '' : ' primary') + '" data-a="rv-toggle" data-id="' + esc(v.id) + '" data-p="' + (v.published ? '0' : '1') + '">' + (v.published ? 'Hide from website' : 'Show on website') + '</button></div></div>';
+    }).join('');
+  }
+
   /* ---------- tab: services and prices (admin) ---------- */
   function naira(n) { return '₦' + Number(n).toLocaleString('en-NG'); }
   function svcFields(base, x, idp) {
@@ -563,14 +587,14 @@
 
   var A = {
     logout: function () { NB.logout().then(function () { S.state = 'login'; S.D = null; S.tab = null; S.sd = null; S.svcD = null; S.cred = null; render(); }); },
-    tab: function (t) { S.tab = t.dataset.t; S.arm = null; S.rs = null; S.notes = null; if (S.tab === 'settings') { S.sd = settingsDraft(); } if (S.tab === 'services') { S.svcD = svcDrafts(); } if (S.tab === 'staff') selectStaff(S.staffSel); if (S.tab === 'book') S.book = { svc: '', date: '', slots: null, loading: false, time: null, name: '', phone: '', complaint: '', dentist: '', err: '', done: null, busy: false }; render(); },
+    tab: function (t) { S.tab = t.dataset.t; S.arm = null; S.rs = null; S.notes = null; if (S.tab === 'settings') { S.sd = settingsDraft(); } if (S.tab === 'services') { S.svcD = svcDrafts(); } if (S.tab === 'reviews') loadReviews(); if (S.tab === 'staff') selectStaff(S.staffSel); if (S.tab === 'book') S.book = { svc: '', date: '', slots: null, loading: false, time: null, name: '', phone: '', complaint: '', dentist: '', err: '', done: null, busy: false }; render(); },
     pwtoggle: function () { S.pw.open = !S.pw.open; S.pw.v = ''; render(); },
     pwsave: function () {
       if (S.pw.v.length < 8) return toast('Use at least 8 characters.');
       NB.changePassword(S.pw.v).then(function () { S.pw = { open: false, v: '' }; toast('Password changed.'); render(); }, function (e) { toast(e.message); });
     },
     status: function (t) {
-      var s = t.dataset.s, msg = { confirmed: 'Confirmed. A message is queued for the patient.', completed: 'Marked completed.', no_show: 'Marked as no-show.' }[s] || 'Updated.';
+      var s = t.dataset.s, msg = { confirmed: 'Confirmed. A message is queued for the patient.', in_progress: 'Treatment started. The patient can see this on their booking page.', completed: 'Treatment finished. The patient can now leave a review.', no_show: 'Marked as no-show.' }[s] || 'Updated.';
       run(function () { return rpc('set_appt_status', { p_id: t.dataset.id, p_status: s }); }, msg);
     },
     arm: function (t) { S.arm = t.dataset.id; S.armReason = ''; S.rs = null; render(); },
@@ -648,6 +672,7 @@
       run(function () { return rpc('admin_save_settings', { p: { clinic_name: d.clinic_name, phone: d.phone, whatsapp: d.whatsapp, open_min: o, close_min: c, slot_step: Number(d.slot_step), cutoff_min: Number(d.cutoff_min), max_days: Number(d.max_days), max_open_per_phone: Number(d.max_open_per_phone), auto_confirm: !!d.auto_confirm, channel: d.channel, open_days: d.open_days } }); }, 'Settings saved.', function () { S.sd = settingsDraft(); });
     },
     'svc-row-save': function (t) { var id = t.dataset.id, x = S.svcD[id]; if (x.name.trim().length < 2) return toast('Give the service a name.'); run(function () { return rpc('admin_save_service', { p: svcPayload(x, id) }); }, 'Service saved. The website shows it now.', function () { S.svcD = svcDrafts(); }); },
+    'rv-toggle': function (t) { var pub = t.dataset.p === '1'; rpc('admin_set_review', { p_id: t.dataset.id, p_published: pub }).then(function () { toast(pub ? 'Showing on the website.' : 'Hidden from the website.'); loadReviews(); }, function (e) { toast(e.message); }); },
     'ck-scan': function () { startScan(); },
     'ck-find': function () { ckLookup(S.ck.ref); },
     'ck-next': function () { S.ck = { ref: '', res: null, err: '', busy: false, done: false }; render(); },

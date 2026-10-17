@@ -5,7 +5,7 @@
   var S = { tab: location.hash === '#mine' ? 'mine' : 'book', info: null, err: null, loading: true,
     svc: null, days: null, daysLoading: false, date: null, slots: null, slotsLoading: false, time: null,
     name: '', phone: '', complaint: '', busy: false, formErr: '', done: null,
-    mPhone: '', mRef: '', mRes: undefined, mBusy: false, mErr: '' };
+    mPhone: '', mRef: '', mRes: undefined, mBusy: false, mErr: '', rvStars: 0, rvText: '', rvBusy: false };
   var WA = '2348106977321', PHONE = '0810 697 7321';
 
   function toast(m) { var t = document.getElementById('toast'); t.textContent = m; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { t.hidden = true; }, 4200); }
@@ -78,12 +78,14 @@
       '<button class="btn primary" data-a="find"' + (S.mBusy ? ' disabled' : '') + '>Find my booking</button></div>';
     if (r === null) h += '<div class="notice warn">We could not find a booking with that phone number and reference. Check both and try again, or call ' + PHONE + '.</div>';
     if (r) {
-      h += '<div class="box"><div class="row" style="justify-content:space-between"><h3>' + esc(r.service_name) + '</h3><span class="pill ' + r.status + '">' + r.status.replace('_', ' ') + '</span></div>' +
+      h += '<div class="box"><div class="row" style="justify-content:space-between"><h3>' + esc(r.service_name) + '</h3><span class="pill ' + r.status + '">' + (STATUS_PT[r.status] || r.status) + '</span></div>' +
         '<p style="margin-top:8px"><b>' + U.fmtDL(r.day) + '</b> at ' + U.fmtT(r.start_min) + ' to ' + U.fmtT(r.start_min + r.dur_min) + '</p>' +
         '<p class="muted">With ' + esc(r.dentist_name) + ' · Ref ' + esc(r.ref) + '</p>' +
-        (r.status === 'cancelled' || r.status === 'no_show' || r.status === 'completed' ? '' : qrBox(r.ref)) +
+        progress(r) +
+        (r.status === 'cancelled' || r.status === 'no_show' || r.status === 'completed' || r.status === 'in_progress' ? '' : qrBox(r.ref)) +
         '<p class="muted small" style="margin-top:8px">To change or cancel, please call or message the clinic.</p>' +
         '<div class="row" style="margin-top:12px"><a class="btn" href="tel:+2348106977321">Call ' + PHONE + '</a><a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/' + WA + '?text=' + encodeURIComponent('Hello NAIBI Dental Clinic, about my booking ' + r.ref + '.') + '">WhatsApp</a></div></div>';
+      h += reviewBlock(r);
     }
     return h;
   }
@@ -94,6 +96,35 @@
     if (!window.NBQR) return '';
     return '<div class="qrbox"><div class="qrimg">' + NBQR.svg(qrUrl(ref), 190) + '</div><p><b>Show this QR code at the clinic</b></p><p class="small muted">The receptionist scans it to check you in. Take a screenshot or save it.</p>' +
       '<button class="btn small" data-a="saveqr" data-ref="' + esc(ref) + '">Save QR picture</button></div>';
+  }
+
+  var STATUS_PT = { pending: 'waiting for confirmation', confirmed: 'confirmed', in_progress: 'in treatment', completed: 'completed', cancelled: 'cancelled', no_show: 'missed' };
+  function hhmm(iso) { try { return new Date(iso).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Lagos' }); } catch (e) { return ''; } }
+  function stars(n) { var o = ''; for (var i = 1; i <= 5; i++) o += i <= n ? '\u2605' : '\u2606'; return o; }
+  /* Booked > Confirmed > In treatment > Completed, so the patient can follow their visit */
+  function progress(r) {
+    var idx = { pending: 0, confirmed: 1, in_progress: 2, completed: 3 }[r.status];
+    if (idx === undefined) return '';
+    var names = ['Booked', 'Confirmed', 'In treatment', 'Completed'];
+    var msg = { pending: 'The clinic will confirm your booking soon.', confirmed: 'Your time is reserved. Show your QR code when you arrive.',
+      in_progress: 'Your treatment has started' + (r.started_at ? ' (' + hhmm(r.started_at) + ')' : '') + '. This page updates by itself.',
+      completed: 'Your treatment is complete' + (r.completed_at ? ' (' + hhmm(r.completed_at) + ')' : '') + '. Thank you for choosing us.' }[r.status];
+    return '<ol class="steps" aria-label="Progress">' + names.map(function (n, i) { return '<li class="' + (i < idx ? 'done' : i === idx ? 'now' : '') + '"><i>' + (i < idx ? '\u2713' : i + 1) + '</i><span>' + n + '</span></li>'; }).join('') + '</ol>' +
+      '<p class="stepmsg">' + msg + '</p>';
+  }
+  function reviewBlock(r) {
+    if (r.status !== 'completed') return '';
+    if (r.review) return '<div class="box"><h3>Thank you for your review</h3><p class="rvstars" aria-label="' + r.review.rating + ' out of 5">' + stars(r.review.rating) + '</p>' + (r.review.body ? '<p class="muted">' + esc(r.review.body) + '</p>' : '') + '</div>';
+    var st = '';
+    for (var i = 1; i <= 5; i++) st += '<button type="button" class="star' + (i <= S.rvStars ? ' on' : '') + '" data-a="star" data-n="' + i + '" aria-label="' + i + ' star' + (i > 1 ? 's' : '') + '" aria-pressed="' + (i <= S.rvStars) + '">\u2605</button>';
+    return '<div class="box"><h3>How was your visit?</h3><p class="muted small" style="margin:4px 0 10px">Your review helps other patients. It shows your first name and the first letter of your last name.</p>' +
+      '<div class="starrow" role="group" aria-label="Your rating">' + st + '</div>' +
+      '<div class="field"><label for="rv-text">Your review (optional)</label><textarea id="rv-text" data-in="rvText" maxlength="600" placeholder="Tell us about your treatment and the care you received">' + esc(S.rvText) + '</textarea></div>' +
+      '<button class="btn primary" data-a="rvsend"' + (S.rvBusy ? ' disabled' : '') + '>' + (S.rvBusy ? 'Sending...' : 'Send review') + '</button></div>';
+  }
+  function refreshMine(silent) {
+    if (!S.mRes || !S.mPhone || !S.mRef) return;
+    NB.rpc('my_booking', { p_phone: S.mPhone, p_ref: S.mRef }).then(function (r) { if (r && S.mRes && JSON.stringify(r) !== JSON.stringify(S.mRes)) { S.mRes = r; render(); } }, function () {});
   }
 
   function render() {
@@ -146,6 +177,14 @@
         if (e.code === 'slot_taken') { S.time = null; loadSlots(); toast(e.message); } else render();
       });
     },
+    star: function (t) { S.rvStars = Number(t.dataset.n); render(); },
+    rvsend: function () {
+      if (S.rvBusy) return; if (!S.rvStars) return toast('Please tap a star to rate your visit.');
+      S.rvBusy = true; render();
+      NB.rpc('submit_review', { p_phone: S.mPhone, p_ref: S.mRef, p_rating: S.rvStars, p_text: S.rvText }).then(function () {
+        S.rvBusy = false; S.rvStars = 0; S.rvText = ''; toast('Thank you for your review!'); NB.rpc('my_booking', { p_phone: S.mPhone, p_ref: S.mRef }).then(function (r) { S.mRes = r || S.mRes; render(); }, function () { render(); });
+      }, function (e) { S.rvBusy = false; toast(e.message); render(); });
+    },
     find: function () {
       if (S.mPhone.replace(/\D/g, '').length < 10 || S.mRef.trim().length < 5) { S.mErr = 'Enter your phone number and your reference.'; return render(); }
       S.mErr = ''; S.mBusy = true; render();
@@ -156,6 +195,7 @@
   document.addEventListener('input', function (e) { var t = e.target; if (t.dataset && t.dataset.in) S[t.dataset.in] = t.value; });
   window.addEventListener('hashchange', function () { S.tab = location.hash === '#mine' ? 'mine' : 'book'; render(); });
   window.__book = S;
+  setInterval(function () { if (!document.hidden && S.tab === 'mine' && S.mRes && S.mRes.status !== 'completed' && S.mRes.status !== 'cancelled' && S.mRes.status !== 'no_show') refreshMine(); }, 15000);
 
   if (!NB.configured()) { render(); return; }
   render();
